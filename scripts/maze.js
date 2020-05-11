@@ -1,8 +1,3 @@
-let h = 20;
-let w = 20;
-let holeProbability = 0.08;
-let numPowerUps = 5;
-
 class MazeGenerator {
     constructor(w, h, holes, powerups) {
         this.w = w;
@@ -177,6 +172,3 @@ class MazeGenerator {
         }
     }
 }
-
-m = new MazeGenerator(h, w, holeProbability, numPowerUps);
-m.generate();
