@@ -114,13 +114,10 @@ class MazeGenerator {
 
             if (this.grid[current_row][current_col] == 0) continue;
 
-            //Check if it has both (above or below) and (left or right)
-            //If it does, skip, because it is a junction
             if ((this.grid[current_row][current_col-1] == 1 || this.grid[current_row][current_col+1] == 1) &&
                 (this.grid[current_row-1][current_col] == 1 || this.grid[current_row+1][current_col] == 1)) continue;
 
             this.grid[current_row][current_col] = 0;
-            console.log(current_col + " " + current_row);
             holesAdded--;
         }
     }
