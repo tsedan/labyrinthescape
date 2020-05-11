@@ -1,12 +1,14 @@
 let h = 20;
 let w = 20;
 let holeProbability = 0.08;
+let numPowerUps = 5;
 
 class MazeGenerator {
-    constructor(w, h, holes) {
+    constructor(w, h, holes, powerups) {
         this.w = w;
         this.h = h;
         this.holes = Math.floor(w*h*holes);
+        this.powers = powerups;
     }
 
     generate() {
@@ -34,6 +36,7 @@ class MazeGenerator {
 
         this.generateEntrances();
         this.addHoles();
+        this.addPowerUps();
 
         this.printPretty();
     }
@@ -122,10 +125,31 @@ class MazeGenerator {
         }
     }
 
+    addPowerUps() {
+        let powerUpsAdded = this.powers;
+        this.powerLocs = new Array();
+        while (powerUpsAdded > 0) {
+            let current_row = Math.floor(Math.random() * (this.H - 2)) + 1;
+            let current_col = Math.floor(Math.random() * (this.W - 2)) + 1;
+
+            if (this.grid[current_row][current_col] == 1) continue;
+
+            this.powerLocs.push([current_row, current_col]);
+            powerUpsAdded--;
+        }
+    }
+
     printPretty() {
         for (let i = 0; i < this.grid.length; i++) {
             let ret = "";
-            for (let j = 0; j < this.grid[i].length; j++) {
+            col: for (let j = 0; j < this.grid[i].length; j++) {
+                for (let k of this.powerLocs) {
+                    if (j == k[1] && i == k[0]) {
+                        ret += "🟦";
+                        continue col;
+                    }
+                }
+
                 if (j == this.start[1] && i == this.start[0]) {
                     ret += "🟩";
                 } else if (j == this.end[1] && i == this.end[0]) {
@@ -140,5 +164,5 @@ class MazeGenerator {
     }
 }
 
-m = new MazeGenerator(h, w, holeProbability); //5% of the area of the maze will be added holes
+m = new MazeGenerator(h, w, holeProbability, numPowerUps);
 m.generate();
