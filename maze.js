@@ -1,5 +1,5 @@
-let h = 8;
-let w = 12;
+let h = 20;
+let w = 20;
 
 class MazeGenerator {
     constructor(w, h, holes) {
@@ -114,13 +114,10 @@ class MazeGenerator {
 
             if (this.grid[current_row][current_col] == 0) continue;
 
-            //Check if it has both (above or below) and (left or right)
-            //If it does, skip, because it is a junction
             if ((this.grid[current_row][current_col-1] == 1 || this.grid[current_row][current_col+1] == 1) &&
                 (this.grid[current_row-1][current_col] == 1 || this.grid[current_row+1][current_col] == 1)) continue;
 
             this.grid[current_row][current_col] = 0;
-            console.log(current_col + " " + current_row);
             holesAdded--;
         }
     }
@@ -145,4 +142,3 @@ class MazeGenerator {
 
 m = new MazeGenerator(h, w, 30);
 m.generate();
-console.log(m.start + " " + m.end);
