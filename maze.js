@@ -1,5 +1,5 @@
-let h = 8;
-let w = 12;
+let h = 20;
+let w = 20;
 
 class MazeGenerator {
     constructor(w, h, holes) {
@@ -121,11 +121,16 @@ class MazeGenerator {
             let current_col = Math.floor(Math.random() * (this.W - 2)) + 1
 
             if (this.grid[current_row][current_col] == 1) {
-                this.grid[current_row][current_col] = 0;
-                console.log(current_col + " " + current_row);
-                console.log(this.find_neighbors(current_row, current_col, 1, false))
-                holesAdded--;
 
+
+                let unvisited_neighbors = this.find_neighbors(current_row, current_col, 1, false);
+                if (unvisited_neighbors.length == 2) {
+                    if (unvisited_neighbors[0][0] == unvisited_neighbors[1][0] || unvisited_neighbors[0][1] == unvisited_neighbors[1][1]) {
+                        holesAdded--;
+                        this.grid[current_row][current_col] = 0;
+
+                    }
+                }
             }
         }
 
@@ -150,8 +155,7 @@ class MazeGenerator {
     }
 }
 
-m = new MazeGenerator(h, w, 1);
+m = new MazeGenerator(h, w, 30);
 m.generate();
-console.log(m.start + " " + m.end);
 
 
