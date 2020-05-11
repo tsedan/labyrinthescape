@@ -1,11 +1,12 @@
 let h = 20;
 let w = 20;
+let holeProbability = 0.08;
 
 class MazeGenerator {
     constructor(w, h, holes) {
         this.w = w;
         this.h = h;
-        this.holes = holes;
+        this.holes = Math.floor(w*h*holes);
     }
 
     generate() {
@@ -32,7 +33,6 @@ class MazeGenerator {
         }
 
         this.generateEntrances();
-        this.printPretty();
         this.addHoles();
 
         this.printPretty();
@@ -44,7 +44,7 @@ class MazeGenerator {
             let this_col = col;
 
             let unvisited_neighbors = this.find_neighbors(
-                this_row, this_col, 2);
+                this_row, this_col, 2, true);
 
             while (unvisited_neighbors.length > 0) {
                 let neighbor = unvisited_neighbors[Math.floor(Math.random() * unvisited_neighbors.length)];
@@ -53,23 +53,23 @@ class MazeGenerator {
                 [this_row, this_col] = neighbor;
 
                 unvisited_neighbors = this.find_neighbors(
-                    this_row, this_col, 2);
+                    this_row, this_col, 2, true);
             }
         }
     }
 
-    find_neighbors(r, c, dist) {
+    find_neighbors(r, c, dist, is_wall) {
         let ns = [];
-        if (r > 1 && this.grid[r - dist][c])
+        if (r > 1 && this.grid[r - dist][c] == is_wall)
             ns.push([r - dist, c]);
 
-        if (r < this.H - dist && this.grid[r + dist][c])
+        if (r < this.H - dist && this.grid[r + dist][c] == is_wall)
             ns.push([r + dist, c]);
 
-        if (c > 1 && this.grid[r][c - dist])
+        if (c > 1 && this.grid[r][c - dist] == is_wall)
             ns.push([r, c - dist]);
 
-        if (c < this.W - dist && this.grid[r][c + dist])
+        if (c < this.W - dist && this.grid[r][c + dist] == is_wall)
             ns.push([r, c + dist]);
 
         return ns;
@@ -140,5 +140,5 @@ class MazeGenerator {
     }
 }
 
-m = new MazeGenerator(h, w, 30);
+m = new MazeGenerator(h, w, holeProbability); //5% of the area of the maze will be added holes
 m.generate();
