@@ -1,11 +1,33 @@
-let m = new MazeGenerator(12, 20, 0.02, 5);
-m.generate();
 let player;
 let walls;
 let open;
+let exit;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    player = createSprite(0, 0, 15, 15);
+    newMaze();
+}
+
+function draw() {
+    background(51);
+    checkKeyPress();
+    player.collide(walls);
+    player.collide(exit, newMaze)
+
+
+
+    drawSprites(walls);
+    drawSprites(open);
+    drawSprite(player);
+}
+
+function newMaze() {
+    player.position.x = 0;
+    player.position.y = 0;
+
+    m = new MazeGenerator(12, 20, 0.02, 5);
+    m.generate();
 
     walls = new Group();
     open = new Group();
@@ -26,6 +48,7 @@ function setup() {
             } else if (j == m.end[1] && i == m.end[0]) {
                 box.shapeColor = color(255, 0, 0);
                 open.add(box);
+                exit = box;
             } else {
                 if (m.grid[i][j] == 1) {
                     box.shapeColor = color(0);
@@ -39,15 +62,8 @@ function setup() {
         }
     }
 
-    player = createSprite(m.start[0] * 25 + 15, m.start[1] * 25 + 15, 15, 15);
-}
-
-function draw() {
-    background(51);
-    checkKeyPress();
-    player.collide(walls);
-
-    drawSprites();
+    player.position.x = m.start[0] * 25 + 15;
+    player.position.y = m.start[1] * 25 + 15;
 }
 
 function checkKeyPress() {
