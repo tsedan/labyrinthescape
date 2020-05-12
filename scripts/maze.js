@@ -40,7 +40,7 @@ class MazeGenerator {
             let this_row = row;
             let this_col = col;
 
-            let unvisited_neighbors = this.find_neighbors(
+            let unvisited_neighbors = this.findNeighbors(
                 this_row, this_col, 2, true);
 
             while (unvisited_neighbors.length > 0) {
@@ -49,13 +49,13 @@ class MazeGenerator {
                 this.grid[Math.floor((neighbor[0] + this_row) / 2)][Math.floor((neighbor[1] + this_col) / 2)] = 0;
                 [this_row, this_col] = neighbor;
 
-                unvisited_neighbors = this.find_neighbors(
+                unvisited_neighbors = this.findNeighbors(
                     this_row, this_col, 2, true);
             }
         }
     }
 
-    find_neighbors(r, c, dist, is_wall) {
+    findNeighbors(r, c, dist, is_wall) {
         let ns = [];
         if (r > 1 && this.grid[r - dist][c] == is_wall)
             ns.push([r - dist, c]);
@@ -131,7 +131,7 @@ class MazeGenerator {
                 current_col = Math.floor(Math.random() * (this.W - 2)) + 1;
 
                 if (this.grid[current_row][current_col] == 1) continue;
-                if (this.find_neighbors(current_row, current_col, 1, true).length != 3) continue;
+                if (this.findNeighbors(current_row, current_col, 1, true).length != 3) continue;
 
                 for (let k of this.powerLocs)
                     if (current_col == k[1] && current_row == k[0])
