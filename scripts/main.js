@@ -5,7 +5,7 @@ let walls;
 let open;
 let exit;
 
-let scale = 28;
+let scale = 50;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -13,7 +13,7 @@ function setup() {
 
     newMaze();
 
-    camera.zoom = 1.5;
+    camera.zoom = 3;
     camera.position.x = (m.H * scale - windowWidth) / 2 + (windowWidth / 2);
     camera.position.y = (m.W * scale - windowHeight) / 2 + (windowHeight / 2);
 }
@@ -38,6 +38,7 @@ function newMaze() {
     for (let i = 0; i < m.grid.length; i++) {
         for (let j = 0; j < m.grid[0].length; j++) {
             let box = createSprite(i * scale + scale / 2, j * scale + scale / 2, scale, scale);
+            box.immovable = true;
             let isPower = false;
             for (let k of m.powerLocs)
                 if (j == k[1] && i == k[0])
@@ -65,8 +66,8 @@ function newMaze() {
 function draw() {
     background(51);
 
-    camera.position.x = player.position.x;
-    camera.position.y = player.position.y;
+    camera.position.x = (4 * camera.position.x + player.position.x) / 5;
+    camera.position.y = (4 * camera.position.y + player.position.y) / 5;
 
     updateVelocities();
     player.collide(walls);
@@ -81,18 +82,18 @@ function draw() {
 function updateVelocities() {
     let a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
     if (a ? d : !d) {
-        player.velocity.x /= 1.5;
+        player.velocity.x /= 1.2;
     } else if (a) {
-        player.velocity.x = (player.velocity.x - 5) / 2;
+        player.velocity.x = (9 * player.velocity.x - 4) / 10;
     } else if (d) {
-        player.velocity.x = (player.velocity.x + 5) / 2;
+        player.velocity.x = (9 * player.velocity.x + 4) / 10;
     }
 
     if (w ? s : !s) {
-        player.velocity.y /= 1.5;
+        player.velocity.y /= 1.2;
     } else if (w) {
-        player.velocity.y = (player.velocity.y - 5) / 2;
+        player.velocity.y = (9 * player.velocity.y - 4) / 10;
     } else if (s) {
-        player.velocity.y = (player.velocity.y + 5) / 2;
+        player.velocity.y = (9 * player.velocity.y + 4) / 10;
     }
 }
