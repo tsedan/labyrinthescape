@@ -143,10 +143,9 @@ class MazeGenerator {
             this.powerLocs.push([current_row, current_col]);
             powerUpsAdded--;
         }
-        console.log(this.powerLocs);
     }
 
-    printPretty() {
+    /*printPretty() {
         for (let i = 0; i < this.grid.length; i++) {
             let ret = "";
             for (let j = 0; j < this.grid[i].length; j++) {
@@ -168,5 +167,5 @@ class MazeGenerator {
             }
             console.log(ret);
         }
-    }
+    }*/
 }
