@@ -9,7 +9,7 @@ class MazeGenerator {
     generate() {
         this.H = 2 * this.h + 1;
         this.W = 2 * this.w + 1;
-        this.holes = Math.floor(this.W*this.H*this.holes);
+        this.holes = Math.floor(this.W * this.H * this.holes);
 
         this.grid = new Array(this.H);
         for (let i = 0; i < this.grid.length; i++) {
@@ -33,8 +33,6 @@ class MazeGenerator {
         this.generateEntrances();
         this.addHoles();
         this.addPowerUps();
-
-        this.printPretty();
     }
 
     walk(row, col) {
@@ -113,8 +111,8 @@ class MazeGenerator {
 
             if (this.grid[current_row][current_col] == 0) continue;
 
-            if ((this.grid[current_row][current_col-1] == 1 || this.grid[current_row][current_col+1] == 1) &&
-                (this.grid[current_row-1][current_col] == 1 || this.grid[current_row+1][current_col] == 1)) continue;
+            if ((this.grid[current_row][current_col - 1] == 1 || this.grid[current_row][current_col + 1] == 1) &&
+                (this.grid[current_row - 1][current_col] == 1 || this.grid[current_row + 1][current_col] == 1)) continue;
 
             this.grid[current_row][current_col] = 0;
             holesAdded--;
@@ -133,7 +131,7 @@ class MazeGenerator {
                 current_col = Math.floor(Math.random() * (this.W - 2)) + 1;
 
                 if (this.grid[current_row][current_col] == 1) continue;
-                if (this.find_neighbors(current_row,current_col,1,true).length != 3) continue;
+                if (this.find_neighbors(current_row, current_col, 1, true).length != 3) continue;
 
                 for (let k of this.powerLocs)
                     if (current_col == k[1] && current_row == k[0])

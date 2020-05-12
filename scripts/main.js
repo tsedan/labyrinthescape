@@ -1,4 +1,4 @@
-let m = new MazeGenerator(10, 10, 0.05, 5);
+let m = new MazeGenerator(12, 20, 0.02, 5);
 m.generate();
 let player;
 let walls;
