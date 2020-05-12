@@ -13,7 +13,7 @@ function setup() {
 
     newMaze();
 
-    camera.zoom = 1;
+    camera.zoom = 1.5;
     camera.position.x = (m.H * scale - windowWidth) / 2 + (windowWidth / 2);
     camera.position.y = (m.W * scale - windowHeight) / 2 + (windowHeight / 2);
 }
@@ -27,17 +27,17 @@ function newMaze() {
     if (player) player.remove();
     if (exit) exit.remove();
 
-    player = createSprite(m.start[0] * scale + scale/2, m.start[1] * scale + scale/2, scale/2, scale/2);
+    player = createSprite(m.start[0] * scale + scale / 2, m.start[1] * scale + scale / 2, scale / 2, scale / 2);
 
     open = new Group();
-    let back = createSprite(m.H*scale/2,m.W*scale/2,m.H*scale,m.W*scale);
+    let back = createSprite(m.H * scale / 2, m.W * scale / 2, m.H * scale, m.W * scale);
     back.shapeColor = color(255);
     open.add(back);
 
     walls = new Group();
     for (let i = 0; i < m.grid.length; i++) {
         for (let j = 0; j < m.grid[0].length; j++) {
-            let box = createSprite(i * scale + scale/2, j * scale + scale/2, scale, scale);
+            let box = createSprite(i * scale + scale / 2, j * scale + scale / 2, scale, scale);
             let isPower = false;
             for (let k of m.powerLocs)
                 if (j == k[1] && i == k[0])
@@ -64,6 +64,10 @@ function newMaze() {
 
 function draw() {
     background(51);
+
+    camera.position.x = player.position.x;
+    camera.position.y = player.position.y;
+
     updateVelocities();
     player.collide(walls);
     player.collide(exit, newMaze);
