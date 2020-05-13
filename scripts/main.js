@@ -62,8 +62,12 @@ function newMaze() {
 function draw() {
     background(51);
 
-    camera.position.x = ((4 * camera.position.x + player.position.x + windowWidth/2) / 5);
-    camera.position.y = ((4 * camera.position.y + player.position.y + windowHeight/2) / 5);
+    camera.position.x = ((4 * camera.position.x + player.position.x + windowWidth / 2) / 5);
+    camera.position.y = ((4 * camera.position.y + player.position.y + windowHeight / 2) / 5);
+    let locX = mouseX - width / 2;
+    let locY = mouseY - height / 2;
+    ambientLight(0);
+    spotLight(255, 255, 255, locX, locY, 2500, 0, 0, -1);
 
     updateVelocities();
     player.collide(walls);
@@ -73,6 +77,7 @@ function draw() {
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
+
 }
 
 function updateVelocities() {
