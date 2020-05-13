@@ -31,6 +31,10 @@ class MazeGenerator {
         }
 
         this.generateEntrances();
+
+        this.grid[this.start[0]][this.start[1]] = 0;
+        this.grid[this.end[0]][this.end[1]] = 0;
+
         this.addHoles();
         this.addPowerUps();
     }
@@ -161,7 +165,7 @@ class MazeGenerator {
                 } else if (j == this.end[1] && i == this.end[0]) {
                     ret += "🟥";
                 } else {
-                    ret += (this.grid[i][j] == 1) ? "⬛️" : "⬜️";
+                    ret += (this.grid[i][j] == 1) ? "⬛️" : "⬜";
                 }
 
             }
