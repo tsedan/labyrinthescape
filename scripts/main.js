@@ -5,17 +5,13 @@ let walls;
 let open;
 let exit;
 
-let scale = 50;
+let scale = 120;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(60);
 
     newMaze();
-
-    camera.zoom = 3;
-    camera.position.x = (m.H * scale - windowWidth) / 2 + (windowWidth / 2);
-    camera.position.y = (m.W * scale - windowHeight) / 2 + (windowHeight / 2);
 }
 
 function newMaze() {
@@ -66,8 +62,8 @@ function newMaze() {
 function draw() {
     background(51);
 
-    camera.position.x = (4 * camera.position.x + player.position.x) / 5;
-    camera.position.y = (4 * camera.position.y + player.position.y) / 5;
+    camera.position.x = ((4 * camera.position.x + player.position.x + windowWidth/2) / 5);
+    camera.position.y = ((4 * camera.position.y + player.position.y + windowHeight/2) / 5);
 
     updateVelocities();
     player.collide(walls);
@@ -84,16 +80,16 @@ function updateVelocities() {
     if (a ? d : !d) {
         player.velocity.x /= 1.2;
     } else if (a) {
-        player.velocity.x = (9 * player.velocity.x - 4) / 10;
+        player.velocity.x = (9 * player.velocity.x - 12) / 10;
     } else if (d) {
-        player.velocity.x = (9 * player.velocity.x + 4) / 10;
+        player.velocity.x = (9 * player.velocity.x + 12) / 10;
     }
 
     if (w ? s : !s) {
         player.velocity.y /= 1.2;
     } else if (w) {
-        player.velocity.y = (9 * player.velocity.y - 4) / 10;
+        player.velocity.y = (9 * player.velocity.y - 12) / 10;
     } else if (s) {
-        player.velocity.y = (9 * player.velocity.y + 4) / 10;
+        player.velocity.y = (9 * player.velocity.y + 12) / 10;
     }
 }
