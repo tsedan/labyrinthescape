@@ -64,6 +64,22 @@ function newMaze(w, h, holes, powerups) {
             }
         }
     }
+
+    const topBox = createSprite(m.H*scale/2-1000,-1000,m.H*scale+2000,2000);
+    topBox.shapeColor = color(0);
+    walls.add(topBox);
+
+    const bottomBox = createSprite(m.H*scale/2-1000,m.W*scale+1000,m.H*scale+2000,2000);
+    bottomBox.shapeColor = color(0);
+    walls.add(bottomBox);
+
+    const leftBox = createSprite(-1000,m.W*scale/2,2000,m.W*scale);
+    leftBox.shapeColor = color(0);
+    walls.add(leftBox);
+
+    const rightBox = createSprite(m.H*scale+1000,m.W*scale/2,2000,m.W*scale);
+    rightBox.shapeColor = color(0);
+    walls.add(rightBox);
 }
 
 function newMazeAfterFinish() {
@@ -84,14 +100,18 @@ function draw() {
     spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(walls);
-    player.collide(exit, newMazeAfterFinish);
+    player.collide(walls, wallFriction);
+    player.collide(exit, newMaze);
 
     drawSprites(open);
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
+}
 
+function wallFriction() {
+    player.velocity.x /= 1.8;
+    player.velocity.y /= 1.8;
 }
 
 function updateVelocities() {
