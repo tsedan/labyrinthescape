@@ -7,15 +7,22 @@ let exit;
 
 let scale = 120;
 
+const numberOfMazes = 3;
+const mazeStartWidth = 12;
+const mazeStartHeight = 20;
+
+let mazesStarted = 0;
+
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(60);
 
-    newMaze();
+    newMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, 0.02, 6);
 }
 
-function newMaze() {
-    m = new MazeGenerator(12, 20, 0.02, 5);
+function newMaze(w, h, holes, powerups) {
+    mazesStarted++;
+    m = new MazeGenerator(w, h, holes, powerups);
     m.generate();
 
     if (open) open.removeSprites();
@@ -59,19 +66,26 @@ function newMaze() {
     }
 }
 
+function newMazeAfterFinish() {
+    newMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, 0.02, 6);
+}
+
 function draw() {
     background(51);
 
+    if (mazesStarted > numberOfMazes) {
+        return;
+    }
+
     camera.position.x = ((4 * camera.position.x + player.position.x + windowWidth / 2) / 5);
     camera.position.y = ((4 * camera.position.y + player.position.y + windowHeight / 2) / 5);
-    let locX = mouseX - width / 2;
-    let locY = mouseY - height / 2;
+
     ambientLight(0);
-    spotLight(255, 255, 255, locX, locY, 2500, 0, 0, -1);
+    spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
     player.collide(walls);
-    player.collide(exit, newMaze);
+    player.collide(exit, newMazeAfterFinish);
 
     drawSprites(open);
     drawSprites(walls);
