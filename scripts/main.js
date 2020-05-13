@@ -57,6 +57,22 @@ function newMaze() {
             }
         }
     }
+
+    const topBox = createSprite(m.H*scale/2-1000,-1000,m.H*scale+2000,2000);
+    topBox.shapeColor = color(0);
+    walls.add(topBox);
+
+    const bottomBox = createSprite(m.H*scale/2-1000,m.W*scale+1000,m.H*scale+2000,2000);
+    bottomBox.shapeColor = color(0);
+    walls.add(bottomBox);
+
+    const leftBox = createSprite(-1000,m.W*scale/2,2000,m.W*scale);
+    leftBox.shapeColor = color(0);
+    walls.add(leftBox);
+
+    const rightBox = createSprite(m.H*scale+1000,m.W*scale/2,2000,m.W*scale);
+    rightBox.shapeColor = color(0);
+    walls.add(rightBox);
 }
 
 function draw() {
@@ -64,20 +80,22 @@ function draw() {
 
     camera.position.x = ((4 * camera.position.x + player.position.x + windowWidth / 2) / 5);
     camera.position.y = ((4 * camera.position.y + player.position.y + windowHeight / 2) / 5);
-    let locX = mouseX - width / 2;
-    let locY = mouseY - height / 2;
     ambientLight(0);
-    spotLight(255, 255, 255, locX, locY, 2500, 0, 0, -1);
+    spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(walls);
+    player.collide(walls, wallFriction);
     player.collide(exit, newMaze);
 
     drawSprites(open);
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
+}
 
+function wallFriction() {
+    player.velocity.x /= 1.8;
+    player.velocity.y /= 1.8;
 }
 
 function updateVelocities() {
