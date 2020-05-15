@@ -106,7 +106,7 @@ function draw() {
 
     updateVelocities();
     player.collide(walls);
-    player.collide(exit, newMaze);
+    player.collide(exit, newMazeAfterFinish);
 
     drawSprites(open);
     drawSprites(walls);
