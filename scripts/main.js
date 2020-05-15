@@ -4,6 +4,7 @@ let player;
 let walls;
 let open;
 let exit;
+let minimap;
 
 let scale = 120;
 
@@ -63,6 +64,7 @@ function newMaze(w, h, holes, powerups) {
                 } else { box.remove(); }
             }
         }
+
     }
 
     const topBox = createSprite(m.H*scale/2-1000,-1000,m.H*scale+2000,2000);
@@ -80,6 +82,8 @@ function newMaze(w, h, holes, powerups) {
     const rightBox = createSprite(m.H*scale+1000,m.W*scale/2,2000,m.W*scale);
     rightBox.shapeColor = color(0);
     walls.add(rightBox);
+
+    minimap = new Minimap(m);
 }
 
 function newMazeAfterFinish() {
@@ -107,6 +111,7 @@ function draw() {
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
+    minimap.draw();
 }
 
 function wallFriction() {
