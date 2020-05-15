@@ -32,6 +32,7 @@ function newMaze(w, h, holes, powerups) {
     if (exit) exit.remove();
 
     player = createSprite(m.start[0] * scale + scale / 2, m.start[1] * scale + scale / 2, scale / 2, scale / 2);
+    player.shapeColor = color(140, 28, 43);
 
     open = new Group();
     let back = createSprite(m.H * scale / 2, m.W * scale / 2, m.H * scale, m.W * scale);
@@ -67,19 +68,19 @@ function newMaze(w, h, holes, powerups) {
 
     }
 
-    const topBox = createSprite(m.H*scale/2-1000,-1000,m.H*scale+2000,2000);
+    const topBox = createSprite(m.H * scale / 2 - 1000, -1000, m.H * scale + 2000, 2000);
     topBox.shapeColor = color(0);
     walls.add(topBox);
 
-    const bottomBox = createSprite(m.H*scale/2-1000,m.W*scale+1000,m.H*scale+2000,2000);
+    const bottomBox = createSprite(m.H * scale / 2 - 1000, m.W * scale + 1000, m.H * scale + 2000, 2000);
     bottomBox.shapeColor = color(0);
     walls.add(bottomBox);
 
-    const leftBox = createSprite(-1000,m.W*scale/2,2000,m.W*scale);
+    const leftBox = createSprite(-1000, m.W * scale / 2, 2000, m.W * scale);
     leftBox.shapeColor = color(0);
     walls.add(leftBox);
 
-    const rightBox = createSprite(m.H*scale+1000,m.W*scale/2,2000,m.W*scale);
+    const rightBox = createSprite(m.H * scale + 1000, m.W * scale / 2, 2000, m.W * scale);
     rightBox.shapeColor = color(0);
     walls.add(rightBox);
 
@@ -104,13 +105,16 @@ function draw() {
     spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(walls, wallFriction);
+    player.collide(walls);
     player.collide(exit, newMaze);
 
     drawSprites(open);
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
+
+    minimap.update(Math.floor(player.position.x / scale), Math.floor(player.position.y / scale));
+
     minimap.draw();
 }
 
