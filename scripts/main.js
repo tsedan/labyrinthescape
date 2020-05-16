@@ -32,7 +32,7 @@ function newMaze(w, h, holes, powerups) {
     if (player) player.remove();
     if (exit) exit.remove();
 
-    player = createSprite(m.start[0] * scale + scale / 2, m.start[1] * scale + scale / 2, scale / 2, scale / 2);
+    player = createSprite(m.start[1] * scale + scale / 2, m.start[0] * scale + scale / 2, scale / 2, scale / 2);
 
     open = new Group();
     let back = createSprite(m.H * scale / 2, m.W * scale / 2, m.H * scale, m.W * scale);
@@ -58,7 +58,7 @@ function newMaze(w, h, holes, powerups) {
                 box.shapeColor = color(0, 255, 0);
                 open.add(box);
                 ret += "🟩";
-            } else if (j == m.end[1] && i == m.end[0]) {
+            } else if (j == m.end[0] && i == m.end[1]) {
                 box.shapeColor = color(255, 0, 0);
                 exit = box;
                 ret += "🟥";
@@ -81,23 +81,15 @@ function newMaze(w, h, holes, powerups) {
 
 
     for (let i = 0; i < m.grid.length; i++) {
-        let tempRect = new Array();
         let rectangleLength = scale;
-        let startX = scale * i;
-        let startY = 0;
+        let startX = 0;
+        let startY = scale * i;
         let colorRect = m.grid[i][0];
         for (let j = 0; j < m.grid[0].length; j++) {
             if (j < m.grid[0].length - 1) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {
                     rectangleLength += scale;
                 } else {
-                    tempRect.push({
-                        length: rectangleLength,
-                        x: startX,
-                        y: startY,
-                        color: colorRect
-                    });
-
                     let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
                     if (colorRect == 1) {
                         box.shapeColor = color(255, 255, 0);
@@ -108,17 +100,10 @@ function newMaze(w, h, holes, powerups) {
                     }
 
                     rectangleLength = scale;
-                    startY = scale * (j + 1);
+                    startX = scale * (j + 1);
                     colorRect = m.grid[i][j + 1];
                 }
             } else {
-                tempRect.push({
-                    length: rectangleLength,
-                    x: startX,
-                    y: startY,
-                    color: colorRect
-                });
-
                 let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
                 if (colorRect == 1) {
                     box.shapeColor = color(255, 255, 0);
@@ -129,11 +114,6 @@ function newMaze(w, h, holes, powerups) {
                 }
             }
         }
-
-
-        console.log(tempRect);
-        console.log(testWall);
-        console.log(testOpen);
     }
 
     for (let j = 0; j < m.grid[0].length; j++) {
