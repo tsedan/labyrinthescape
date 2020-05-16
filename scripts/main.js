@@ -4,9 +4,6 @@ let player;
 let walls;
 let open;
 let exit;
-// let testWall;
-// let testOpen;
-// let testGroup;
 
 let scale = 120;
 
@@ -140,20 +137,19 @@ function newMaze(w, h, holes, powerups) {
     }
 
 
-    fill(0)
-    const topBox = createSprite(m.H * scale / 2 - 1000, -1000, m.H * scale + 2000, 2000);
+    const topBox = createSprite(m.W * scale / 2, -scale / 2, m.W * scale, scale);
     topBox.shapeColor = color(0);
     walls.add(topBox);
 
-    const bottomBox = createSprite(m.H * scale / 2 - 1000, m.W * scale + 1000, m.H * scale + 2000, 2000);
+    const bottomBox = createSprite(m.W * scale / 2, m.H * scale + scale / 2, m.W * scale, scale);
     bottomBox.shapeColor = color(0);
     walls.add(bottomBox);
 
-    const leftBox = createSprite(-1000, m.W * scale / 2, 2000, m.W * scale);
+    const leftBox = createSprite(-scale / 2, m.H * scale / 2, scale, m.H * scale);
     leftBox.shapeColor = color(0);
     walls.add(leftBox);
 
-    const rightBox = createSprite(m.H * scale + 1000, m.W * scale / 2, 2000, m.W * scale);
+    const rightBox = createSprite(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale);
     rightBox.shapeColor = color(0);
     walls.add(rightBox);
 }
@@ -163,7 +159,7 @@ function newMazeAfterFinish() {
 }
 
 function draw() {
-    background(51);
+    background(0);
 
     if (mazesStarted > numberOfMazes) {
         return;
@@ -176,14 +172,12 @@ function draw() {
     spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(walls, wallFriction);
+    player.collide(walls);
     //player.collide(exit, newMazeAfterFinish);
 
     drawSprites(open);
     drawSprites(walls);
-    // drawSprites(testWall);
-    // drawSprites(testOpen);
-    // drawSprites(testGroup);
+
     drawSprite(exit);
     drawSprite(player);
 }
