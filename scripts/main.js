@@ -4,7 +4,8 @@ let player;
 let walls;
 let open;
 let exit;
-let test;
+let testWall;
+let testOpen;
 
 let scale = 120;
 
@@ -75,7 +76,9 @@ function newMaze(w, h, holes, powerups) {
         console.log(ret);
     }
 
-    test = new Group();
+    testWall = new Group();
+    testOpen = new Group();
+
 
     for (let i = 0; i < m.grid.length; i++) {
         let tempRect = new Array();
@@ -96,8 +99,14 @@ function newMaze(w, h, holes, powerups) {
                     });
 
                     let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
-                    box.shapeColor = colorRect == 1 ? color(255, 255, 0) : color(255, 0, 255);
-                    test.add(box);
+                    if (colorRect == 1) {
+                        box.shapeColor = color(255, 255, 0);
+                        testWall.add(box)
+                    } else {
+                        box.shapeColor = color(255, 0, 255);
+                        testOpen.add(box)
+                    }
+
                     rectangleLength = scale;
                     startY = scale * (j + 1);
                     colorRect = m.grid[i][j + 1];
@@ -111,13 +120,20 @@ function newMaze(w, h, holes, powerups) {
                 });
 
                 let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
-                box.shapeColor = colorRect == 1 ? color(255, 255, 0) : color(255, 0, 255);
-                test.add(box);
+                if (colorRect == 1) {
+                    box.shapeColor = color(255, 255, 0);
+                    testWall.add(box)
+                } else {
+                    box.shapeColor = color(255, 0, 255);
+                    testOpen.add(box)
+                }
             }
         }
 
 
         console.log(tempRect);
+        console.log(testWall);
+        console.log(testOpen);
     }
 
     for (let j = 0; j < m.grid[0].length; j++) {
@@ -138,7 +154,7 @@ function newMaze(w, h, holes, powerups) {
             }
         }
 
-        console.log(tempRect);
+        // console.log(tempRect);
     }
 
     const topBox = createSprite(m.H * scale / 2 - 1000, -1000, m.H * scale + 2000, 2000);
@@ -176,12 +192,13 @@ function draw() {
     spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(walls, wallFriction);
+    player.collide(testWall, wallFriction);
     player.collide(exit, newMazeAfterFinish);
 
     //drawSprites(open);
     //drawSprites(walls);
-    drawSprites(test);
+    drawSprites(testWall);
+    drawSprites(testOpen);
     drawSprite(exit);
     drawSprite(player);
 }
