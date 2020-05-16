@@ -18,8 +18,8 @@ class Minimap {
         noStroke();
         rectMode(CORNER);
 
-        const w = minimapScale * m.H;
-        const h = minimapScale * m.W;
+        const w = minimapScale * m.W;
+        const h = minimapScale * (m.H - 1);
         const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
         fill(gameColors.minimapBack);
