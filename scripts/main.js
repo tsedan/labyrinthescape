@@ -36,50 +36,9 @@ function newMaze(w, h, holes, powerups) {
     player = createSprite(m.start[1] * scale + scale / 2, m.start[0] * scale + scale / 2, scale / 2, scale / 2);
 
     open = new Group();
-    let back = createSprite(m.H * scale / 2, m.W * scale / 2, m.H * scale, m.W * scale);
-    back.shapeColor = color(255);
-    open.add(back);
-
     walls = new Group();
-    // for (let i = 0; i < m.grid.length; i++) {
-    //     let ret = "";
-    //     for (let j = 0; j < m.grid[0].length; j++) {
-    //         let box = createSprite(i * scale + scale / 2, j * scale + scale / 2, scale, scale);
-    //         box.immovable = true;
-    //         let isPower = false;
-    //         for (let k of m.powerLocs)
-    //             if (j == k[1] && i == k[0])
-    //                 isPower = true;
 
-    //         if (isPower) {
-    //             box.shapeColor = color(0, 0, 255);
-    //             open.add(box);
-    //             ret += "🟦";
-    //         } else if (j == m.start[1] && i == m.start[0]) {
-    //             box.shapeColor = color(0, 255, 0);
-    //             open.add(box);
-    //             ret += "🟩";
-    //         } else if (j == m.end[0] && i == m.end[1]) {
-    //             box.shapeColor = color(255, 0, 0);
-    //             exit = box;
-    //             ret += "🟥";
-    //         } else {
-    //             if (m.grid[i][j] == 1) {
-    //                 box.shapeColor = color(0);
-    //                 walls.add(box);
-    //                 ret += "⬛️";
-    //             } else {
-    //                 box.remove();
-    //                 ret += "⬜";
-    //             }
-    //         }
-    //     }
-    //     console.log(ret);
-    // }
-
-    // testWall = new Group();
-    // testOpen = new Group();
-
+    let singleSquares = new Set();
 
     for (let i = 0; i < m.grid.length; i++) {
         let rectangleLength = scale;
@@ -100,6 +59,8 @@ function newMaze(w, h, holes, powerups) {
                             box.shapeColor = color(255);
                             open.add(box)
                         }
+                    } else {
+                        singleSquares.add(startX + "," + startY)
                     }
 
                     rectangleLength = scale;
@@ -116,6 +77,8 @@ function newMaze(w, h, holes, powerups) {
                         box.shapeColor = color(255);
                         open.add(box)
                     }
+                } else {
+                    singleSquares.add(startX + "," + startY)
                 }
             }
         }
@@ -141,6 +104,12 @@ function newMaze(w, h, holes, powerups) {
                             box.shapeColor = color(255);
                             open.add(box)
                         }
+                    } else {
+                        if (singleSquares.has(startX + "," + startY)) {
+                            let box = createSprite(startX + scale / 2, startY + scale / 2, scale, scale);
+                            box.shapeColor = color(0);
+                            walls.add(box)
+                        }
                     }
 
                     rectangleLength = scale;
@@ -157,6 +126,12 @@ function newMaze(w, h, holes, powerups) {
                     } else {
                         box.shapeColor = color(255);
                         open.add(box)
+                    }
+                } else {
+                    if (singleSquares.has(startX + "," + startY)) {
+                        let box = createSprite(startX + scale / 2, startY + scale / 2, scale, scale);
+                        box.shapeColor = color(0);
+                        walls.add(box)
                     }
                 }
             }
