@@ -4,8 +4,9 @@ let player;
 let walls;
 let open;
 let exit;
-let testWall;
-let testOpen;
+// let testWall;
+// let testOpen;
+// let testGroup;
 
 let scale = 120;
 
@@ -40,44 +41,44 @@ function newMaze(w, h, holes, powerups) {
     open.add(back);
 
     walls = new Group();
-    for (let i = 0; i < m.grid.length; i++) {
-        let ret = "";
-        for (let j = 0; j < m.grid[0].length; j++) {
-            let box = createSprite(i * scale + scale / 2, j * scale + scale / 2, scale, scale);
-            box.immovable = true;
-            let isPower = false;
-            for (let k of m.powerLocs)
-                if (j == k[1] && i == k[0])
-                    isPower = true;
+    // for (let i = 0; i < m.grid.length; i++) {
+    //     let ret = "";
+    //     for (let j = 0; j < m.grid[0].length; j++) {
+    //         let box = createSprite(i * scale + scale / 2, j * scale + scale / 2, scale, scale);
+    //         box.immovable = true;
+    //         let isPower = false;
+    //         for (let k of m.powerLocs)
+    //             if (j == k[1] && i == k[0])
+    //                 isPower = true;
 
-            if (isPower) {
-                box.shapeColor = color(0, 0, 255);
-                open.add(box);
-                ret += "🟦";
-            } else if (j == m.start[1] && i == m.start[0]) {
-                box.shapeColor = color(0, 255, 0);
-                open.add(box);
-                ret += "🟩";
-            } else if (j == m.end[0] && i == m.end[1]) {
-                box.shapeColor = color(255, 0, 0);
-                exit = box;
-                ret += "🟥";
-            } else {
-                if (m.grid[i][j] == 1) {
-                    box.shapeColor = color(0);
-                    walls.add(box);
-                    ret += "⬛️";
-                } else {
-                    box.remove();
-                    ret += "⬜";
-                }
-            }
-        }
-        console.log(ret);
-    }
+    //         if (isPower) {
+    //             box.shapeColor = color(0, 0, 255);
+    //             open.add(box);
+    //             ret += "🟦";
+    //         } else if (j == m.start[1] && i == m.start[0]) {
+    //             box.shapeColor = color(0, 255, 0);
+    //             open.add(box);
+    //             ret += "🟩";
+    //         } else if (j == m.end[0] && i == m.end[1]) {
+    //             box.shapeColor = color(255, 0, 0);
+    //             exit = box;
+    //             ret += "🟥";
+    //         } else {
+    //             if (m.grid[i][j] == 1) {
+    //                 box.shapeColor = color(0);
+    //                 walls.add(box);
+    //                 ret += "⬛️";
+    //             } else {
+    //                 box.remove();
+    //                 ret += "⬜";
+    //             }
+    //         }
+    //     }
+    //     console.log(ret);
+    // }
 
-    testWall = new Group();
-    testOpen = new Group();
+    // testWall = new Group();
+    // testOpen = new Group();
 
 
     for (let i = 0; i < m.grid.length; i++) {
@@ -90,13 +91,15 @@ function newMaze(w, h, holes, powerups) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {
                     rectangleLength += scale;
                 } else {
-                    let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
-                    if (colorRect == 1) {
-                        box.shapeColor = color(255, 255, 0);
-                        testWall.add(box)
-                    } else {
-                        box.shapeColor = color(255, 0, 255);
-                        testOpen.add(box)
+                    if (rectangleLength != scale) {
+                        let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
+                        if (colorRect == 1) {
+                            box.shapeColor = color(0);
+                            walls.add(box)
+                        } else {
+                            box.shapeColor = color(255);
+                            open.add(box)
+                        }
                     }
 
                     rectangleLength = scale;
@@ -104,37 +107,61 @@ function newMaze(w, h, holes, powerups) {
                     colorRect = m.grid[i][j + 1];
                 }
             } else {
-                let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
-                if (colorRect == 1) {
-                    box.shapeColor = color(255, 255, 0);
-                    testWall.add(box)
-                } else {
-                    box.shapeColor = color(255, 0, 255);
-                    testOpen.add(box)
+                if (rectangleLength != scale) {
+                    let box = createSprite(startX + rectangleLength / 2, startY + scale / 2, rectangleLength, scale);
+                    if (colorRect == 1) {
+                        box.shapeColor = color(0);
+                        walls.add(box)
+                    } else {
+                        box.shapeColor = color(255);
+                        open.add(box)
+                    }
                 }
             }
         }
     }
 
     for (let j = 0; j < m.grid[0].length; j++) {
-        let tempRect = new Array();
-        let rectangleLength = 1;
-        let startX = 1;
-        let startY = 1;
+        let rectangleLength = scale;
+
+        let startX = scale * j;
+        let startY = 0;
+        let colorRect = m.grid[0][j];
         for (let i = 0; i < m.grid.length; i++) {
             if (i < m.grid.length - 1) {
                 if (m.grid[i + 1][j] == m.grid[i][j]) {
-                    rectangleLength++;
+                    rectangleLength += scale;
                 } else {
-                    tempRect.push(rectangleLength);
-                    rectangleLength = 1;
+                    if (rectangleLength != scale) {
+                        let box = createSprite(startX + scale / 2, startY + rectangleLength / 2, scale, rectangleLength);
+                        if (colorRect == 1) {
+                            box.shapeColor = color(0);
+                            walls.add(box)
+                        } else {
+                            box.shapeColor = color(255);
+                            open.add(box)
+                        }
+                    }
+
+                    rectangleLength = scale;
+                    startY = scale * (i + 1);
+                    colorRect = m.grid[i + 1][j];
                 }
             } else {
-                tempRect.push(rectangleLength);
+                if (rectangleLength != scale) {
+                    let box = createSprite(startX + scale / 2, startY + rectangleLength / 2, scale, rectangleLength);
+
+                    if (colorRect == 1) {
+                        box.shapeColor = color(0);
+                        walls.add(box)
+                    } else {
+                        box.shapeColor = color(255);
+                        open.add(box)
+                    }
+                }
             }
         }
 
-        // console.log(tempRect);
     }
 
     const topBox = createSprite(m.H * scale / 2 - 1000, -1000, m.H * scale + 2000, 2000);
@@ -172,13 +199,14 @@ function draw() {
     spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
     updateVelocities();
-    player.collide(testWall, wallFriction);
-    player.collide(exit, newMazeAfterFinish);
+    player.collide(walls, wallFriction);
+    //player.collide(exit, newMazeAfterFinish);
 
-    //drawSprites(open);
-    //drawSprites(walls);
-    drawSprites(testWall);
-    drawSprites(testOpen);
+    drawSprites(open);
+    drawSprites(walls);
+    // drawSprites(testWall);
+    // drawSprites(testOpen);
+    // drawSprites(testGroup);
     drawSprite(exit);
     drawSprite(player);
 }
