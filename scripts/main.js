@@ -3,7 +3,9 @@ let m;
 let player;
 let walls;
 let open;
+let start;
 let exit;
+let powerups;
 
 let scale = 120;
 
@@ -20,9 +22,9 @@ function setup() {
     newMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, 0.02, 6);
 }
 
-function newMaze(w, h, holes, powerups) {
+function newMaze(w, h, holes, numPowerups) {
     mazesStarted++;
-    m = new MazeGenerator(w, h, holes, powerups);
+    m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate();
 
     if (open) open.removeSprites();
@@ -32,8 +34,15 @@ function newMaze(w, h, holes, powerups) {
 
     player = createSprite(m.start[1] * scale + scale / 2, m.start[0] * scale + scale / 2, scale / 2, scale / 2);
 
+    start = createSprite(m.start[1] * scale + scale / 2, m.start[0] * scale + scale / 2, scale, scale);
+    start.shapeColor = color(0, 255, 0);
+
+    exit = createSprite(m.end[1] * scale + scale / 2, m.end[0] * scale + scale / 2, scale, scale);
+    exit.shapeColor = color(255, 0, 0);
+
     open = new Group();
     walls = new Group();
+    powerups = new Group();
 
     let singleSquares = new Set();
 
@@ -43,6 +52,17 @@ function newMaze(w, h, holes, powerups) {
         let startY = scale * i;
         let colorRect = m.grid[i][0];
         for (let j = 0; j < m.grid[0].length; j++) {
+            let isPower = false;
+            for (let k of m.powerLocs)
+                if (j == k[1] && i == k[0])
+                    isPower = true;
+
+            if (isPower) {
+                let box = createSprite(scale * j + scale / 2, scale * i + scale / 2, scale, scale);
+                box.shapeColor = color(0, 0, 255);
+                powerups.add(box)
+            }
+
             if (j < m.grid[0].length - 1) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {
                     rectangleLength += scale;
@@ -133,9 +153,7 @@ function newMaze(w, h, holes, powerups) {
                 }
             }
         }
-
     }
-
 
     const topBox = createSprite(m.W * scale / 2, -scale / 2, m.W * scale, scale);
     topBox.shapeColor = color(0);
@@ -173,12 +191,14 @@ function draw() {
 
     updateVelocities();
     player.collide(walls);
-    //player.collide(exit, newMazeAfterFinish);
+    player.collide(exit, newMazeAfterFinish);
 
     drawSprites(open);
     drawSprites(walls);
+    drawSprites(powerups);
 
     drawSprite(exit);
+    drawSprite(start);
     drawSprite(player);
 }
 
