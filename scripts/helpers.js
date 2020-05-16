@@ -132,11 +132,11 @@ function genMaze(w, h, holes, powerups) {
         }
     }
 
-    const topBox = createSprite(m.W * scale / 2, -scale / 2, m.W * scale, scale);
+    const topBox = createSprite(m.W * scale / 2, -scale / 2, (m.W+2) * scale, scale);
     topBox.shapeColor = color(gameColors.wall);
     walls.add(topBox);
 
-    const bottomBox = createSprite(m.W * scale / 2, m.H * scale + scale / 2, m.W * scale, scale);
+    const bottomBox = createSprite(m.W * scale / 2, m.H * scale + scale / 2, (m.W+2) * scale, scale);
     bottomBox.shapeColor = color(gameColors.wall);
     walls.add(bottomBox);
 
