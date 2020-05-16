@@ -1,3 +1,22 @@
+function updateVelocities() {
+    let a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
+    if (a ? d : !d) {
+        player.velocity.x *= playerFriction / (playerFriction + 1);
+    } else if (a) {
+        player.velocity.x = (playerFriction * player.velocity.x - playerMaxSpeed) / (playerFriction + 1);
+    } else if (d) {
+        player.velocity.x = (playerFriction * player.velocity.x + playerMaxSpeed) / (playerFriction + 1);
+    }
+
+    if (w ? s : !s) {
+        player.velocity.y *= playerFriction / (playerFriction + 1);
+    } else if (w) {
+        player.velocity.y = (playerFriction * player.velocity.y - playerMaxSpeed) / (playerFriction + 1);
+    } else if (s) {
+        player.velocity.y = (playerFriction * player.velocity.y + playerMaxSpeed) / (playerFriction + 1);
+    }
+}
+
 function genMaze(w, h, holes, powerups) {
     mazesStarted++;
     m = new MazeGenerator(w, h, holes, powerups);
@@ -54,7 +73,7 @@ function genMaze(w, h, holes, powerups) {
                             open.add(box);
                         }
                     } else {
-                        singleSquares.add(startX + "," + startY)
+                        singleSquares.add(startX + "," + startY);
                     }
 
                     rectangleLength = scale;
