@@ -15,11 +15,11 @@ function genMaze(w, h, holes, powerups) {
     if (player) player.remove();
     if (exit) exit.remove();
 
-    player = createSprite(m.start[0] * scale + scale / 2, m.start[1] * scale + scale / 2, scale / 2, scale / 2);
+    player = createSprite((m.start[0]+0.5)*scale, (m.start[1]+0.5)*scale, scale/2, scale/2);
     player.shapeColor = color(...gameColors.player);
 
     open = new Group();
-    const back = createSprite(m.H * scale / 2, m.W * scale / 2, m.H * scale, m.W * scale);
+    const back = createSprite(m.H*scale/2, m.W*scale/2, m.H*scale, m.W*scale);
     back.shapeColor = color(...gameColors.back);
     open.add(back);
 
@@ -67,7 +67,7 @@ function genMaze(w, h, holes, powerups) {
     rightBox.shapeColor = color(...gameColors.wall);
     walls.add(rightBox);
 
-    minimap = new Minimap(m);
+    minimap = new Minimap();
 }
 
 function newMaze() {
@@ -88,14 +88,12 @@ function draw() {
     updateVelocities();
     player.collide(walls);
     player.collide(exit, newMaze);
+    minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
     drawSprites(open);
     drawSprites(walls);
     drawSprite(exit);
     drawSprite(player);
-
-    minimap.update(Math.floor(player.position.x / scale), Math.floor(player.position.y / scale));
-
     minimap.draw();
 }
 

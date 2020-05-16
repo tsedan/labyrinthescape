@@ -6,7 +6,8 @@ let open;
 let exit;
 let minimap;
 
-let scale = 120;
+const scale = 120;
+const minimapScale = scale / 20;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 12;
@@ -27,5 +28,6 @@ const gameColors = {
     power: [0,0,255],
     start: [0,255,0],
     end: [255,0,0],
-    wall: [0]
+    wall: [0],
+    minimapBack: [51]
 }

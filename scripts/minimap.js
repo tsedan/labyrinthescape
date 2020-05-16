@@ -1,45 +1,37 @@
 class Minimap {
-    constructor(m) {
-        this.m = m;
+    constructor() {
         this.pointsVisited = new Set();
-        this.currX = this.m.start[0];
-        this.currY = this.m.start[1];
+        this.currX = m.start[0];
+        this.currY = m.start[1];
     }
 
     update(row, col) {
         this.currX = row;
         this.currY = col;
 
-        this.pointsVisited.add(row + "," + col);
+        this.pointsVisited.add([row, col]);
     }
 
     draw() {
         push();
         noLights();
         noStroke();
-
         rectMode(CORNER);
-        // HARDCODED TRASH FIX THIS PLS
-        fill(51);
-        rect(camera.position.x - scale / 2 - scale * this.m.grid.length / 25, camera.position.y - scale / 2 - scale * this.m.grid[0].length / 25, scale * this.m.grid.length / 25, scale * this.m.grid[0].length / 25);
 
-        fill(0);
-        rect(camera.position.x - scale / 2 - scale * this.m.grid.length / 25 + scale * 0.05, camera.position.y - scale / 2.25 - scale * this.m.grid[0].length / 25, scale * 0.94 * this.m.grid.length / 25, scale * 0.90 * this.m.grid[0].length / 25);
+        const w = minimapScale * m.H;
+        const h = minimapScale * m.W;
+        const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
+        const pad = minimapScale;
 
-        let w = scale * 0.94 * this.m.grid.length / 25 / this.m.grid.length;
-        let h = scale * 0.9 * this.m.grid[0].length / 25 / this.m.grid[0].length;
+        fill(...gameColors.minimapBack);
+        rect(camera.position.x - w - pad - offset, camera.position.y - h - pad - offset, w + 2*pad, h + 2*pad);
 
-        for (let it = this.pointsVisited.values(), val = null; val = it.next().value;) {
-            let square = val.split(",");
-            let squareX = +square[0];
-            let squareY = +square[1];
-            if (this.currX == squareX && this.currY == squareY) {
-                fill(255, 0, 0);
-            } else {
-                fill(255);
-            }
-            rect(camera.position.x - scale / 2 - scale * this.m.grid.length / 25 + scale * 0.05 + w * squareX, camera.position.y - scale / 2.25 - scale * this.m.grid[0].length / 25 + h * squareY, w, h);
+        fill(...gameColors.wall);
+        rect(camera.position.x - w - offset, camera.position.y - h - offset, w, h);
 
+        for (let pts = this.pointsVisited.values(), val = []; val = pts.next().value;) {
+            (this.currX == val[0] && this.currY == val[1]) ? fill(...gameColors.player) : fill(...gameColors.back);
+            rect(camera.position.x - w + val[0]*minimapScale - offset,camera.position.y - h + val[1]*minimapScale - offset, minimapScale, minimapScale);
         }
 
         pop();
