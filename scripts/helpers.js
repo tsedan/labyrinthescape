@@ -1,19 +1,20 @@
 function updateVelocities() {
-    let a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
+    const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
+
     if (a ? d : !d) {
-        player.velocity.x *= playerFriction / (playerFriction + 1);
+        player.velocity.x *= friction / (friction + 1);
     } else if (a) {
-        player.velocity.x = (playerFriction * player.velocity.x - playerMaxSpeed) / (playerFriction + 1);
+        player.velocity.x = (friction * player.velocity.x - maxSpeed) / (friction + 1);
     } else if (d) {
-        player.velocity.x = (playerFriction * player.velocity.x + playerMaxSpeed) / (playerFriction + 1);
+        player.velocity.x = (friction * player.velocity.x + maxSpeed) / (friction + 1);
     }
 
     if (w ? s : !s) {
-        player.velocity.y *= playerFriction / (playerFriction + 1);
+        player.velocity.y *= friction / (friction + 1);
     } else if (w) {
-        player.velocity.y = (playerFriction * player.velocity.y - playerMaxSpeed) / (playerFriction + 1);
+        player.velocity.y = (friction * player.velocity.y - maxSpeed) / (friction + 1);
     } else if (s) {
-        player.velocity.y = (playerFriction * player.velocity.y + playerMaxSpeed) / (playerFriction + 1);
+        player.velocity.y = (friction * player.velocity.y + maxSpeed) / (friction + 1);
     }
 }
 

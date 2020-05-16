@@ -1,6 +1,6 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(60);
+    frameRate(desiredFPS);
     newMaze();
 }
 
@@ -9,8 +9,8 @@ function draw() {
 
     if (mazesStarted > numberOfMazes) return;
 
-    camera.position.x = player.position.x;
-    camera.position.y = player.position.y;
+    camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
+    camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
 
     updateVelocities();
     player.collide(walls);
