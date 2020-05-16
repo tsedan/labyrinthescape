@@ -164,6 +164,8 @@ function newMaze(w, h, holes, powerups) {
 
     }
 
+
+    fill(0)
     const topBox = createSprite(m.H * scale / 2 - 1000, -1000, m.H * scale + 2000, 2000);
     topBox.shapeColor = color(0);
     walls.add(topBox);
