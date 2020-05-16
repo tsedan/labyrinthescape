@@ -16,11 +16,11 @@ function genMaze(w, h, holes, powerups) {
     if (exit) exit.remove();
 
     player = createSprite((m.start[0]+0.5)*scale, (m.start[1]+0.5)*scale, scale/2, scale/2);
-    player.shapeColor = color(...gameColors.player);
+    player.shapeColor = color(gameColors.player);
 
     open = new Group();
     const back = createSprite(m.H*scale/2, m.W*scale/2, m.H*scale, m.W*scale);
-    back.shapeColor = color(...gameColors.back);
+    back.shapeColor = color(gameColors.back);
     open.add(back);
 
     walls = new Group();
@@ -33,17 +33,17 @@ function genMaze(w, h, holes, powerups) {
                     isPower = true;
 
             if (isPower) {
-                box.shapeColor = color(...gameColors.power);
+                box.shapeColor = color(gameColors.power);
                 open.add(box);
             } else if (j == m.start[1] && i == m.start[0]) {
-                box.shapeColor = color(...gameColors.start);
+                box.shapeColor = color(gameColors.start);
                 open.add(box);
             } else if (j == m.end[1] && i == m.end[0]) {
-                box.shapeColor = color(...gameColors.end);
+                box.shapeColor = color(gameColors.end);
                 exit = box;
             } else {
                 if (m.grid[i][j] == 1) {
-                    box.shapeColor = color(...gameColors.wall);
+                    box.shapeColor = color(gameColors.wall);
                     walls.add(box);
                 } else { box.remove(); }
             }
@@ -51,20 +51,20 @@ function genMaze(w, h, holes, powerups) {
 
     }
 
-    const topBox = createSprite(m.H*scale/2, -scale/2, (m.H+2)*scale, scale);
-    topBox.shapeColor = color(...gameColors.wall);
+    const topBox = createSprite(m.H*scale/2, -10*scale, (m.H+20)*scale, 20*scale);
+    topBox.shapeColor = color(gameColors.wall);
     walls.add(topBox);
 
-    const bottomBox = createSprite(m.H*scale/2, (m.W+0.5)*scale, (m.H+2)*scale, scale);
-    bottomBox.shapeColor = color(...gameColors.wall);
+    const bottomBox = createSprite(m.H*scale/2, (m.W+10)*scale, (m.H+20)*scale, 20*scale);
+    bottomBox.shapeColor = color(gameColors.wall);
     walls.add(bottomBox);
 
-    const leftBox = createSprite(-scale/2, m.W*scale/2, scale, m.W*scale);
-    leftBox.shapeColor = color(...gameColors.wall);
+    const leftBox = createSprite(-10*scale, m.W*scale/2, 20*scale, m.W*scale);
+    leftBox.shapeColor = color(gameColors.wall);
     walls.add(leftBox);
 
-    const rightBox = createSprite((m.H+0.5)*scale, m.W*scale/2, scale, m.W*scale);
-    rightBox.shapeColor = color(...gameColors.wall);
+    const rightBox = createSprite((m.H+10)*scale, m.W*scale/2, 20*scale, m.W*scale);
+    rightBox.shapeColor = color(gameColors.wall);
     walls.add(rightBox);
 
     minimap = new Minimap();
@@ -75,7 +75,7 @@ function newMaze() {
 }
 
 function draw() {
-    background(...gameColors.wall);
+    background(gameColors.wall);
 
     if (mazesStarted > numberOfMazes) return;
 

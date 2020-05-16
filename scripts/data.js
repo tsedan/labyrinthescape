@@ -23,11 +23,11 @@ const playerFriction = 9;
 const playerMaxSpeed = 12;
 
 const gameColors = {
-    player: [140, 28, 43],
-    back: [255],
-    power: [0,0,255],
-    start: [0,255,0],
-    end: [255,0,0],
-    wall: [0],
-    minimapBack: [51]
+    player: '#ff5252',
+    back: '#f7f1e3',
+    power: '#34ace0',
+    start: '#33d9b2',
+    end: '#ffb142',
+    wall: '#84817a',
+    minimapBack: '#d1ccc0'
 }
