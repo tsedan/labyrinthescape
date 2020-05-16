@@ -14,10 +14,6 @@ class Minimap {
     }
 
     draw() {
-
-        //Draw my boys
-
-        //Translate everyone to the corner
         push();
         noLights();
         noStroke();
@@ -29,7 +25,6 @@ class Minimap {
 
         fill(0);
         rect(camera.position.x - scale / 2 - scale * this.m.grid.length / 25 + scale * 0.05, camera.position.y - scale / 2.25 - scale * this.m.grid[0].length / 25, scale * 0.94 * this.m.grid.length / 25, scale * 0.90 * this.m.grid[0].length / 25);
-
 
         let w = scale * 0.94 * this.m.grid.length / 25 / this.m.grid.length;
         let h = scale * 0.9 * this.m.grid[0].length / 25 / this.m.grid[0].length;
