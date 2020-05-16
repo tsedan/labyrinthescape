@@ -13,25 +13,26 @@ class Minimap {
     }
 
     draw() {
+
         push();
         noStroke();
         rectMode(CORNER);
 
         const w = minimapScale * m.W;
         const h = minimapScale * m.H;
-        const edgeX = camera.position.x + windowWidth/2;
-        const edgeY = camera.position.y + windowHeight/2;
+        const edgeX = windowWidth;
+        const edgeY = windowHeight;
         const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
         fill(gameColors.minimapBack);
-        rect(edgeX - w - minimapScale - offset, edgeY - h - minimapScale - offset, w + 2*minimapScale, h + 2*minimapScale);
+        rect(edgeX - w - minimapScale - offset, edgeY - h - minimapScale - offset, w + 2 * minimapScale, h + 2 * minimapScale);
 
         fill(gameColors.wall);
         rect(edgeX - w - offset, edgeY - h - offset, w, h);
 
         for (let pts = this.pointsVisited.values(), val = []; val = pts.next().value;) {
             (this.currX == val[0] && this.currY == val[1]) ? fill(gameColors.player) : fill(gameColors.back);
-            rect(edgeX - w + val[0]*minimapScale - offset,edgeY - h + val[1]*minimapScale - offset, minimapScale, minimapScale);
+            rect(edgeX - w + val[0] * minimapScale - offset, edgeY - h + val[1] * minimapScale - offset, minimapScale, minimapScale);
         }
 
         pop();

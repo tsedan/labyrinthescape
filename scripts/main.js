@@ -24,5 +24,7 @@ function draw() {
     drawSprite(exit);
     drawSprite(start);
     drawSprite(player);
+
+    camera.off();
     minimap.draw();
 }
