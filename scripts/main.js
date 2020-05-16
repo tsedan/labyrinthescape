@@ -1,77 +1,7 @@
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(60);
-
     newMaze();
-}
-
-function genMaze(w, h, holes, powerups) {
-    mazesStarted++;
-    m = new MazeGenerator(w, h, holes, powerups);
-    m.generate();
-
-    if (open) open.removeSprites();
-    if (walls) walls.removeSprites();
-    if (player) player.remove();
-    if (exit) exit.remove();
-
-    player = createSprite((m.start[0]+0.5)*scale, (m.start[1]+0.5)*scale, scale/2, scale/2);
-    player.shapeColor = color(gameColors.player);
-
-    open = new Group();
-    const back = createSprite(m.H*scale/2, m.W*scale/2, m.H*scale, m.W*scale);
-    back.shapeColor = color(gameColors.back);
-    open.add(back);
-
-    walls = new Group();
-    for (let i = 0; i < m.H; i++) {
-        for (let j = 0; j < m.W; j++) {
-            const box = createSprite((i+0.5) * scale, (j+0.5) * scale, scale, scale);
-            let isPower = false;
-            for (let k of m.powerLocs)
-                if (j == k[1] && i == k[0])
-                    isPower = true;
-
-            if (isPower) {
-                box.shapeColor = color(gameColors.power);
-                open.add(box);
-            } else if (j == m.start[1] && i == m.start[0]) {
-                box.shapeColor = color(gameColors.start);
-                open.add(box);
-            } else if (j == m.end[1] && i == m.end[0]) {
-                box.shapeColor = color(gameColors.end);
-                exit = box;
-            } else {
-                if (m.grid[i][j] == 1) {
-                    box.shapeColor = color(gameColors.wall);
-                    walls.add(box);
-                } else { box.remove(); }
-            }
-        }
-
-    }
-
-    const topBox = createSprite(m.H*scale/2, -10*scale, (m.H+20)*scale, 20*scale);
-    topBox.shapeColor = color(gameColors.wall);
-    walls.add(topBox);
-
-    const bottomBox = createSprite(m.H*scale/2, (m.W+10)*scale, (m.H+20)*scale, 20*scale);
-    bottomBox.shapeColor = color(gameColors.wall);
-    walls.add(bottomBox);
-
-    const leftBox = createSprite(-10*scale, m.W*scale/2, 20*scale, m.W*scale);
-    leftBox.shapeColor = color(gameColors.wall);
-    walls.add(leftBox);
-
-    const rightBox = createSprite((m.H+10)*scale, m.W*scale/2, 20*scale, m.W*scale);
-    rightBox.shapeColor = color(gameColors.wall);
-    walls.add(rightBox);
-
-    minimap = new Minimap();
-}
-
-function newMaze() {
-    genMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, holeProbability, powerUpNum);
 }
 
 function draw() {
@@ -92,7 +22,10 @@ function draw() {
 
     drawSprites(open);
     drawSprites(walls);
+    drawSprites(powerups);
+
     drawSprite(exit);
+    drawSprite(start);
     drawSprite(player);
     minimap.draw();
 }
