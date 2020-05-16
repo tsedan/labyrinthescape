@@ -13,7 +13,6 @@ class Minimap {
     }
 
     draw() {
-
         push();
         noStroke();
         rectMode(CORNER);

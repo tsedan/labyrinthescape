@@ -5,7 +5,7 @@ function setup() {
 }
 
 function draw() {
-    background(gameColors.wall);
+    background(gameColors.back);
 
     if (mazesStarted > numberOfMazes) return;
 
@@ -17,7 +17,6 @@ function draw() {
     player.collide(exit, newMaze);
     minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
-    drawSprites(open);
     drawSprites(walls);
     drawSprites(powerups);
 

@@ -2,7 +2,6 @@ let m;
 
 let player;
 let walls;
-let open;
 let exit;
 let powerups;
 let minimap;
