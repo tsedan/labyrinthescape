@@ -6,7 +6,7 @@ let exit;
 let powerups;
 let minimap;
 
-const desiredFPS = 60;
+const desiredFPS = 30;
 
 const scale = 120;
 const minimapScale = scale / 20;
@@ -22,7 +22,10 @@ let mazesStarted = 0;
 const lightBrightness = 1800;
 
 const friction = 9;
-const maxSpeed = 12;
+const maxSpeed = 20;
+
+const viewRadius = scale * 2.5;
+const circularApprox = 1.35;
 
 const gameColors = {
     player: '#ff5252',
@@ -33,5 +36,3 @@ const gameColors = {
     wall: '#84817a',
     minimapBack: '#d1ccc0'
 }
-
-let viewRadius = scale * 2.5;

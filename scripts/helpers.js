@@ -35,7 +35,7 @@ function genMaze(w, h, holes, powerups) {
     player = genObj((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale / 2, scale / 2, gameColors.player);
     start = genObj((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale, scale, gameColors.start);
     exit = genObj((m.end[1]+0.5) * scale, (m.end[0]+0.5) * scale, scale, scale, gameColors.end);
-  
+
     walls = new Group();
     powerups = new Group();
 
@@ -133,7 +133,7 @@ function createMask() {
     vertex(0, 0);
     vertex(width / 2, 0);
     vertex(width / 2, height / 2 - viewRadius);
-    bezierVertex(width / 2 - viewRadius * 1.5, height / 2 - viewRadius, width / 2 - viewRadius * 1.5, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
+    bezierVertex(width / 2 - viewRadius * circularApprox, height / 2 - viewRadius, width / 2 - viewRadius * circularApprox, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
     vertex(width / 2, height);
     vertex(0, height);
     endShape();
@@ -142,7 +142,7 @@ function createMask() {
     vertex(width, 0);
     vertex(width / 2, 0);
     vertex(width / 2, height / 2 - viewRadius);
-    bezierVertex(width / 2 + viewRadius * 1.5, height / 2 - viewRadius, width / 2 + viewRadius * 1.5, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
+    bezierVertex(width / 2 + viewRadius * circularApprox, height / 2 - viewRadius, width / 2 + viewRadius * circularApprox, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
     vertex(width / 2, height);
     vertex(width, height);
     endShape();
