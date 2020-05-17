@@ -8,24 +8,37 @@ class Menu {
     }
 
     eventHandler(data) {
+
         if (!data) return;
+
         if (this.state == "CLIENTMODE") {
 
             if (data == "CREATE PARTY") {
+
                 this.state = "CREATEPARTY";
-                this.currentMenu = new MenuOptions("ID: " + myID + ", 1P", "share this id with those you want in your party", [
+                this.currentMenu = new MenuOptions("ID: " + peer.id + ", " + (all_connections.length + 1) + "P", "share this id with those you want in your party", [
                     "READY TO START",
                     "BACK"
                 ]);
             } else {
                 this.state = "JOINPARTY";
-                this.currentMenu = new MenuPrompt("JOIN PARTY","ask your party leader for the party id","ENTER PARTY ID");
+                this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID");
             }
 
         } else if (this.state == "CREATEPARTY") {
 
             if (data == "READY TO START") {
                 gameState = "GAME";
+                mazeSeed = Date.now();
+
+                game = new Game();
+
+                for (let c in all_connections) {
+                    if (all_connections[c] && all_connections[c].open) {
+                        all_connections[c].send("GAME STARTED BY HOST," + mazeSeed);
+                    }
+                }
+
             } else {
                 this.state = "CLIENTMODE";
                 this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
@@ -34,8 +47,31 @@ class Menu {
                 ]);
             }
 
-        } else if (this.state == "JOIN PARTY") {
-            //ATTEMPT TO CONNECT TO THE HOST
+        } else if (this.state == "JOINPARTY") {
+            for (let c in all_connections) {
+                if (all_connections[c]) {
+                    all_connections[c].close();
+                }
+            }
+
+            let conn = peer.connect(data);
+
+            conn.on('open', function () {
+                console.log("PARTY JOIN SIDE Connected to: " + conn.peer);
+                all_connections.push(conn);
+
+                conn.send('my name is beep boop');
+            });
+
+            conn.on('data', function (data) {
+                console.log("Data recieved: " + data);
+                if (data.split(",")[0] == 'GAME STARTED BY HOST') {
+                    gameState = 'GAME';
+
+                    mazeSeed = +data.split(",")[1];
+                    game = new Game();
+                }
+            });
         }
     }
 
@@ -60,7 +96,7 @@ class MenuPrompt {
 
     handleKey(code, key) {
         if (code == 8 && this.input != "") {
-            this.input = this.input.substring(0,this.input.length-1);
+            this.input = this.input.substring(0, this.input.length - 1);
             this.backspaceDelay = this.maxBackspaceDelay;
         }
 
@@ -75,7 +111,7 @@ class MenuPrompt {
             this.backspaceDelay--;
             if (this.backspaceDelay < 0) {
                 this.backspaceDelay = 1;
-                this.input = this.input.substring(0,this.input.length-1);
+                this.input = this.input.substring(0, this.input.length - 1);
             }
         }
 
@@ -84,9 +120,9 @@ class MenuPrompt {
         textFont(font);
         fill(255);
 
-        const bottom = height/2;
-        const left = -width/2;
-        const right = width/2;
+        const bottom = height / 2;
+        const left = -width / 2;
+        const right = width / 2;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);
@@ -123,7 +159,7 @@ class MenuOptions {
                 return 0;
             case 83: //S
                 this.currentOption--;
-                if (this.currentOption < 0) this.currentOption = this.options.length-1;
+                if (this.currentOption < 0) this.currentOption = this.options.length - 1;
                 return 0;
             case 13: //ENTER
                 return this.options[this.currentOption];
@@ -136,9 +172,9 @@ class MenuOptions {
         textFont(font);
         fill(255);
 
-        const bottom = height/2;
-        const left = -width/2;
-        const right = width/2;
+        const bottom = height / 2;
+        const left = -width / 2;
+        const right = width / 2;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);
@@ -150,7 +186,7 @@ class MenuOptions {
         textAlign(RIGHT, BOTTOM);
         textSize(64);
         for (let i = 0; i < this.options.length; i++) {
-            text((i == this.currentOption ? "> " : "") + this.options[i], right - pad, bottom - pad - 64*i);
+            text((i == this.currentOption ? "> " : "") + this.options[i], right - pad, bottom - pad - 64 * i);
         }
     }
 }

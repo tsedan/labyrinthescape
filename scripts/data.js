@@ -2,13 +2,13 @@
 let gameState = "MENU";
 let menu;
 let game;
-let myID;
+let peer;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
 
 // P2P
-let connectID;
+let all_connections = [];
 
 // VIEWPORT
 const desiredFPS = 30;
@@ -27,7 +27,7 @@ let exit;
 let powerups;
 let backMaze;
 
-const mazeSeed = 100;
+let mazeSeed = 100;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 12;
@@ -43,7 +43,7 @@ let minimapScale;
 
 // FONTS
 let font;
-const widtohei = 5/7;
+const widtohei = 5 / 7;
 
 // COLORS
 const gameColors = {

@@ -3,15 +3,30 @@ function preload() {
 }
 
 function setup() {
+    peer = new Peer();
+
     createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(desiredFPS);
 
-    myID = validCharacters.split('').sort(() => { return 0.5-Math.random() }).join('').substring(0,6);
+    //myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
     menu = new Menu();
-    game = new Game();
+
+    peer.on('connection', function (conn) {
+        conn.on('data', function (data) {
+            console.log(data);
+        });
+
+        all_connections.push(conn);
+        console.log("PARTY CREATE SIDE Connected to " + conn.peer)
+
+        // HACK TO GET THE PLAYER COUNT TO UPDATE PROPERLY
+        menu.state = "CLIENTMODE";
+        menu.eventHandler("CREATE PARTY");
+    });
 }
 
 function draw() {
+
     switch (gameState) {
         case "MENU":
             menu.draw();
