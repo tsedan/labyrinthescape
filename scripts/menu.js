@@ -4,15 +4,43 @@ class Menu {
         this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
             "CREATE PARTY",
             "JOIN PARTY"
-        ], this.enterHandler);
+        ]);
     }
 
-    enterHandler(data) {
-        gameState = "GAME";
+    eventHandler(data) {
+        if (!data) return;
+        if (this.state == "CLIENTMODE") {
+
+            if (data == "CREATE PARTY") {
+                this.state = "CREATEPARTY";
+                this.currentMenu = new MenuOptions("ID: " + myID + ", 1P", "share this id with those you want in your party", [
+                    "READY TO START",
+                    "BACK"
+                ]);
+            } else {
+                this.state = "JOINPARTY";
+                this.currentMenu = new MenuPrompt("JOIN PARTY","ask your party leader for the party id","ENTER PARTY ID");
+            }
+
+        } else if (this.state == "CREATEPARTY") {
+
+            if (data == "READY TO START") {
+                gameState = "GAME";
+            } else {
+                this.state = "CLIENTMODE";
+                this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
+                    "CREATE PARTY",
+                    "JOIN PARTY"
+                ]);
+            }
+
+        } else if (this.state == "JOIN PARTY") {
+            //ATTEMPT TO CONNECT TO THE HOST
+        }
     }
 
     handleKey(code, key) {
-        this.currentMenu.handleKey(code, key);
+        this.eventHandler(this.currentMenu.handleKey(code, key));
     }
 
     draw() {
@@ -21,12 +49,11 @@ class Menu {
 }
 
 class MenuPrompt {
-    constructor(header, subtitle, placeholder, enterHandler) {
+    constructor(header, subtitle, placeholder) {
         this.header = header;
         this.subtitle = subtitle;
         this.placeholder = placeholder;
         this.input = "";
-        this.enterHandler = enterHandler;
         this.maxBackspaceDelay = 15;
         this.backspaceDelay = this.maxBackspaceDelay;
     }
@@ -37,10 +64,10 @@ class MenuPrompt {
             this.backspaceDelay = this.maxBackspaceDelay;
         }
 
-        if (code == 13)
-            this.enterHandler(this.input);
+        if (code == 13) return this.input;
 
         if (validCharacters.includes(key)) this.input += key;
+        return 0;
     }
 
     draw() {
@@ -93,13 +120,13 @@ class MenuOptions {
             case 87: //W
                 this.currentOption++;
                 this.currentOption %= this.options.length;
-                break;
+                return 0;
             case 83: //S
                 this.currentOption--;
                 if (this.currentOption < 0) this.currentOption = this.options.length-1;
-                break
+                return 0;
             case 13: //ENTER
-                this.enterHandler(this.currentOption);
+                return this.options[this.currentOption];
         }
     }
 
