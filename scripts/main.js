@@ -1,23 +1,22 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(30);
+    frameRate(desiredFPS);
     newMaze();
 }
 
 function draw() {
-    background(gameColors.wall);
+    background(gameColors.back);
 
     if (mazesStarted > numberOfMazes) return;
 
-    camera.position.x = player.position.x;
-    camera.position.y = player.position.y;
+    camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
+    camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
 
     updateVelocities();
     player.collide(walls);
     player.collide(exit, newMaze);
     minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
-    drawSprites(open);
     drawSprites(walls);
     drawSprites(powerups);
 

@@ -2,10 +2,11 @@ let m;
 
 let player;
 let walls;
-let open;
 let exit;
 let powerups;
 let minimap;
+
+const desiredFPS = 60;
 
 const scale = 120;
 const minimapScale = scale / 20;
@@ -20,8 +21,8 @@ let mazesStarted = 0;
 
 const lightBrightness = 1800;
 
-const playerFriction = 9;
-const playerMaxSpeed = 12;
+const friction = 9;
+const maxSpeed = 12;
 
 const gameColors = {
     player: '#ff5252',
