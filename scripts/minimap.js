@@ -9,7 +9,7 @@ class Minimap {
         this.currX = row;
         this.currY = col;
 
-        this.pointsVisited.add([row, col]);
+        this.pointsVisited.add(row + "," + col);
     }
 
     draw() {
@@ -30,8 +30,9 @@ class Minimap {
         rect(edgeX - w - offset, edgeY - h - offset, w, h);
 
         for (let pts = this.pointsVisited.values(), val = []; val = pts.next().value;) {
-            (this.currX == val[0] && this.currY == val[1]) ? fill(gameColors.player) : fill(gameColors.back);
-            rect(edgeX - w + val[0] * minimapScale - offset, edgeY - h + val[1] * minimapScale - offset, minimapScale, minimapScale);
+            const asArray = val.split(',');
+            (this.currX == asArray[0] && this.currY == asArray[1]) ? fill(gameColors.player) : fill(gameColors.back);
+            rect(edgeX - w + asArray[0] * minimapScale - offset, edgeY - h + asArray[1] * minimapScale - offset, minimapScale, minimapScale);
         }
 
         pop();
