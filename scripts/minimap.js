@@ -24,7 +24,7 @@ class Minimap {
         const edgeY = windowHeight/2;
         const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
-        fill(gameColors.minimapBack);
+        fill(gameColors.minimap);
         rect(edgeX - w - minimapScale - offset, edgeY - h - minimapScale - offset, w + 2 * minimapScale, h + 2 * minimapScale);
 
         fill(gameColors.wall);

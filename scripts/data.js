@@ -1,5 +1,7 @@
 // GAMESTATE
-let inStartScreen = true;
+let gameState = "MENU";
+let menu;
+let game;
 
 // P2P
 let connectID;
@@ -15,7 +17,6 @@ const friction = 9;
 const maxSpeed = 20;
 
 // MAZE
-let game;
 let m;
 let walls;
 let exit;
@@ -38,6 +39,7 @@ let minimapScale;
 
 // FONTS
 let font;
+const widtohei = 5/7;
 
 // COLORS
 const gameColors = {
@@ -47,5 +49,5 @@ const gameColors = {
     start: '#33d9b2',
     end: '#ffb142',
     wall: '#000000',
-    minimapBack: '#d1ccc0'
+    minimap: '#d1ccc0'
 }
