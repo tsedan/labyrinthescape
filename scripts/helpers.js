@@ -32,9 +32,10 @@ function genMaze(w, h, holes, powerups) {
 
     for (let spr of getSprites()) spr.remove();
 
-    player = genObj((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale / 2, scale / 2, gameColors.player);
-    start = genObj((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale, scale, gameColors.start);
-    exit = genObj((m.end[1]+0.5) * scale, (m.end[0]+0.5) * scale, scale, scale, gameColors.end);
+    player = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale / 2, scale / 2, gameColors.player);
+    start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
+    exit = genObj((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale, gameColors.end);
+    backMaze = genObj(m.H / 2 * scale, m.W / 2 * scale, m.H * scale, m.W * scale, gameColors.back);
 
     walls = new Group();
     powerups = new Group();
@@ -113,8 +114,8 @@ function genMaze(w, h, holes, powerups) {
         }
     }
 
-    walls.add(genObj(m.W * scale / 2, -scale / 2, (m.W+2) * scale, scale, gameColors.wall));
-    walls.add(genObj(m.W * scale / 2, m.H * scale + scale / 2, (m.W+2) * scale, scale, gameColors.wall));
+    walls.add(genObj(m.W * scale / 2, -scale / 2, (m.W + 2) * scale, scale, gameColors.wall));
+    walls.add(genObj(m.W * scale / 2, m.H * scale + scale / 2, (m.W + 2) * scale, scale, gameColors.wall));
     walls.add(genObj(-scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
     walls.add(genObj(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
 

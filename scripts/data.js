@@ -5,11 +5,12 @@ let walls;
 let exit;
 let powerups;
 let minimap;
+let backMaze;
 
 const desiredFPS = 30;
 
 const scale = 120;
-const minimapScale = scale / 20;
+const minimapScale = scale / 25;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 20;
@@ -33,6 +34,6 @@ const gameColors = {
     power: '#34ace0',
     start: '#33d9b2',
     end: '#ffb142',
-    wall: '#84817a',
+    wall: '#000000',
     minimapBack: '#d1ccc0'
 }
