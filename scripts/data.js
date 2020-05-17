@@ -1,19 +1,28 @@
-let m;
+// GAMESTATE
+let inStartScreen = true;
 
+// P2P
+let connectID;
+
+// VIEWPORT
+const desiredFPS = 30;
+const scale = 120;
+const lightBrightness = 1800;
+
+// PLAYER
 let player;
+const friction = 9;
+const maxSpeed = 20;
+
+// MAZE
+let game;
+let m;
 let walls;
 let exit;
 let powerups;
-let minimap;
 let backMaze;
-let font;
-let connectID;
 
-let inStartScreen = true;
-
-const desiredFPS = 30;
-
-const scale = 120;
+const mazeSeed = 100;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 12;
@@ -21,18 +30,16 @@ const mazeStartHeight = 20;
 const holeProbability = 0.02;
 const powerUpNum = 6;
 
-let minimapScale = scale / 20;
-
 let mazesStarted = 0;
 
-const lightBrightness = 1800;
+// MINIMAP
+let minimap;
+let minimapScale;
 
-const friction = 9;
-const maxSpeed = 20;
+// FONTS
+let font;
 
-const viewRadius = scale * 2.5;
-const circularApprox = 1.35;
-
+// COLORS
 const gameColors = {
     player: '#ff5252',
     back: '#f7f1e3',

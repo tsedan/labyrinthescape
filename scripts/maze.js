@@ -6,10 +6,10 @@ class MazeGenerator {
         this.powers = powerups;
     }
 
-    generate() {
+    generate(seed) {
         this.H = 2 * this.h + 1;
         this.W = 2 * this.w + 1;
-        this.holes = Math.floor(this.W * this.H * this.holes);
+        this.holes = floor(this.W * this.H * this.holes);
 
         this.grid = new Array(this.H);
         for (let i = 0; i < this.grid.length; i++) {
@@ -17,8 +17,9 @@ class MazeGenerator {
             this.grid[i].fill(1);
         }
 
-        let current_row = Math.floor(Math.random() * this.h) * 2 + 1;
-        let current_col = Math.floor(Math.random() * this.w) * 2 + 1;
+        randomSeed(seed);
+        let current_row = floor(random() * this.h) * 2 + 1;
+        let current_col = floor(random() * this.w) * 2 + 1;
         this.grid[current_row][current_col] = 0;
 
         let num_trials = 0;
@@ -48,9 +49,9 @@ class MazeGenerator {
                 this_row, this_col, 2, true);
 
             while (unvisited_neighbors.length > 0) {
-                let neighbor = unvisited_neighbors[Math.floor(Math.random() * unvisited_neighbors.length)];
+                let neighbor = unvisited_neighbors[floor(random() * unvisited_neighbors.length)];
                 this.grid[neighbor[0]][neighbor[1]] = 0;
-                this.grid[Math.floor((neighbor[0] + this_row) / 2)][Math.floor((neighbor[1] + this_col) / 2)] = 0;
+                this.grid[floor((neighbor[0] + this_row) / 2)][floor((neighbor[1] + this_col) / 2)] = 0;
                 [this_row, this_col] = neighbor;
 
                 unvisited_neighbors = this.findNeighbors(
@@ -80,38 +81,38 @@ class MazeGenerator {
         if (count >= (this.H * this.W))
             return [-1, -1];
 
-        return [Math.floor(Math.random() * this.h) * 2 + 1, Math.floor(Math.random() * this.w) * 2 + 1];
+        return [floor(random() * this.h) * 2 + 1, floor(random() * this.w) * 2 + 1];
     }
 
     generateEntrances() {
-        let start_side = Math.floor(Math.random() * 4);
+        let start_side = floor(random() * 4);
         switch (start_side) {
             case 0:
-                this.start = [0, Math.floor(Math.random() * this.w) * 2 + 1]; // North
-                this.end = [this.H - 1, Math.floor(Math.random() * this.w) * 2 + 1];
+                this.start = [0, floor(random() * this.w) * 2 + 1]; // North
+                this.end = [this.H - 1, floor(random() * this.w) * 2 + 1];
                 break;
             case 1:
-                this.start = [this.H - 1, Math.floor(Math.random() * this.w) * 2 + 1];  // South
-                this.end = [0, Math.floor(Math.random() * this.w) * 2 + 1];
+                this.start = [this.H - 1, floor(random() * this.w) * 2 + 1];  // South
+                this.end = [0, floor(random() * this.w) * 2 + 1];
                 break;
             case 2:
-                this.start = [Math.floor(Math.random() * this.h) * 2 + 1, 0];  // West
-                this.end = [Math.floor(Math.random() * this.h) * 2 + 1, this.W - 1];
+                this.start = [floor(random() * this.h) * 2 + 1, 0];  // West
+                this.end = [floor(random() * this.h) * 2 + 1, this.W - 1];
                 break;
             default:
-                this.start = [Math.floor(Math.random() * this.h) * 2 + 1, this.W - 1]  // East
-                this.end = [Math.floor(Math.random() * this.h) * 2 + 1, 0];
+                this.start = [floor(random() * this.h) * 2 + 1, this.W - 1]  // East
+                this.end = [floor(random() * this.h) * 2 + 1, 0];
         }
 
-        if (Math.abs(this.start[0] - this.end[0]) + Math.abs(this.start[1] - this.end[1]) < 2)
+        if (abs(this.start[0] - this.end[0]) + abs(this.start[1] - this.end[1]) < 2)
             this.generateEntrances();
     }
 
     addHoles() {
         let holesAdded = this.holes;
         while (holesAdded > 0) {
-            let current_row = Math.floor(Math.random() * (this.H - 2)) + 1;
-            let current_col = Math.floor(Math.random() * (this.W - 2)) + 1;
+            let current_row = floor(random() * (this.H - 2)) + 1;
+            let current_col = floor(random() * (this.W - 2)) + 1;
 
             if (this.grid[current_row][current_col] == 0) continue;
 
@@ -131,8 +132,8 @@ class MazeGenerator {
             let current_col = 0;
 
             deadEndFinder: while (true) {
-                current_row = Math.floor(Math.random() * (this.H - 2)) + 1;
-                current_col = Math.floor(Math.random() * (this.W - 2)) + 1;
+                current_row = floor(random() * (this.H - 2)) + 1;
+                current_col = floor(random() * (this.W - 2)) + 1;
 
                 if (this.grid[current_row][current_col] == 1) continue;
                 if (this.findNeighbors(current_row, current_col, 1, true).length != 3) continue;

@@ -21,16 +21,15 @@ function updateVelocities() {
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
     box.shapeColor = c;
-    //box.debug = true;
     return box;
 }
 
-function genMaze(w, h, holes, powerups) {
+function genMaze(w, h, holes, powerups, seed) {
     mazesStarted++;
     m = new MazeGenerator(w, h, holes, powerups);
-    m.generate();
+    m.generate(seed);
 
-    minimapScale = scale / (Math.max(m.h, m.w));
+    minimapScale = scale / max(m.h, m.w);
 
     for (let spr of getSprites()) spr.remove();
 
@@ -122,31 +121,4 @@ function genMaze(w, h, holes, powerups) {
     walls.add(genObj(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
 
     minimap = new Minimap();
-}
-
-function newMaze() {
-    genMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, holeProbability, powerUpNum);
-}
-
-function createMask() {
-    noStroke();
-    fill(0)
-
-    beginShape();
-    vertex(0, 0);
-    vertex(width / 2, 0);
-    vertex(width / 2, height / 2 - viewRadius);
-    bezierVertex(width / 2 - viewRadius * circularApprox, height / 2 - viewRadius, width / 2 - viewRadius * circularApprox, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
-    vertex(width / 2, height);
-    vertex(0, height);
-    endShape();
-
-    beginShape();
-    vertex(width, 0);
-    vertex(width / 2, 0);
-    vertex(width / 2, height / 2 - viewRadius);
-    bezierVertex(width / 2 + viewRadius * circularApprox, height / 2 - viewRadius, width / 2 + viewRadius * circularApprox, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
-    vertex(width / 2, height);
-    vertex(width, height);
-    endShape();
 }
