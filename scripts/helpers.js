@@ -27,13 +27,13 @@ function genMaze(w, h, holes, powerups) {
     if (player) player.remove();
     if (exit) exit.remove();
 
-    player = createSprite((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale / 2, scale / 2);
+    player = createSprite((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale / 2, scale / 2);
     player.shapeColor = color(gameColors.player);
 
-    start = createSprite((m.start[1]+0.5) * scale, (m.start[0]+0.5) * scale, scale, scale);
+    start = createSprite((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale);
     start.shapeColor = color(gameColors.start);
 
-    exit = createSprite((m.end[1]+0.5) * scale, (m.end[0]+0.5) * scale, scale, scale);
+    exit = createSprite((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale);
     exit.shapeColor = color(gameColors.end);
 
     open = new Group();
@@ -151,11 +151,11 @@ function genMaze(w, h, holes, powerups) {
         }
     }
 
-    const topBox = createSprite(m.W * scale / 2, -scale / 2, (m.W+2) * scale, scale);
+    const topBox = createSprite(m.W * scale / 2, -scale / 2, (m.W + 2) * scale, scale);
     topBox.shapeColor = color(gameColors.wall);
     walls.add(topBox);
 
-    const bottomBox = createSprite(m.W * scale / 2, m.H * scale + scale / 2, (m.W+2) * scale, scale);
+    const bottomBox = createSprite(m.W * scale / 2, m.H * scale + scale / 2, (m.W + 2) * scale, scale);
     bottomBox.shapeColor = color(gameColors.wall);
     walls.add(bottomBox);
 
@@ -172,4 +172,27 @@ function genMaze(w, h, holes, powerups) {
 
 function newMaze() {
     genMaze(mazeStartWidth + mazesStarted * 2, mazeStartHeight + mazesStarted * 2, holeProbability, powerUpNum);
+}
+
+function createMask() {
+    noStroke();
+    fill(0)
+
+    beginShape();
+    vertex(0, 0);
+    vertex(width / 2, 0);
+    vertex(width / 2, height / 2 - viewRadius);
+    bezierVertex(width / 2 - viewRadius * 1.5, height / 2 - viewRadius, width / 2 - viewRadius * 1.5, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
+    vertex(width / 2, height);
+    vertex(0, height);
+    endShape();
+
+    beginShape();
+    vertex(width, 0);
+    vertex(width / 2, 0);
+    vertex(width / 2, height / 2 - viewRadius);
+    bezierVertex(width / 2 + viewRadius * 1.5, height / 2 - viewRadius, width / 2 + viewRadius * 1.5, height / 2 + viewRadius, width / 2, height / 2 + viewRadius);
+    vertex(width / 2, height);
+    vertex(width, height);
+    endShape();
 }

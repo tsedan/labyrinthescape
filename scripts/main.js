@@ -1,6 +1,6 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(60);
+    frameRate(30);
     newMaze();
 }
 
@@ -26,5 +26,6 @@ function draw() {
     drawSprite(player);
 
     camera.off();
+    createMask();
     minimap.draw();
 }
