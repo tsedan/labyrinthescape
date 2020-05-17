@@ -6,6 +6,10 @@ let exit;
 let powerups;
 let minimap;
 let backMaze;
+let font;
+let connectID;
+
+let inStartScreen = true;
 
 const desiredFPS = 30;
 
