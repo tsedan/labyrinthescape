@@ -25,5 +25,6 @@ function draw() {
     drawSprite(player);
 
     camera.off();
+    createMask();
     minimap.draw();
 }

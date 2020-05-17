@@ -12,7 +12,7 @@ const scale = 120;
 const minimapScale = scale / 20;
 
 const numberOfMazes = 3;
-const mazeStartWidth = 12;
+const mazeStartWidth = 20;
 const mazeStartHeight = 20;
 const holeProbability = 0.02;
 const powerUpNum = 6;
@@ -33,3 +33,5 @@ const gameColors = {
     wall: '#84817a',
     minimapBack: '#d1ccc0'
 }
+
+let viewRadius = scale * 2.5;
