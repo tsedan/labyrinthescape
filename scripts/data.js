@@ -2,6 +2,10 @@
 let gameState = "MENU";
 let menu;
 let game;
+let myID;
+
+// MENU
+const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
 
 // P2P
 let connectID;
