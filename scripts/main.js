@@ -20,7 +20,6 @@ function draw() {
     player.collide(exit, newMaze);
     minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
-    console.log(backMaze)
     drawSprite(backMaze);
     drawSprites(walls);
 
