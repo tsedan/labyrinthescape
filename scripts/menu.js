@@ -35,6 +35,12 @@ class Menu {
 
                 for (let c in allConnections) {
                     if (allConnections[c] && allConnections[c].open) {
+                        allConnections[c].send("PLAYER ID," + peer.id);
+                        for (let c2 in allConnections) {
+                            if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
+                                allConnections[c].send("PLAYER ID," + allConnections[c2].peer);
+                            }
+                        }
                         allConnections[c].send("GAME STARTED BY HOST," + mazeSeed);
                     }
                 }
@@ -64,13 +70,30 @@ class Menu {
             });
 
             conn.on('data', function (data) {
-                console.log("Data recieved: " + data);
-                if (data.split(",")[0] == 'GAME STARTED BY HOST') {
+                //console.log(peer.id + " recieved from " + conn.peer + ": " + data);
+                let splitData = data.split(",");
+                if (splitData[0] == 'GAME STARTED BY HOST') {
                     gameState = 'GAME';
 
-                    mazeSeed = +data.split(",")[1];
+                    mazeSeed = +splitData[1];
                     game = new Game();
                 }
+
+                if (splitData[0] == "PLAYER POSITION DATA") {
+                    let pID = splitData[1];
+                    let pX = +splitData[2];
+                    let pY = +splitData[3];
+                    playerPos[pID].position.x = pX;
+                    playerPos[pID].position.y = pY;
+                }
+
+                if (splitData[0] == "PLAYER ID") {
+                    let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                    playerPos[splitData[1]] = otherPlayer;
+                    //console.log(playerPos)
+                }
+
+
             });
         }
     }

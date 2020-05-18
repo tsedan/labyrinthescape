@@ -33,13 +33,8 @@ class Game {
 
         drawSprite(exit);
         drawSprite(start);
-        //console.log(playerPos)
-        //drawSprites(allPlayers);
-        //console.log(allPlayers.length)
-        for (let i = 0; i < allPlayers.length; i++) {
-            //console.log(allPlayers[i].position.x)
-            drawSprite(allPlayers[i]);
-        }
+
+        drawSprites(allPlayers);
 
         camera.off();
         //createMask();
@@ -50,6 +45,18 @@ class Game {
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
                 allConnections[0].send("PLAYER POSITION DATA," + player.position.x + "," + player.position.y);
+            }
+        } else if (isHost) {
+            for (let c in allConnections) {
+                if (allConnections[c] && allConnections[c].open) {
+                    allConnections[c].send("PLAYER POSITION DATA," + peer.id + "," + player.position.x + "," + player.position.y);
+                    for (let c2 in allConnections) {
+                        if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
+                            let peerID = allConnections[c2].peer;
+                            allConnections[c].send("PLAYER POSITION DATA," + peerID + "," + playerPos[peerID].position.x + "," + playerPos[peerID].position.y);
+                        }
+                    }
+                }
             }
         }
     }

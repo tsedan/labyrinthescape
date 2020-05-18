@@ -22,10 +22,9 @@ function setup() {
             }
         });
 
-        let otherPlayer = genObj(200, 200, scale / 2, scale / 2, gameColors.player);
+        let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
         playerPos[conn.peer] = otherPlayer;
 
-        console.log(allPlayers)
         allConnections.push(conn);
         console.log("PARTY CREATE SIDE Connected to " + conn.peer)
 
