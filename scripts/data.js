@@ -8,9 +8,12 @@ let peer;
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
 
 // P2P
-let all_connections = [];
+let allConnections = [];
 const prefix = "hUntErsmAzEgAmE";
 const myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
+let isHost = false;
+let playerPos = {};
+let allPlayers;
 
 // VIEWPORT
 const desiredFPS = 30;

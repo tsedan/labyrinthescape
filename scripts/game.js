@@ -5,9 +5,12 @@ class Game {
 
     newMaze() {
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
+
+        console.log(allPlayers)
     }
 
     draw() {
+        this.sendPositionData();
         background(gameColors.wall);
 
         if (mazesStarted > numberOfMazes) return;
@@ -19,7 +22,7 @@ class Game {
         spotLight(255, 255, 255, 0, 0, 1500, 0, 0, -1);
 
         updateVelocities();
-        player.collide(walls);
+        allPlayers.collide(walls);
         player.collide(exit, this.newMaze);
         minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
@@ -30,11 +33,24 @@ class Game {
 
         drawSprite(exit);
         drawSprite(start);
-        drawSprite(player);
-
+        //console.log(playerPos)
+        //drawSprites(allPlayers);
+        //console.log(allPlayers.length)
+        for (let i = 0; i < allPlayers.length; i++) {
+            //console.log(allPlayers[i].position.x)
+            drawSprite(allPlayers[i]);
+        }
 
         camera.off();
         //createMask();
         minimap.draw();
+    }
+
+    sendPositionData() {
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send("PLAYER POSITION DATA," + player.position.x + "," + player.position.y);
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ class Menu {
             if (data == "CREATE PARTY") {
 
                 this.state = "CREATEPARTY";
-                this.currentMenu = new MenuOptions("ID: " + myID + ", " + (all_connections.length + 1) + "P", "share this id with those you want in your party", [
+                this.currentMenu = new MenuOptions("ID: " + myID + ", " + (allConnections.length + 1) + "P", "share this id with those you want in your party", [
                     "READY TO START",
                     "BACK"
                 ]);
@@ -33,9 +33,9 @@ class Menu {
 
                 game = new Game();
 
-                for (let c in all_connections) {
-                    if (all_connections[c] && all_connections[c].open) {
-                        all_connections[c].send("GAME STARTED BY HOST," + mazeSeed);
+                for (let c in allConnections) {
+                    if (allConnections[c] && allConnections[c].open) {
+                        allConnections[c].send("GAME STARTED BY HOST," + mazeSeed);
                     }
                 }
 
@@ -48,9 +48,9 @@ class Menu {
             }
 
         } else if (this.state == "JOINPARTY") {
-            for (let c in all_connections) {
-                if (all_connections[c]) {
-                    all_connections[c].close();
+            for (let c in allConnections) {
+                if (allConnections[c]) {
+                    allConnections[c].close();
                 }
             }
 
@@ -58,7 +58,7 @@ class Menu {
 
             conn.on('open', function () {
                 console.log("PARTY JOIN SIDE Connected to: " + conn.peer);
-                all_connections.push(conn);
+                allConnections.push(conn);
 
                 conn.send('my name is beep boop');
             });

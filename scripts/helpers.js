@@ -31,9 +31,28 @@ function genMaze(w, h, holes, powerups, seed) {
 
     minimapScale = scale / max(m.h, m.w);
 
-    for (let spr of getSprites()) spr.remove();
+    for (let spr of getSprites()) {
+        let doNotRemove = false;
+        for (let key in playerPos) {
+            if (playerPos.hasOwnProperty(key) && spr == playerPos[key])
+                doNotRemove = true;
+        }
+
+        if (!doNotRemove)
+            spr.remove();
+    }
 
     player = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale / 2, scale / 2, gameColors.player);
+    allPlayers.add(player);
+
+    for (let key in playerPos) {
+        if (playerPos.hasOwnProperty(key)) {
+            playerPos[key].position.x = (m.start[1] + 0.5) * scale;
+            playerPos[key].position.y = (m.start[0] + 0.5) * scale;
+            allPlayers.add(playerPos[key]);
+        }
+    }
+
     start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
     exit = genObj((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale, gameColors.end);
     backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, gameColors.back);
