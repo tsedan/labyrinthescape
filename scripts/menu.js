@@ -16,7 +16,7 @@ class Menu {
             if (data == "CREATE PARTY") {
 
                 this.state = "CREATEPARTY";
-                this.currentMenu = new MenuOptions("ID: " + peer.id + ", " + (all_connections.length + 1) + "P", "share this id with those you want in your party", [
+                this.currentMenu = new MenuOptions("ID: " + myID + ", " + (all_connections.length + 1) + "P", "share this id with those you want in your party", [
                     "READY TO START",
                     "BACK"
                 ]);
@@ -54,7 +54,7 @@ class Menu {
                 }
             }
 
-            let conn = peer.connect(data);
+            let conn = peer.connect(prefix + data);
 
             conn.on('open', function () {
                 console.log("PARTY JOIN SIDE Connected to: " + conn.peer);
@@ -120,9 +120,12 @@ class MenuPrompt {
         textFont(font);
         fill(255);
 
-        const bottom = height / 2;
-        const left = -width / 2;
-        const right = width / 2;
+        camera.position.x = 0;
+        camera.position.y = 0;
+
+        const bottom = 0;
+        const left = -windowWidth;
+        const right = 0;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);
@@ -172,9 +175,12 @@ class MenuOptions {
         textFont(font);
         fill(255);
 
-        const bottom = height / 2;
-        const left = -width / 2;
-        const right = width / 2;
+        camera.position.x = 0;
+        camera.position.y = 0;
+
+        const bottom = 0;
+        const left = -windowWidth;
+        const right = 0;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);

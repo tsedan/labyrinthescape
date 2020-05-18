@@ -3,12 +3,11 @@ function preload() {
 }
 
 function setup() {
-    peer = new Peer();
+    peer = new Peer(prefix + myID);
 
     createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(desiredFPS);
 
-    //myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
     menu = new Menu();
 
     peer.on('connection', function (conn) {
@@ -23,6 +22,11 @@ function setup() {
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });
+}
+
+function windowResized() {
+    console.log("PLEASE!");
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function draw() {

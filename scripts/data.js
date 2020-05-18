@@ -9,6 +9,8 @@ const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKL
 
 // P2P
 let all_connections = [];
+const prefix = "hUntErsmAzEgAmE";
+const myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
 
 // VIEWPORT
 const desiredFPS = 30;
