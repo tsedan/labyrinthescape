@@ -2,14 +2,14 @@ function preload() {
     font = loadFont('assets/mozart.ttf');
 
     let imgPrefix = 'assets/wall/Wall';
-    let interval = 5;
+    let interval = 1;
     for (let i = 0; i <= 100; i += interval)
         wallImages.push(loadImage(imgPrefix + i + '.png'));
 
-    // imgPrefix = 'assets/floor/Floor';
-    // interval = 20;
-    // for (let i = 0; i <= 100; i += interval)
-    //     floorImages.push(loadImage(imgPrefix + i + '.png'));
+    imgPrefix = 'assets/floor/Floor';
+    interval = 1;
+    for (let i = 0; i <= 100; i += interval)
+        floorImages.push(loadImage(imgPrefix + i + '.png'));
 }
 
 function setup() {

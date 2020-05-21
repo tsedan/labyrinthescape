@@ -3,11 +3,8 @@ function drawMaze() {
         for (let j = 0; j < m.W; j++) {
             const locX = (j+0.5) * scale;
             const locY = (i+0.5) * scale;
-            const hyp = dist(camera.position.x, camera.position.y, locX, locY);
-            const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight) / 2 - 2 * scale;
-            //const imageArray = (m.grid[i][j] ? wallImages : floorImages);
-            if (!m.grid[i][j]) continue;
-            const imageArray = wallImages;
+            const hyp = abs(camera.position.x-locX) + abs(camera.position.y-locY);
+            const imageArray = (m.grid[i][j] ? wallImages : floorImages);
             const parts = imageArray.length;
             for (let k = 0; k < parts; k++) {
                 if (hyp < (k+1)*maxRenderDist/parts) {
