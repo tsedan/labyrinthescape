@@ -1,17 +1,15 @@
-function drawMaze() {
-    for (let i = 0; i < m.H; i++) {
-        for (let j = 0; j < m.W; j++) {
-            const locX = (j+0.5) * scale;
-            const locY = (i+0.5) * scale;
-            const hyp = abs(camera.position.x-locX) + abs(camera.position.y-locY);
+function drawMaze(pX, pY) {
+    const bX = max(pX-maxRenderDist-1,0), tX = min(pX+maxRenderDist+1,m.W);
+    const bY = max(pY-maxRenderDist-1,0), tY = min(pY+maxRenderDist+1,m.H);
+    for (let i = bY; i < tY; i++) {
+        for (let j = bX; j < tX; j++) {
+            const locX = (j+0.5) * scale, locY = (i+0.5) * scale;
+            const hyp = dist(player.position.x, player.position.y, locX, locY);
             const imageArray = (m.grid[i][j] ? wallImages : floorImages);
             const parts = imageArray.length;
-            for (let k = 0; k < parts; k++) {
-                if (hyp < (k+1)*maxRenderDist/parts) {
-                    image(imageArray[k],locX,locY,scale,scale);
-                    break;
-                }
-            }
+            const maxHyp = maxRenderDist*scale;
+            if (hyp > maxHyp) continue;
+            image(imageArray[floor(99*hyp/maxHyp)],locX,locY,scale,scale);
         }
     }
 }

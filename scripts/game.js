@@ -5,8 +5,6 @@ class Game {
 
     newMaze() {
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
-
-        console.log(allPlayers)
     }
 
     draw() {
@@ -24,8 +22,7 @@ class Game {
         minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
         drawSprite(backMaze);
-        //drawSprites(walls);
-        drawMaze();
+        drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
         drawSprites(powerups);
 

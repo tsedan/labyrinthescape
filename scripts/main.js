@@ -38,9 +38,7 @@ function setup() {
         playerPos[conn.peer] = otherPlayer;
 
         allConnections.push(conn);
-        console.log("PARTY CREATE SIDE Connected to " + conn.peer)
 
-        // HACK TO GET THE PLAYER COUNT TO UPDATE PROPERLY
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });

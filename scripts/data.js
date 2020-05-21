@@ -23,8 +23,7 @@ let allPlayers;
 const desiredFPS = 30;
 const scale = 120;
 const lightBrightness = 1800;
-const maxRenderScale = 5;
-const maxRenderDist = maxRenderScale*scale;
+const maxRenderDist = 4;
 
 // PLAYER
 let player;
