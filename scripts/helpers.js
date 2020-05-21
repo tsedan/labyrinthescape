@@ -30,10 +30,8 @@ function drawWalls() {
                 const locY = top + j*scale;
                 const hyp = dist(camera.position.x, camera.position.y, locX, locY);
                 const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight)/2 + 2*scale;
-                if (hyp <= maxRenderDist/6) {
+                if (hyp <= maxRenderDist/3) {
                     image(wallImg,locX,locY,scale,scale);
-                } else if (hyp <= maxRenderDist/3) {
-                    image(wall20Img,locX,locY,scale,scale);
                 } else if (hyp <= maxRenderDist/2) {
                     image(wall40Img,locX,locY,scale,scale);
                 } else if (hyp <= 2*maxRenderDist/3) {
@@ -85,7 +83,7 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
     start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
     exit = genObj((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale, gameColors.end);
-    backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, gameColors.back);
+    backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, 0);
 
     walls = new Group();
     powerups = new Group();

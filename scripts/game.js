@@ -11,7 +11,7 @@ class Game {
 
     draw() {
         this.sendPositionData();
-        background(gameColors.wall);
+        background(0);
 
         if (mazesStarted > numberOfMazes) return;
 

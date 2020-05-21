@@ -6,6 +6,10 @@ let peer;
 
 // IMAGES
 let wallImg;
+let wall40Img;
+let wall60Img;
+let wall80Img;
+let wall100Img;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
