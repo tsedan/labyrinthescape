@@ -6,6 +6,7 @@ let peer;
 
 // IMAGES
 let wallImages = [];
+let floorImages = [];
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";

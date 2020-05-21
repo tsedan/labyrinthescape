@@ -1,3 +1,24 @@
+function drawMaze() {
+    for (let i = 0; i < m.H; i++) {
+        for (let j = 0; j < m.W; j++) {
+            const locX = (j+0.5) * scale;
+            const locY = (i+0.5) * scale;
+            const hyp = dist(camera.position.x, camera.position.y, locX, locY);
+            const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight) / 2 - 2 * scale;
+            //const imageArray = (m.grid[i][j] ? wallImages : floorImages);
+            if (!m.grid[i][j]) continue;
+            const imageArray = wallImages;
+            const parts = imageArray.length;
+            for (let k = 0; k < parts; k++) {
+                if (hyp < (k+1)*maxRenderDist/parts) {
+                    image(imageArray[k],locX,locY,scale,scale);
+                    break;
+                }
+            }
+        }
+    }
+}
+
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
 
@@ -15,34 +36,6 @@ function updateVelocities() {
         player.velocity.y = (friction * player.velocity.y - maxSpeed) / (friction + 1);
     } else if (s) {
         player.velocity.y = (friction * player.velocity.y + maxSpeed) / (friction + 1);
-    }
-}
-
-function drawWalls() {
-    for (let spr of walls.toArray()) {
-        const numHoriz = spr.width / scale;
-        const numVert = spr.height / scale;
-        const top = spr.position.y - spr.height / 2 + scale / 2;
-        const left = spr.position.x - spr.width / 2 + scale / 2;
-        for (let i = 0; i < numHoriz; i++) {
-            for (let j = 0; j < numVert; j++) {
-                const locX = left + i * scale;
-                const locY = top + j * scale;
-                const hyp = dist(camera.position.x, camera.position.y, locX, locY);
-                const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight) / 2 + 2 * scale;
-                if (hyp <= maxRenderDist / 3) {
-                    image(wallImages[0], locX, locY, scale, scale);
-                } else if (hyp <= maxRenderDist / 2) {
-                    image(wallImages[2], locX, locY, scale, scale);
-                } else if (hyp <= 2 * maxRenderDist / 3) {
-                    image(wallImages[3], locX, locY, scale, scale);
-                } else if (hyp <= 5 * maxRenderDist / 6) {
-                    image(wallImages[4], locX, locY, scale, scale);
-                } else if (hyp <= maxRenderDist) {
-                    image(wallImages[5], locX, locY, scale, scale);
-                }
-            }
-        }
     }
 }
 

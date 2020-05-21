@@ -25,6 +25,7 @@ class Game {
 
         drawSprite(backMaze);
         //drawSprites(walls);
+        drawMaze();
 
         drawSprites(powerups);
 
@@ -32,7 +33,6 @@ class Game {
         drawSprite(start);
 
         drawSprites(allPlayers);
-        drawWalls();
 
         camera.off();
         //createMask();
