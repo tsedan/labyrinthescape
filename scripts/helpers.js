@@ -22,24 +22,24 @@ function drawWalls() {
     for (let spr of walls.toArray()) {
         const numHoriz = spr.width / scale;
         const numVert = spr.height / scale;
-        const top = spr.position.y - spr.height/2 + scale/2;
-        const left = spr.position.x - spr.width/2 + scale/2;
+        const top = spr.position.y - spr.height / 2 + scale / 2;
+        const left = spr.position.x - spr.width / 2 + scale / 2;
         for (let i = 0; i < numHoriz; i++) {
             for (let j = 0; j < numVert; j++) {
-                const locX = left + i*scale;
-                const locY = top + j*scale;
+                const locX = left + i * scale;
+                const locY = top + j * scale;
                 const hyp = dist(camera.position.x, camera.position.y, locX, locY);
-                const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight)/2 + 2*scale;
-                if (hyp <= maxRenderDist/3) {
-                    image(wallImg,locX,locY,scale,scale);
-                } else if (hyp <= maxRenderDist/2) {
-                    image(wall40Img,locX,locY,scale,scale);
-                } else if (hyp <= 2*maxRenderDist/3) {
-                    image(wall60Img,locX,locY,scale,scale);
-                } else if (hyp <= 5*maxRenderDist/6) {
-                    image(wall80Img,locX,locY,scale,scale);
+                const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight) / 2 + 2 * scale;
+                if (hyp <= maxRenderDist / 3) {
+                    image(wallImages[0], locX, locY, scale, scale);
+                } else if (hyp <= maxRenderDist / 2) {
+                    image(wallImages[2], locX, locY, scale, scale);
+                } else if (hyp <= 2 * maxRenderDist / 3) {
+                    image(wallImages[3], locX, locY, scale, scale);
+                } else if (hyp <= 5 * maxRenderDist / 6) {
+                    image(wallImages[4], locX, locY, scale, scale);
                 } else if (hyp <= maxRenderDist) {
-                    image(wall100Img,locX,locY,scale,scale);
+                    image(wallImages[5], locX, locY, scale, scale);
                 }
             }
         }
@@ -166,8 +166,6 @@ function genMaze(w, h, holes, numPowerups, seed) {
     walls.add(genObj(m.W * scale / 2, m.H * scale + scale / 2, (m.W + 2) * scale, scale, gameColors.wall));
     walls.add(genObj(-scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
     walls.add(genObj(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
-
-    console.log(powerups.length);
 
     minimap = new Minimap();
 }

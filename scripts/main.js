@@ -1,10 +1,11 @@
 function preload() {
     font = loadFont('assets/mozart.ttf');
-    wallImg = loadImage('assets/Wall.png');
-    wall40Img = loadImage('assets/Wall40.png');
-    wall60Img = loadImage('assets/Wall60.png');
-    wall80Img = loadImage('assets/Wall80.png');
-    wall100Img = loadImage('assets/Wall100.png');
+
+    let wallPrefix = 'assets/wall/Wall'
+    let interval = 20;
+    for (let i = 0; i <= 100; i += interval) {
+        wallImages.push(loadImage(wallPrefix + i + '.png'))
+    }
 }
 
 function setup() {

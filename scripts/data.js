@@ -5,11 +5,7 @@ let game;
 let peer;
 
 // IMAGES
-let wallImg;
-let wall40Img;
-let wall60Img;
-let wall80Img;
-let wall100Img;
+let wallImages = [];
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
