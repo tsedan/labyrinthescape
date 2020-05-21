@@ -28,8 +28,20 @@ function drawWalls() {
             for (let j = 0; j < numVert; j++) {
                 const locX = left + i*scale;
                 const locY = top + j*scale;
-                if (dist(camera.position.x, camera.position.y, locX, locY) < scale * 5) {
+                const hyp = dist(camera.position.x, camera.position.y, locX, locY);
+                const maxRenderDist = (windowWidth > windowHeight ? windowWidth : windowHeight)/2 + 2*scale;
+                if (hyp <= maxRenderDist/6) {
                     image(wallImg,locX,locY,scale,scale);
+                } else if (hyp <= maxRenderDist/3) {
+                    image(wall20Img,locX,locY,scale,scale);
+                } else if (hyp <= maxRenderDist/2) {
+                    image(wall40Img,locX,locY,scale,scale);
+                } else if (hyp <= 2*maxRenderDist/3) {
+                    image(wall60Img,locX,locY,scale,scale);
+                } else if (hyp <= 5*maxRenderDist/6) {
+                    image(wall80Img,locX,locY,scale,scale);
+                } else if (hyp <= maxRenderDist) {
+                    image(wall100Img,locX,locY,scale,scale);
                 }
             }
         }
