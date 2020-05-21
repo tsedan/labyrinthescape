@@ -4,6 +4,9 @@ let menu;
 let game;
 let peer;
 
+// IMAGES
+let wallImg;
+
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
 

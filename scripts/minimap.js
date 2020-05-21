@@ -15,13 +15,12 @@ class Minimap {
     draw() {
         push();
         noStroke();
-        noLights();
         rectMode(CORNER);
 
         const w = minimapScale * m.W;
         const h = minimapScale * m.H;
-        const edgeX = windowWidth/2;
-        const edgeY = windowHeight/2;
+        const edgeX = windowWidth;
+        const edgeY = windowHeight;
         const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
         fill(gameColors.minimap);

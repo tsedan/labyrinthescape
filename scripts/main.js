@@ -1,13 +1,16 @@
 function preload() {
     font = loadFont('assets/mozart.ttf');
+    wallImg = loadImage('assets/Wall.png');
 }
 
 function setup() {
     allPlayers = new Group();
     peer = new Peer(prefix + myID);
 
-    createCanvas(windowWidth, windowHeight, WEBGL);
+    createCanvas(windowWidth, windowHeight);
     frameRate(desiredFPS);
+    imageMode(CENTER);
+    noSmooth();
 
     menu = new Menu();
 

@@ -143,12 +143,12 @@ class MenuPrompt {
         textFont(font);
         fill(255);
 
-        camera.position.x = 0;
-        camera.position.y = 0;
+        camera.position.x = windowWidth/2;
+        camera.position.y = windowHeight/2;
 
-        const bottom = 0;
-        const left = -windowWidth;
-        const right = 0;
+        const bottom = windowHeight;
+        const left = 0;
+        const right = windowWidth;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);
@@ -198,12 +198,12 @@ class MenuOptions {
         textFont(font);
         fill(255);
 
-        camera.position.x = 0;
-        camera.position.y = 0;
+        camera.position.x = windowWidth/2;
+        camera.position.y = windowHeight/2;
 
-        const bottom = 0;
-        const left = -windowWidth;
-        const right = 0;
+        const bottom = windowHeight;
+        const left = 0;
+        const right = windowWidth;
         const pad = 20;
 
         textAlign(LEFT, BOTTOM);

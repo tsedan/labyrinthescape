@@ -18,15 +18,33 @@ function updateVelocities() {
     }
 }
 
+function drawWalls() {
+    for (let spr of walls.toArray()) {
+        const numHoriz = spr.width / scale;
+        const numVert = spr.height / scale;
+        const top = spr.position.y - spr.height/2 + scale/2;
+        const left = spr.position.x - spr.width/2 + scale/2;
+        for (let i = 0; i < numHoriz; i++) {
+            for (let j = 0; j < numVert; j++) {
+                const locX = left + i*scale;
+                const locY = top + j*scale;
+                if (dist(camera.position.x, camera.position.y, locX, locY) < scale * 5) {
+                    image(wallImg,locX,locY,scale,scale);
+                }
+            }
+        }
+    }
+}
+
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
     box.shapeColor = c;
     return box;
 }
 
-function genMaze(w, h, holes, powerups, seed) {
+function genMaze(w, h, holes, numPowerups, seed) {
     mazesStarted++;
-    m = new MazeGenerator(w, h, holes, powerups);
+    m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate(seed);
 
     minimapScale = scale / max(m.h, m.w);
@@ -138,6 +156,8 @@ function genMaze(w, h, holes, powerups, seed) {
     walls.add(genObj(m.W * scale / 2, m.H * scale + scale / 2, (m.W + 2) * scale, scale, gameColors.wall));
     walls.add(genObj(-scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
     walls.add(genObj(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
+
+    console.log(powerups.length);
 
     minimap = new Minimap();
 }
