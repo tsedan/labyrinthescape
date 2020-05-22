@@ -43,11 +43,11 @@ class Game {
         } else if (isHost) {
             for (let c in allConnections) {
                 if (allConnections[c] && allConnections[c].open) {
-                    allConnections[c].send('pos' + peer.id + ',' + player.position.x + ',' + player.position.y);
+                    allConnections[c].send('pos,' + peer.id + ',' + player.position.x + ',' + player.position.y);
                     for (let c2 in allConnections) {
                         if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
                             let peerID = allConnections[c2].peer;
-                            allConnections[c].send('pos' + peerID + ',' + playerPos[peerID].position.x + ',' + playerPos[peerID].position.y);
+                            allConnections[c].send('pos,' + peerID + ',' + playerPos[peerID].position.x + ',' + playerPos[peerID].position.y);
                         }
                     }
                 }
