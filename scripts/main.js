@@ -1,34 +1,35 @@
 function preload() {
     font = loadFont('assets/mozart.ttf');
-
-    let imgPrefix = 'assets/wall/Wall';
-    let interval = 1;
-    for (let i = 0; i <= 100; i += interval)
-        wallImages.push(loadImage(imgPrefix + i + '.png'));
-
-    imgPrefix = 'assets/floor/Floor';
-    interval = 1;
-    for (let i = 0; i <= 100; i += interval)
-        floorImages.push(loadImage(imgPrefix + i + '.png'));
 }
 
 function setup() {
-    allPlayers = new Group();
-    peer = new Peer(prefix + myID);
-
     createCanvas(windowWidth, windowHeight);
     frameRate(desiredFPS);
     imageMode(CENTER);
     noSmooth();
 
-    menu = new Menu();
+    assetsLoaded = 0;
+    totalAssets = (101/lightingInterval)*2;
+
+    let imgPrefix = 'assets/wall/Wall';
+    for (let i = 0; i <= 100; i += lightingInterval)
+        wallImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
+
+    imgPrefix = 'assets/floor/Floor';
+    for (let i = 0; i <= 100; i += lightingInterval)
+        floorImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
+
+    peer = new Peer(prefix + myID);
+    connectedToServer = false;
+
+    peer.on('open', function (id) { connectedToServer = true; });
 
     peer.on('connection', function (conn) {
         isHost = true;
-        conn.send('trash data');
+        conn.send('trash');
         conn.on('data', function (data) {
             let splitData = data.split(",");
-            if (splitData[0] == "PLAYER POSITION DATA") {
+            if (splitData[0] == 'pos') {
                 playerPos[conn.peer].position.x = +splitData[1];
                 playerPos[conn.peer].position.y = +splitData[2];
             }
@@ -42,6 +43,9 @@ function setup() {
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });
+
+    allPlayers = new Group();
+    menu = new Menu();
 }
 
 function windowResized() {
@@ -49,14 +53,17 @@ function windowResized() {
 }
 
 function draw() {
-
-    switch (gameState) {
-        case "MENU":
-            menu.draw();
-            break;
-        case "GAME":
-            game.draw();
-            break;
+    if (assetsLoaded < totalAssets || !connectedToServer) {
+        drawLoadingScreen(floor(100*assetsLoaded/totalAssets));
+    } else {
+        switch (gameState) {
+            case "MENU":
+                menu.draw();
+                break;
+            case "GAME":
+                game.draw();
+                break;
+        }
     }
 }
 

@@ -7,6 +7,9 @@ let peer;
 // IMAGES
 let wallImages = [];
 let floorImages = [];
+const lightingInterval = 1;
+let assetsLoaded;
+let totalAssets;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -18,11 +21,11 @@ const myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }
 let isHost = false;
 let playerPos = {};
 let allPlayers;
+let connectedToServer;
 
 // VIEWPORT
 const desiredFPS = 30;
 const scale = 120;
-const lightBrightness = 1800;
 const maxRenderDist = 4;
 
 // PLAYER

@@ -32,23 +32,22 @@ class Game {
         drawSprites(allPlayers);
 
         camera.off();
-        //createMask();
         minimap.draw();
     }
 
     sendPositionData() {
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
-                allConnections[0].send("PLAYER POSITION DATA," + player.position.x + "," + player.position.y);
+                allConnections[0].send('pos,' + player.position.x + ',' + player.position.y);
             }
         } else if (isHost) {
             for (let c in allConnections) {
                 if (allConnections[c] && allConnections[c].open) {
-                    allConnections[c].send("PLAYER POSITION DATA," + peer.id + "," + player.position.x + "," + player.position.y);
+                    allConnections[c].send('pos' + peer.id + ',' + player.position.x + ',' + player.position.y);
                     for (let c2 in allConnections) {
                         if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
                             let peerID = allConnections[c2].peer;
-                            allConnections[c].send("PLAYER POSITION DATA," + peerID + "," + playerPos[peerID].position.x + "," + playerPos[peerID].position.y);
+                            allConnections[c].send('pos' + peerID + ',' + playerPos[peerID].position.x + ',' + playerPos[peerID].position.y);
                         }
                     }
                 }

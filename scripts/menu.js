@@ -35,13 +35,13 @@ class Menu {
 
                 for (let c in allConnections) {
                     if (allConnections[c] && allConnections[c].open) {
-                        allConnections[c].send("PLAYER ID," + peer.id);
+                        allConnections[c].send('id,' + peer.id);
                         for (let c2 in allConnections) {
                             if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
-                                allConnections[c].send("PLAYER ID," + allConnections[c2].peer);
+                                allConnections[c].send('id,' + allConnections[c2].peer);
                             }
                         }
-                        allConnections[c].send("GAME STARTED BY HOST," + mazeSeed);
+                        allConnections[c].send('start,' + mazeSeed);
                     }
                 }
 
@@ -63,23 +63,20 @@ class Menu {
             let conn = peer.connect(prefix + data);
 
             conn.on('open', function () {
-                console.log("PARTY JOIN SIDE Connected to: " + conn.peer);
                 allConnections.push(conn);
-
-                conn.send('my name is beep boop');
+                conn.send('trash');
             });
 
             conn.on('data', function (data) {
-                //console.log(peer.id + " recieved from " + conn.peer + ": " + data);
                 let splitData = data.split(",");
-                if (splitData[0] == 'GAME STARTED BY HOST') {
-                    gameState = 'GAME';
+                if (splitData[0] == 'start') {
+                    gameState = "GAME";
 
                     mazeSeed = +splitData[1];
                     game = new Game();
                 }
 
-                if (splitData[0] == "PLAYER POSITION DATA") {
+                if (splitData[0] == 'pos') {
                     let pID = splitData[1];
                     let pX = +splitData[2];
                     let pY = +splitData[3];
@@ -87,12 +84,10 @@ class Menu {
                     playerPos[pID].position.y = pY;
                 }
 
-                if (splitData[0] == "PLAYER ID") {
+                if (splitData[0] == 'id') {
                     let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     playerPos[splitData[1]] = otherPlayer;
-                    //console.log(playerPos)
                 }
-
 
             });
         }
