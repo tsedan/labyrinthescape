@@ -54,17 +54,17 @@ class Menu {
             }
 
         } else if (this.state == "JOINPARTY") {
-            for (let c in allConnections) {
-                if (allConnections[c]) {
-                    allConnections[c].close();
-                }
-            }
+            for (let c in allConnections)
+                if (allConnections[c]) allConnections[c].close();
 
             let conn = peer.connect(prefix + data);
 
             conn.on('open', function () {
                 allConnections.push(conn);
                 conn.send('trash');
+
+                this.state = "WAITROOM";
+                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in');
             });
 
             conn.on('data', function (data) {
@@ -99,6 +99,35 @@ class Menu {
 
     draw() {
         this.currentMenu.draw();
+    }
+}
+
+class MenuAlert {
+    constructor(header, subtitle) {
+        this.header = header;
+        this.subtitle = subtitle;
+    }
+
+    handleKey() {}
+
+    draw() {
+        background(gameColors.wall);
+        noStroke();
+        textFont(font);
+        fill(255);
+
+        camera.position.x = windowWidth/2;
+        camera.position.y = windowHeight/2;
+
+        const bottom = windowHeight;
+        const left = 0;
+        const pad = 20;
+
+        textAlign(LEFT, BOTTOM);
+        textSize(64);
+        text(this.header, left + pad, bottom - pad - 32);
+        textSize(32);
+        text(this.subtitle, left + pad, bottom - pad);
     }
 }
 
