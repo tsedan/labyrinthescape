@@ -7,6 +7,8 @@ class MazeGenerator {
     }
 
     generate(seed) {
+        randomSeed(seed);
+        
         this.H = 2 * this.h + 1;
         this.W = 2 * this.w + 1;
         this.holes = floor(this.W * this.H * this.holes);
@@ -17,7 +19,6 @@ class MazeGenerator {
             this.grid[i].fill(1);
         }
 
-        randomSeed(seed);
         let current_row = floor(random() * this.h) * 2 + 1;
         let current_col = floor(random() * this.w) * 2 + 1;
         this.grid[current_row][current_col] = 0;

@@ -22,7 +22,7 @@ class Menu {
                 ]);
             } else {
                 this.state = "JOINPARTY";
-                this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID");
+                this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID", 6);
             }
 
         } else if (this.state == "CREATEPARTY") {
@@ -59,12 +59,12 @@ class Menu {
 
             let conn = peer.connect(prefix + data);
 
+            this.state = "WAITROOM";
+            this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in');
+
             conn.on('open', function () {
                 allConnections.push(conn);
                 conn.send('trash');
-
-                this.state = "WAITROOM";
-                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in');
             });
 
             conn.on('data', function (data) {
@@ -111,32 +111,17 @@ class MenuAlert {
     handleKey() {}
 
     draw() {
-        background(gameColors.wall);
-        noStroke();
-        textFont(font);
-        fill(255);
-
-        camera.position.x = windowWidth/2;
-        camera.position.y = windowHeight/2;
-
-        const bottom = windowHeight;
-        const left = 0;
-        const pad = 20;
-
-        textAlign(LEFT, BOTTOM);
-        textSize(64);
-        text(this.header, left + pad, bottom - pad - 32);
-        textSize(32);
-        text(this.subtitle, left + pad, bottom - pad);
+        drawBasicMenu(this.header, this.subtitle);
     }
 }
 
 class MenuPrompt {
-    constructor(header, subtitle, placeholder) {
+    constructor(header, subtitle, placeholder, maxLength) {
         this.header = header;
         this.subtitle = subtitle;
         this.placeholder = placeholder;
         this.input = "";
+        this.maxLength = maxLength;
         this.maxBackspaceDelay = 15;
         this.backspaceDelay = this.maxBackspaceDelay;
     }
@@ -149,7 +134,7 @@ class MenuPrompt {
 
         if (code == 13) return this.input;
 
-        if (validCharacters.includes(key)) this.input += key;
+        if (validCharacters.includes(key) && this.input.length < this.maxLength) this.input += key;
         return 0;
     }
 
@@ -162,24 +147,11 @@ class MenuPrompt {
             }
         }
 
-        background(gameColors.wall);
-        noStroke();
-        textFont(font);
-        fill(255);
-
-        camera.position.x = windowWidth/2;
-        camera.position.y = windowHeight/2;
+        drawBasicMenu(this.header, this.subtitle);
 
         const bottom = windowHeight;
-        const left = 0;
         const right = windowWidth;
         const pad = 20;
-
-        textAlign(LEFT, BOTTOM);
-        textSize(64);
-        text(this.header, left + pad, bottom - pad - 32);
-        textSize(32);
-        text(this.subtitle, left + pad, bottom - pad);
 
         textAlign(RIGHT, BOTTOM);
         textSize(64);
@@ -217,24 +189,11 @@ class MenuOptions {
     }
 
     draw() {
-        background(gameColors.wall);
-        noStroke();
-        textFont(font);
-        fill(255);
-
-        camera.position.x = windowWidth/2;
-        camera.position.y = windowHeight/2;
+        drawBasicMenu(this.header, this.subtitle);
 
         const bottom = windowHeight;
-        const left = 0;
         const right = windowWidth;
         const pad = 20;
-
-        textAlign(LEFT, BOTTOM);
-        textSize(64);
-        text(this.header, left + pad, bottom - pad - 32);
-        textSize(32);
-        text(this.subtitle, left + pad, bottom - pad);
 
         textAlign(RIGHT, BOTTOM);
         textSize(64);

@@ -1,38 +1,3 @@
-function drawLoadingScreen(percentLoaded) {
-    background(gameColors.wall);
-    noStroke();
-    textFont(font);
-    fill(255);
-
-    camera.position.x = windowWidth/2;
-    camera.position.y = windowHeight/2;
-
-    const bottom = windowHeight;
-    const left = 0;
-    const pad = 20;
-
-    textAlign(LEFT, BOTTOM);
-    textSize(64);
-    text('Loading...', left + pad, bottom - pad - 32);
-    textSize(32);
-    text((percentLoaded == 100 ? 'Awaiting Server Connection' : 'Loading Assets: ' + percentLoaded + '%'), left + pad, bottom - pad);
-}
-
-function drawMaze(pX, pY) {
-    const bX = max(pX-maxRenderDist-1,0), tX = min(pX+maxRenderDist+1,m.W);
-    const bY = max(pY-maxRenderDist-1,0), tY = min(pY+maxRenderDist+1,m.H);
-    for (let i = bY; i < tY; i++) {
-        for (let j = bX; j < tX; j++) {
-            const locX = (j+0.5) * scale, locY = (i+0.5) * scale;
-            const hyp = dist(player.position.x, player.position.y, locX, locY);
-            const imageArray = (m.grid[i][j] ? wallImages : floorImages);
-            const maxHyp = maxRenderDist*scale;
-            if (hyp > maxHyp) continue;
-            image(imageArray[floor(99*hyp/maxHyp)],locX,locY,scale,scale);
-        }
-    }
-}
-
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
 
