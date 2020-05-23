@@ -31,6 +31,13 @@ class Game {
 
         drawSprites(allPlayers);
 
+        for (let k of Object.keys(playerPos)) {
+            let p = playerPos[k];
+            textAlign(CENTER, BOTTOM);
+            fill(gameColors.player)
+            text(idToName[k], p.position.x, p.position.y - p.width / 2 - 10);
+        }
+
         camera.off();
         minimap.draw();
     }

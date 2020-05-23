@@ -44,6 +44,8 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
     player = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale / 2, scale / 2, gameColors.player);
     allPlayers.add(player);
+    playerPos[peer.id] = player;
+    console.log(peer.id)
 
     for (let key in playerPos) {
         if (playerPos.hasOwnProperty(key)) {
