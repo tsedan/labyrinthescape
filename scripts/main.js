@@ -20,35 +20,7 @@ function setup() {
         floorImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
 
     idToName[prefix + myID] = myID;
-    peer = new Peer(prefix + myID);
-    connectedToServer = false;
-
-    peer.on('open', function (id) { connectedToServer = true; });
-
-    peer.on('connection', function (conn) {
-        isHost = true;
-        conn.send('trash');
-        conn.on('data', function (data) {
-
-            let splitData = data.split(",");
-            if (splitData[0] == 'pos') {
-                playerPos[conn.peer].position.x = +splitData[1];
-                playerPos[conn.peer].position.y = +splitData[2];
-            } else if (splitData[0] == 'name') {
-                idToName[conn.peer] = splitData[1];
-                menu.state = "CLIENTMODE";
-                menu.eventHandler("CREATE PARTY");
-            }
-        });
-
-        let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-        playerPos[conn.peer] = otherPlayer;
-
-        allConnections.push(conn);
-
-        menu.state = "CLIENTMODE";
-        menu.eventHandler("CREATE PARTY");
-    });
+    initializePeer();
 
     allPlayers = new Group();
     menu = new Menu();

@@ -17,7 +17,7 @@ const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKL
 // P2P
 let allConnections = [];
 const prefix = "hUntErsmAzEgAmE";
-const myID = validCharacters.split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
+const myID = validCharacters.substring(0, validCharacters.length - 1).split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
 let isHost = false;
 let playerPos = {};
 let allPlayers;

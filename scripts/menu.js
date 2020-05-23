@@ -35,20 +35,8 @@ class Menu {
                 mazeSeed = Date.now();
 
                 game = new Game();
-                console.log(idToName)
 
-                for (let c in allConnections) {
-                    if (allConnections[c] && allConnections[c].open) {
-                        allConnections[c].send('id,' + peer.id);
-                        for (let c2 in allConnections) {
-                            if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
-                                allConnections[c].send('id,' + allConnections[c2].peer);
-                            }
-                        }
-                        allConnections[c].send('start,' + mazeSeed);
-                    }
-                }
-
+                sendStartInfo();
             } else {
                 this.state = "CLIENTMODE";
                 this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
@@ -66,15 +54,15 @@ class Menu {
 
             conn.on('open', () => {
                 this.state = "WAITROOM";
-                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in', ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
+                    ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
                 allConnections.push(conn);
                 conn.send('name,' + idToName[prefix + myID]);
             });
 
-            conn.on('data', function (data) {
+            conn.on('data', (data) => {
 
-                console.log(data)
                 let splitData = data.split(",");
                 if (splitData[0] == 'start') {
                     gameState = "GAME";
@@ -94,6 +82,13 @@ class Menu {
                 if (splitData[0] == 'id') {
                     let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     playerPos[splitData[1]] = otherPlayer;
+                }
+
+                if (splitData[0] == 'name') {
+                    idToName[splitData[1]] = splitData[2];
+
+                    this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
+                        ["PARTY MEMBERS:"].concat(Object.values(idToName)));
                 }
 
             });
