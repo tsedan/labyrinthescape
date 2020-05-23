@@ -3,26 +3,29 @@ class Menu {
         this.state = "CLIENTMODE";
         this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
             "CREATE PARTY",
-            "JOIN PARTY"
-        ]);
+            "JOIN PARTY",
+            "SET NAME"
+        ], []);
     }
 
     eventHandler(data) {
-
         if (!data) return;
 
         if (this.state == "CLIENTMODE") {
 
             if (data == "CREATE PARTY") {
-
                 this.state = "CREATEPARTY";
                 this.currentMenu = new MenuOptions("ID: " + myID + ", " + (allConnections.length + 1) + "P", "share this id with those you want in your party", [
                     "READY TO START",
                     "BACK"
-                ]);
-            } else {
+                ], ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+            } else if (data == "JOIN PARTY") {
                 this.state = "JOINPARTY";
                 this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID", 6);
+
+            } else if (data == "SET NAME") {
+                this.state = "SETNAME";
+                this.currentMenu = new MenuPrompt("SET NAME", "choose a name that will be visible to all players", "ENTER USERNAME", 15);
             }
 
         } else if (this.state == "CREATEPARTY") {
@@ -32,6 +35,7 @@ class Menu {
                 mazeSeed = Date.now();
 
                 game = new Game();
+                console.log(idToName)
 
                 for (let c in allConnections) {
                     if (allConnections[c] && allConnections[c].open) {
@@ -49,8 +53,9 @@ class Menu {
                 this.state = "CLIENTMODE";
                 this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
                     "CREATE PARTY",
-                    "JOIN PARTY"
-                ]);
+                    "JOIN PARTY",
+                    "SET NAME"
+                ], []);
             }
 
         } else if (this.state == "JOINPARTY") {
@@ -64,7 +69,7 @@ class Menu {
 
             conn.on('open', function () {
                 allConnections.push(conn);
-                conn.send('trash');
+                conn.send('name,' + idToName[prefix + myID]);
             });
 
             conn.on('data', function (data) {
@@ -90,6 +95,14 @@ class Menu {
                 }
 
             });
+        } else if (this.state == "SETNAME") {
+            idToName[prefix + myID] = data;
+            this.state = "CLIENTMODE";
+            this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
+                "CREATE PARTY",
+                "JOIN PARTY",
+                "SET NAME"
+            ], []);
         }
     }
 
@@ -103,15 +116,22 @@ class Menu {
 }
 
 class MenuAlert {
-    constructor(header, subtitle) {
+    constructor(header, subtitle, upperText) {
         this.header = header;
         this.subtitle = subtitle;
+        this.upperText = upperText;
     }
 
-    handleKey() {}
+    handleKey() { }
 
     draw() {
         drawBasicMenu(this.header, this.subtitle);
+
+        textAlign(LEFT, TOP);
+        textSize(48);
+        for (let i = 0; i < this.upperText.length; i++) {
+            text(this.upperText[i], pad, pad + 48 * i);
+        }
     }
 }
 
@@ -165,11 +185,12 @@ class MenuPrompt {
 }
 
 class MenuOptions {
-    constructor(header, subtitle, options, enterHandler) {
+    constructor(header, subtitle, options, upperText, enterHandler) {
         this.header = header;
         this.subtitle = subtitle;
         this.options = options;
         this.currentOption = 0;
+        this.upperText = upperText;
         this.enterHandler = enterHandler;
     }
 
@@ -190,7 +211,6 @@ class MenuOptions {
 
     draw() {
         drawBasicMenu(this.header, this.subtitle);
-
         const bottom = windowHeight;
         const right = windowWidth;
         const pad = 20;
@@ -199,6 +219,12 @@ class MenuOptions {
         textSize(64);
         for (let i = 0; i < this.options.length; i++) {
             text((i == this.currentOption ? "> " : "") + this.options[i], right - pad, bottom - pad - 64 * i);
+        }
+
+        textAlign(LEFT, TOP);
+        textSize(48);
+        for (let i = 0; i < this.upperText.length; i++) {
+            text(this.upperText[i], pad, pad + 48 * i);
         }
     }
 }

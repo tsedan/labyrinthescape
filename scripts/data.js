@@ -12,7 +12,7 @@ let assetsLoaded;
 let totalAssets;
 
 // MENU
-const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
+const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 
 // P2P
 let allConnections = [];
@@ -22,6 +22,7 @@ let isHost = false;
 let playerPos = {};
 let allPlayers;
 let connectedToServer;
+let idToName = {};
 
 // VIEWPORT
 const desiredFPS = 30;
