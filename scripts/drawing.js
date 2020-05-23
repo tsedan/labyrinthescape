@@ -1,10 +1,12 @@
 function drawMenuBackground() {
     const lineSize = scale / 4;
-    const mX = lineSize * ((frameCount) - windowWidth / 2) / (windowWidth / 2);
-    const mY = lineSize * ((frameCount) - windowHeight / 2) / (windowHeight / 2);
+    const radius = scale;
+    angleMode(DEGREES);
+    const mX = cos(frameCount)*radius;
+    const mY = sin(frameCount)*radius;
 
-    for (let i = -lineSize; i < windowWidth + lineSize; i += lineSize) {
-        for (let j = -lineSize; j < windowHeight + lineSize; j += lineSize) {
+    for (let i = -windowWidth; i < 2*windowWidth; i += lineSize) {
+        for (let j = -windowHeight; j < 2*windowHeight; j += lineSize) {
             stroke(40);
             strokeWeight(5);
             round(noise(i, j)) ? line(i - mX, j - mY, i - mX + lineSize, j - mY + lineSize) : line(i - mX + lineSize, j - mY, i - mX, j - mY + lineSize);

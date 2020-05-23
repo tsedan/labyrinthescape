@@ -131,6 +131,7 @@ class MenuAlert {
 
         textAlign(LEFT, TOP);
         textSize(48);
+        const pad = 20;
         for (let i = 0; i < this.upperText.length; i++) {
             text(this.upperText[i], pad, pad + 48 * i);
         }
