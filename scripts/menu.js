@@ -1,7 +1,7 @@
 class Menu {
     constructor() {
         this.state = "CLIENTMODE";
-        this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
+        this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
             "CREATE PARTY",
             "JOIN PARTY",
             "SET NAME"
@@ -39,7 +39,7 @@ class Menu {
                 sendStartInfo();
             } else {
                 this.state = "CLIENTMODE";
-                this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
+                this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
                     "CREATE PARTY",
                     "JOIN PARTY",
                     "SET NAME"
@@ -95,7 +95,7 @@ class Menu {
         } else if (this.state == "SETNAME") {
             idToName[prefix + myID] = data;
             this.state = "CLIENTMODE";
-            this.currentMenu = new MenuOptions("HUNTER'S MAZE", "use w, s, and enter to navigate the menus", [
+            this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
                 "CREATE PARTY",
                 "JOIN PARTY",
                 "SET NAME"
