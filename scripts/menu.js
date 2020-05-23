@@ -64,15 +64,17 @@ class Menu {
 
             let conn = peer.connect(prefix + data);
 
-            this.state = "WAITROOM";
-            this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in');
+            conn.on('open', () => {
+                this.state = "WAITROOM";
+                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in', ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
-            conn.on('open', function () {
                 allConnections.push(conn);
                 conn.send('name,' + idToName[prefix + myID]);
             });
 
             conn.on('data', function (data) {
+
+                console.log(data)
                 let splitData = data.split(",");
                 if (splitData[0] == 'start') {
                     gameState = "GAME";

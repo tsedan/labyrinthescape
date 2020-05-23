@@ -1,7 +1,7 @@
 function drawMenuBackground() {
     const lineSize = scale / 4;
-    const mX = lineSize * ((frameCount * 20) - windowWidth / 2) / (windowWidth / 2);
-    const mY = lineSize * ((frameCount * 20) - windowHeight / 2) / (windowHeight / 2);
+    const mX = lineSize * ((frameCount) - windowWidth / 2) / (windowWidth / 2);
+    const mY = lineSize * ((frameCount) - windowHeight / 2) / (windowHeight / 2);
 
     for (let i = -lineSize; i < windowWidth + lineSize; i += lineSize) {
         for (let j = -lineSize; j < windowHeight + lineSize; j += lineSize) {
