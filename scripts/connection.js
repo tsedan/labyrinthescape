@@ -43,54 +43,6 @@ function connectionHost() {
     });
 }
 
-function connectionClient(data) {
-    for (let c in allConnections)
-        if (allConnections[c]) allConnections[c].close();
-
-    let conn = peer.connect(prefix + data);
-
-    conn.on('open', () => {
-        this.state = "WAITROOM";
-        this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
-            ["PARTY MEMBERS:"].concat(Object.values(idToName)));
-
-        allConnections.push(conn);
-        conn.send('name,' + idToName[prefix + myID]);
-    });
-
-    conn.on('data', (data) => {
-
-        let splitData = data.split(",");
-        if (splitData[0] == 'start') {
-            gameState = "GAME";
-
-            mazeSeed = +splitData[1];
-            game = new Game();
-        }
-
-        if (splitData[0] == 'pos') {
-            let pID = splitData[1];
-            let pX = +splitData[2];
-            let pY = +splitData[3];
-            playerPos[pID].position.x = pX;
-            playerPos[pID].position.y = pY;
-        }
-
-        if (splitData[0] == 'id') {
-            let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-            playerPos[splitData[1]] = otherPlayer;
-        }
-
-        if (splitData[0] == 'name') {
-            idToName[splitData[1]] = splitData[2];
-
-            this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
-                ["PARTY MEMBERS:"].concat(Object.values(idToName)));
-        }
-
-    });
-}
-
 function sendPositionData() {
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
