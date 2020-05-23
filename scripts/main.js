@@ -6,6 +6,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(desiredFPS);
     imageMode(CENTER);
+    angleMode(DEGREES);
     noSmooth();
 
     assetsLoaded = 0;

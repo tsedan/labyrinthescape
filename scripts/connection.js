@@ -1,5 +1,5 @@
 function initializePeer() {
-    peer = new Peer(prefix + myID);
+    peer = new Peer(prefix + myID, peerConfig);
     connectedToServer = false;
 
     peer.on('open', function (id) { connectedToServer = true; });

@@ -1,11 +1,7 @@
 class Menu {
     constructor() {
         this.state = "CLIENTMODE";
-        this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
-            "CREATE PARTY",
-            "JOIN PARTY",
-            "SET NAME"
-        ], []);
+        this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
     }
 
     eventHandler(data) {

@@ -13,6 +13,11 @@ let totalAssets;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
+const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
+    "CREATE PARTY",
+    "JOIN PARTY",
+    "SET NAME"
+]];
 
 // P2P
 let allConnections = [];
@@ -23,6 +28,15 @@ let playerPos = {};
 let allPlayers;
 let connectedToServer;
 let idToName = {};
+const peerConfig = {
+    secure: true,
+    port: 443,
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302'  },
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' },
+    ]
+};
 
 // VIEWPORT
 const desiredFPS = 30;
