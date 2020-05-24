@@ -75,16 +75,14 @@ class Menu {
                     playerPos[pID].position.y = pY;
                 }
 
-                if (splitData[0] == 'id') {
-                    let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-                    playerPos[splitData[1]] = otherPlayer;
-                }
-
                 if (splitData[0] == 'name') {
                     idToName[splitData[1]] = splitData[2];
 
                     this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
                         ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+
+                    let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                    playerPos[splitData[1]] = otherPlayer;
                 }
 
             });

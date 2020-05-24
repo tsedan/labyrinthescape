@@ -1,5 +1,5 @@
 function initializePeer() {
-    peer = new Peer(prefix + myID, peerConfig);
+    peer = new Peer(prefix + myID);
     connectedToServer = false;
 
     peer.on('open', function (id) { connectedToServer = true; });
@@ -24,7 +24,7 @@ function connectionHost() {
                 menu.state = "CLIENTMODE";
                 menu.eventHandler("CREATE PARTY");
 
-                conn.send("name," + (prefix + myID) + "," + idToName[prefix + myID]);
+                conn.send("name," + peer.id + "," + idToName[peer.id]);
                 for (let c in allConnections) {
 
                     if (allConnections[c].peer != conn.peer) {
@@ -66,12 +66,6 @@ function sendPositionData() {
 function sendStartInfo() {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
-            allConnections[c].send('id,' + peer.id);
-            for (let c2 in allConnections) {
-                if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
-                    allConnections[c].send('id,' + allConnections[c2].peer);
-                }
-            }
             allConnections[c].send('start,' + mazeSeed);
         }
     }
