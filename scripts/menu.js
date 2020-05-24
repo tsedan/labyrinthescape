@@ -35,11 +35,7 @@ class Menu {
                 sendStartInfo();
             } else {
                 this.state = "CLIENTMODE";
-                this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
-                    "CREATE PARTY",
-                    "JOIN PARTY",
-                    "SET NAME"
-                ], []);
+                this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
             }
 
         } else if (this.state == "JOINPARTY") {
@@ -60,11 +56,12 @@ class Menu {
             conn.on('data', (data) => {
 
                 let splitData = data.split(",");
-                if (splitData[0] == 'start') {
-                    gameState = "GAME";
 
+                if (splitData[0] == 'start') {
                     mazeSeed = +splitData[1];
+                    monster = playerPos[splitData[2]];
                     game = new Game();
+                    gameState = "GAME";
                 }
 
                 if (splitData[0] == 'pos') {
@@ -89,11 +86,7 @@ class Menu {
         } else if (this.state == "SETNAME") {
             idToName[prefix + myID] = data;
             this.state = "CLIENTMODE";
-            this.currentMenu = new MenuOptions("LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
-                "CREATE PARTY",
-                "JOIN PARTY",
-                "SET NAME"
-            ], []);
+            this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
         }
     }
 

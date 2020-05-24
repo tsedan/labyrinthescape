@@ -2,7 +2,12 @@ function initializePeer() {
     peer = new Peer(prefix + myID);
     connectedToServer = false;
 
-    peer.on('open', function (id) { connectedToServer = true; });
+    peer.on('open', function (id) {
+        connectedToServer = true;
+        player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+        allPlayers.add(player);
+        playerPos[id] = player;
+    });
 
     connectionHost();
 }
@@ -64,9 +69,13 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
+    // final number will be host player
+    let monsterID = Object.keys(playerPos)[Math.floor(Math.random() * Object.keys(playerPos).length)];
+    monster = playerPos[monsterID];
+
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
-            allConnections[c].send('start,' + mazeSeed);
+            allConnections[c].send('start,' + mazeSeed + "," + monsterID);
         }
     }
 }

@@ -18,6 +18,10 @@ class Game {
 
         updateVelocities();
         allPlayers.collide(walls);
+        player.collide(monster, function () {
+            if (player != monster)
+                console.log("you died i think")
+        });
         player.collide(exit, this.newMaze);
         minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 

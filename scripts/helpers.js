@@ -42,9 +42,6 @@ function genMaze(w, h, holes, numPowerups, seed) {
             spr.remove();
     }
 
-    player = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale / 2, scale / 2, gameColors.player);
-    allPlayers.add(player);
-    playerPos[peer.id] = player;
 
     for (let key in playerPos) {
         if (playerPos.hasOwnProperty(key)) {

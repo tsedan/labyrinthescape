@@ -32,7 +32,7 @@ const peerConfig = {
     secure: true,
     port: 443,
     iceServers: [
-        { urls: 'stun:stun.l.google.com:19302'  },
+        { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:stun1.l.google.com:19302' },
         { urls: 'stun:stun2.l.google.com:19302' },
     ]
@@ -54,6 +54,7 @@ let walls;
 let exit;
 let powerups;
 let backMaze;
+let monster;
 
 let mazeSeed = 100;
 
