@@ -27,12 +27,10 @@ class Menu {
         } else if (this.state == "CREATEPARTY") {
 
             if (data == "READY TO START") {
-                gameState = "GAME";
                 mazeSeed = Date.now();
-
-                game = new Game();
-
                 sendStartInfo();
+                game = new Game();
+                gameState = "GAME";
             } else {
                 this.state = "CLIENTMODE";
                 this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);

@@ -51,6 +51,16 @@ function genMaze(w, h, holes, numPowerups, seed) {
         }
     }
 
+    while (true) {
+        let cR = floor(random() * (m.H - 2)) + 1;
+        let cC = floor(random() * (m.W - 2)) + 1;
+        if (m.grid[cR][cC] == 1) continue;
+
+        monster.position.x = (cC + 0.5) * scale;
+        monster.position.y = (cR + 0.5) * scale;
+        break;
+    }
+
     start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
     exit = genObj((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale, gameColors.end);
     backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, 0);

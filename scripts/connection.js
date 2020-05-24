@@ -70,7 +70,7 @@ function sendPositionData() {
 
 function sendStartInfo() {
     // final number will be host player
-    let monsterID = Object.keys(playerPos)[Math.floor(Math.random() * Object.keys(playerPos).length)];
+    let monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
 
     for (let c in allConnections) {
