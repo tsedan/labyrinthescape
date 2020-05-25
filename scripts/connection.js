@@ -41,7 +41,7 @@ function connectionHost() {
             conn.send('veryspecialtrash');
 
             conn.on('data', function (data) {
-
+                console.log(data)
                 let splitData = data.split(",");
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];

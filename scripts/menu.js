@@ -43,50 +43,55 @@ class Menu {
             let conn = peer.connect(data);
 
             conn.on('open', () => {
+
+
+
+                conn.send("uberspecialtrash");
+                conn.send('name,' + idToName[myID]);
+
                 this.state = "WAITROOM";
                 this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
                     ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
                 allConnections.push(conn);
-                conn.send('name,' + idToName[myID]);
-            });
 
-            conn.on('data', (data) => {
-                console.log(data);
-                let splitData = data.split(",");
+                conn.on('data', (data) => {
+                    console.log(data);
+                    let splitData = data.split(",");
 
-                if (splitData[0] == 'start') {
-                    mazeSeed = +splitData[1];
-                    monster = playerPos[splitData[2]];
-                    game = new Game();
-                    gameState = "GAME";
-                }
+                    if (splitData[0] == 'start') {
+                        mazeSeed = +splitData[1];
+                        monster = playerPos[splitData[2]];
+                        game = new Game();
+                        gameState = "GAME";
+                    }
 
-                if (splitData[0] == 'pos') {
-                    let pID = splitData[1];
-                    let pX = +splitData[2];
-                    let pY = +splitData[3];
-                    playerPos[pID].position.x = pX;
-                    playerPos[pID].position.y = pY;
-                }
+                    if (splitData[0] == 'pos') {
+                        let pID = splitData[1];
+                        let pX = +splitData[2];
+                        let pY = +splitData[3];
+                        playerPos[pID].position.x = pX;
+                        playerPos[pID].position.y = pY;
+                    }
 
-                if (splitData[0] == 'name') {
-                    idToName[splitData[1]] = splitData[2];
+                    if (splitData[0] == 'name') {
+                        idToName[splitData[1]] = splitData[2];
 
-                    console.log("bruh pls update");
+                        console.log("bruh pls update");
 
-                    this.state = "WAITROOM";
-                    this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
-                        ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+                        this.state = "WAITROOM";
+                        this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
+                            ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
-                    let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-                    playerPos[splitData[1]] = otherPlayer;
-                }
+                        let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                        playerPos[splitData[1]] = otherPlayer;
+                    }
 
-                if (splitData[0] == 'roblox_oof_sound.wav') {
-                    // splitData[1] is dead ooooooof
-                    console.log(splitData[1] + ' is dead F');
-                }
+                    if (splitData[0] == 'roblox_oof_sound.wav') {
+                        // splitData[1] is dead ooooooof
+                        console.log(splitData[1] + ' is dead F');
+                    }
+                });
             });
         } else if (this.state == "SETNAME") {
             idToName[myID] = data;
