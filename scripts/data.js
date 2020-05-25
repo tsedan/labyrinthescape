@@ -22,7 +22,7 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
 // P2P
 let allConnections = [];
 let myID;
-for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
+for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length-1))]);
 let isHost = false;
 let playerPos = {};
 let allPlayers;
@@ -46,6 +46,7 @@ let maxSpeed = 20;
 let isMonster;
 let heldItem = null;
 let orientation = 0;
+let isDead = false;
 
 // MAZE
 let m;
@@ -53,10 +54,10 @@ let walls;
 let exit;
 let powerups;
 let powerupsInUse;
-let backMaze;
+let border;
 let monster;
 
-let mazeSeed = 100;
+let mazeSeed;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 10;
@@ -72,7 +73,6 @@ let minimapScale;
 
 // FONTS
 let font;
-const widtohei = 5 / 7;
 
 // COLORS
 const gameColors = {

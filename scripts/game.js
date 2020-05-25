@@ -7,24 +7,32 @@ class Game {
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
     }
 
-    draw() {
-        sendPositionData();
-        background(0);
-
-        if (mazesStarted > numberOfMazes) return;
-
+    update() {
         camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
         camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
 
         updateVelocities();
-        allPlayers.collide(walls);
-        player.overlap(monster, function () {
-            if (isMonster) die();
-        });
-        player.collide(exit, this.newMaze);
-        minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        drawSprite(backMaze);
+        for (let spr of allPlayers) {
+            if (!(spr == player && isDead)) spr.collide(walls);
+            spr.collide(border);
+        }
+
+        if (!isDead) {
+            player.overlap(monster, die);
+            player.collide(exit, this.newMaze);
+            minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
+            sendPositionData();
+        } else {
+            minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
+        }
+    }
+
+    draw() {
+        this.update();
+
+        background(0);
+
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
         for (let p in powerups) {
@@ -41,8 +49,8 @@ class Game {
         textFont(font);
         textSize(32);
         for (let k of Object.keys(playerPos)) {
-            let p = playerPos[k];
-            text(idToName[k], p.position.x, p.position.y - p.width / 2 - 10);
+            if (!playerPos[k].visible) continue;
+            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].width / 2 - 10);
         }
 
         camera.off();

@@ -1,19 +1,21 @@
 function die() {
-    //lmaoooooooo get rekt noob
-
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('roblox_oof_sound.wav');
+            allConnections[0].send('die');
         }
     } else if (isHost) {
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('roblox_oof_sound.wav,' + myID);
+                allConnections[c].send('die,' + myID);
             }
         }
     }
 
-    // oof myself
+    minimap.revealAll();
+    player.visible = false;
+    maxRenderDist = 10;
+    maxSpeed = 30;
+    isDead = true;
 }
 
 function initializePeer() {
@@ -38,8 +40,7 @@ function connectionHost() {
             conn.send('starthandshake');
 
             conn.on('data', function (data) {
-
-                let splitData = data.split(",");
+                let splitData = data.split(',');
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];
                     playerPos[conn.peer].position.y = +splitData[2];
@@ -56,12 +57,12 @@ function connectionHost() {
                             allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
                         }
                     }
-                } else if (splitData[0] == 'roblox_oof_sound.wav') {
-                    //lmaoo that guy died rippppp
+                } else if (splitData[0] == 'die') {
+                    playerPos[conn.peer].visible = false;
 
                     for (let c of allConnections) {
                         if (c.peer != conn.peer) {
-                            c.send('roblox_oof_sound.wav,' + conn.peer);
+                            c.send('die,' + conn.peer);
                         }
                     }
                 } else if (splitData[0] == 'poweruppicked') {
@@ -128,6 +129,7 @@ function sendStartInfo() {
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
+            console.log("CACHUNGUS");
             allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
         }
     }
