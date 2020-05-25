@@ -36,21 +36,23 @@ class Minimap {
         const edgeX = windowWidth, edgeY = windowHeight;
         const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
+        const topCorner = edgeX - w - offset, leftCorner = edgeY - h - offset;
+
         fill(gameColors.minimap);
-        rect(edgeX - w - minimapScale - offset, edgeY - h - minimapScale - offset, w + 2 * minimapScale, h + 2 * minimapScale);
+        rect(topCorner - minimapScale, leftCorner - minimapScale, w + 2 * minimapScale, h + 2 * minimapScale);
 
         fill(gameColors.wall);
-        rect(edgeX - w - offset, edgeY - h - offset, w, h);
+        rect(topCorner, leftCorner, w, h);
 
+        fill(gameColors.back);
         for (let pts = this.pointsVisited.values(), val = []; val = pts.next().value;) {
             const asArray = val.split(',');
             const valX = parseInt(asArray[0]), valY = parseInt(asArray[1]);
-            fill(gameColors.back);
-            rect(edgeX - w + valX * minimapScale - offset, edgeY - h + valY * minimapScale - offset, minimapScale, minimapScale);
+            rect(topCorner + valX * minimapScale, leftCorner + valY * minimapScale, minimapScale, minimapScale);
         }
 
         fill(gameColors.player);
-        rect(edgeX - w + this.currX * minimapScale - offset, edgeY - h + this.currY * minimapScale - offset, minimapScale, minimapScale);
+        rect(topCorner + this.currX * minimapScale, leftCorner + this.currY * minimapScale, minimapScale, minimapScale);
 
         pop();
     }

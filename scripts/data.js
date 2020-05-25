@@ -51,6 +51,7 @@ let m;
 let walls;
 let exit;
 let powerups;
+let border;
 let monster;
 
 let mazeSeed;

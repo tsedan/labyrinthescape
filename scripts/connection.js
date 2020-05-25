@@ -12,7 +12,6 @@ function die() {
     }
 
     minimap.revealAll();
-
     player.visible = false;
     maxRenderDist = 10;
     maxSpeed = 30;

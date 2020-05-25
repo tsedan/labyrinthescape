@@ -14,8 +14,8 @@ class Game {
         updateVelocities();
 
         for (let spr of allPlayers) {
-            if (spr == player && isDead) continue;
-            spr.collide(walls);
+            if (!(spr == player && isDead)) spr.collide(walls);
+            spr.collide(border);
         }
 
         if (!isDead) {
@@ -47,9 +47,8 @@ class Game {
         textFont(font);
         textSize(32);
         for (let k of Object.keys(playerPos)) {
-            let p = playerPos[k];
-            if (!p.visible) continue;
-            text(idToName[k], p.position.x, p.position.y - p.width / 2 - 10);
+            if (!playerPos[k].visible) continue;
+            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].width / 2 - 10);
         }
 
         camera.off();
