@@ -86,7 +86,6 @@ function connectionHost() {
                     powerups[pID].sprite.velocity.x = +splitData[4];
                     powerups[pID].sprite.velocity.y = +splitData[5];
 
-                    // last arguments will be powerup specific
                     if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
                         powerups[pID].timeAvailable = +splitData[6];
                     }
@@ -131,7 +130,6 @@ function sendStartInfo() {
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
-            console.log("CACHUNGUS");
             allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
         }
     }

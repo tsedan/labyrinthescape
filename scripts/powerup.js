@@ -26,7 +26,6 @@ class Powerup {
     }
 
     sendPickupInfo() {
-        console.log(this.index)
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
                 allConnections[0].send('poweruppicked,' + this.index);
@@ -38,7 +37,6 @@ class Powerup {
     }
 
     sendDropInfo() {
-        console.log(this.index)
         let d = ['powerupdropped', this.index, this.sprite.position.x, this.sprite.position.y,
             this.sprite.velocity.x, this.sprite.velocity.y, this.timeAvailable].join(',');
         if (!isHost && allConnections.length == 1) {
@@ -83,8 +81,12 @@ class Boot extends Powerup {
         maxSpeed -= this.speedIncrease;
     }
 
-    update() {
+    draw() {
         super.draw();
+    }
+
+    update() {
+        this.draw();
 
         switch (this.used) {
             case 0:
@@ -150,8 +152,12 @@ class Torch extends Powerup {
         maxRenderDist -= this.renderIncrease;
     }
 
-    update() {
+    draw() {
         super.draw();
+    }
+
+    update() {
+        this.draw();
 
         switch (this.used) {
             case 0:

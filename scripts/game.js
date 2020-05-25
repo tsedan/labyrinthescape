@@ -23,8 +23,12 @@ class Game {
             player.collide(exit, this.newMaze);
             minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
             sendPositionData();
+
+            for (let p in powerups) powerups[p].update();
         } else {
             minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
+
+            for (let p in powerups) powerups[p].draw();
         }
     }
 
@@ -34,10 +38,6 @@ class Game {
         background(0);
 
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
-
-        for (let p in powerups) {
-            powerups[p].update();
-        }
 
         drawSprite(exit);
         drawSprite(start);

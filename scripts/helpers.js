@@ -1,26 +1,24 @@
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
 
-    // starts facing west, clockwise to match p5
-    if (a) orientation = 180;
-    if (d) orientation = 0;
-    if (w) orientation = 270;
-    if (s) orientation = 90;
-
     if (a ? d : !d) {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
         player.velocity.x = (friction * player.velocity.x - maxSpeed) / (friction + 1);
+        orientation = 180;
     } else if (d) {
         player.velocity.x = (friction * player.velocity.x + maxSpeed) / (friction + 1);
+        orientation = 0;
     }
 
     if (w ? s : !s) {
         player.velocity.y *= friction / (friction + 1);
     } else if (w) {
         player.velocity.y = (friction * player.velocity.y - maxSpeed) / (friction + 1);
+        orientation = 270;
     } else if (s) {
         player.velocity.y = (friction * player.velocity.y + maxSpeed) / (friction + 1);
+        orientation = 90;
     }
 }
 
@@ -85,11 +83,7 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
     shuffleArray(powerups);
 
-    for (let p in powerups) {
-        powerups[p].setIndex();
-    }
-
-    console.log(powerups)
+    for (let p in powerups) powerups[p].setIndex();
 
     let numP = 0;
 
