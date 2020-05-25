@@ -1,7 +1,7 @@
 class Menu {
     constructor() {
         this.state = "CLIENTMODE";
-        this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
+        this.currentMenu = new MenuOptions(...mainMenu, [idToName[myID]]);
     }
 
     eventHandler(data) {
@@ -17,7 +17,7 @@ class Menu {
                 ], ["PARTY MEMBERS:"].concat(Object.values(idToName)));
             } else if (data == "JOIN PARTY") {
                 this.state = "JOINPARTY";
-                this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID", 6);
+                this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID", myID.length);
 
             } else if (data == "SET NAME") {
                 this.state = "SETNAME";
@@ -33,14 +33,14 @@ class Menu {
                 gameState = "GAME";
             } else {
                 this.state = "CLIENTMODE";
-                this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
+                this.currentMenu = new MenuOptions(...mainMenu, [idToName[myID]]);
             }
 
         } else if (this.state == "JOINPARTY") {
             for (let c in allConnections)
                 if (allConnections[c]) allConnections[c].close();
 
-            let conn = peer.connect(prefix + data);
+            let conn = peer.connect(data);
 
             conn.on('open', () => {
                 this.state = "WAITROOM";
@@ -48,7 +48,7 @@ class Menu {
                     ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
                 allConnections.push(conn);
-                conn.send('name,' + idToName[prefix + myID]);
+                conn.send('name,' + idToName[myID]);
             });
 
             conn.on('data', (data) => {
@@ -73,6 +73,9 @@ class Menu {
                 if (splitData[0] == 'name') {
                     idToName[splitData[1]] = splitData[2];
 
+                    console.log("bruh pls update");
+
+                    this.state = "WAITROOM";
                     this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
                         ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
@@ -80,11 +83,15 @@ class Menu {
                     playerPos[splitData[1]] = otherPlayer;
                 }
 
+                if (splitData[0] == 'roblox_oof_sound.wav') {
+                    // splitData[1] is dead ooooooof
+                    console.log(splitData[1] + ' is dead F');
+                }
             });
         } else if (this.state == "SETNAME") {
-            idToName[prefix + myID] = data;
+            idToName[myID] = data;
             this.state = "CLIENTMODE";
-            this.currentMenu = new MenuOptions(...mainMenu, [idToName[prefix + myID]]);
+            this.currentMenu = new MenuOptions(...mainMenu, [idToName[myID]]);
         }
     }
 

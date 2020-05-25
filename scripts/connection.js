@@ -1,5 +1,25 @@
+function die() {
+    //lmaoooooooo get rekt noob
+
+    console.log('that happened');
+
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('roblox_oof_sound.wav');
+        }
+    } else if (isHost) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('roblox_oof_sound.wav,' + myID);
+            }
+        }
+    }
+
+    // oof myself
+}
+
 function initializePeer() {
-    peer = new Peer(prefix + myID, peerConfig);
+    peer = new Peer(myID, peerConfig);
     connectedToServer = false;
 
     peer.on('open', function (id) {
@@ -37,6 +57,16 @@ function connectionHost() {
                         allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
                     }
                 }
+            } else if (splitData[0] == 'roblox_oof_sound.wav') {
+                //lmaoo that guy died rippppp
+
+                console.log('as the host, i formally declare ' + conn.peer + ' a dead man');
+
+                for (let c of allConnections) {
+                    if (c.peer != conn.peer) {
+                        c.send('roblox_oof_sound.wav,' + conn.peer);
+                    }
+                }
             }
         });
 
@@ -69,13 +99,13 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
-    // final number will be host player
     let monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
+    isMonster = player != monster;
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
-            allConnections[c].send('start,' + mazeSeed + "," + monsterID);
+            allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
         }
     }
 }

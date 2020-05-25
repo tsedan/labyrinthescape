@@ -18,9 +18,9 @@ class Game {
 
         updateVelocities();
         allPlayers.collide(walls);
-        player.collide(monster, function () {
-            if (player != monster)
-                console.log("you died i think")
+        player.overlap(monster, function () {
+            console.log('so help me god');
+            if (isMonster) die();
         });
         player.collide(exit, this.newMaze);
         minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
@@ -35,10 +35,12 @@ class Game {
 
         drawSprites(allPlayers);
 
+        textAlign(CENTER, BOTTOM);
+        fill(gameColors.player)
+        textFont(font);
+        textSize(32);
         for (let k of Object.keys(playerPos)) {
             let p = playerPos[k];
-            textAlign(CENTER, BOTTOM);
-            fill(gameColors.player)
             text(idToName[k], p.position.x, p.position.y - p.width / 2 - 10);
         }
 

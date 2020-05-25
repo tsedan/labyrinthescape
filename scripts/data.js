@@ -21,8 +21,8 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
 
 // P2P
 let allConnections = [];
-const prefix = "hUntErsmAzEgAmE";
-const myID = validCharacters.substring(0, validCharacters.length - 1).split('').sort(() => { return 0.5 - Math.random() }).join('').substring(0, 6);
+let myID;
+for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
 let isHost = false;
 let playerPos = {};
 let allPlayers;
@@ -43,6 +43,7 @@ const maxRenderDist = 4;
 let player;
 const friction = 9;
 const maxSpeed = 20;
+let isMonster;
 
 // MAZE
 let m;

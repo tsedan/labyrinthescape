@@ -20,7 +20,7 @@ function setup() {
     for (let i = 0; i <= 100; i += lightingInterval)
         floorImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
 
-    idToName[prefix + myID] = myID;
+    idToName[myID] = myID;
     initializePeer();
 
     allPlayers = new Group();
