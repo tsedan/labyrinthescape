@@ -42,7 +42,7 @@ class Menu {
             let conn = peer.connect(data);
 
             this.state = "HANDSHAKING";
-            this.currentMenu = new MenuAlert('Connecting to the Party', 'please hold until the line picks up on the other side UwU', []);
+            this.currentMenu = new MenuAlert('Connecting to the Party', 'please hold until the line picks up on the other side', []);
 
             conn.on('open', () => {
                 allConnections.push(conn);
@@ -59,64 +59,55 @@ class Menu {
 
                     let splitData = data.split(",");
 
-                    if (splitData[0] == 'start') {
-                        mazeSeed = +splitData[1];
-                        monster = playerPos[splitData[2]];
-                        game = new Game();
-                        gameState = "GAME";
-                    }
+                    switch (splitData[0]) {
+                        case 'start':
+                            mazeSeed = +splitData[1];
+                            monster = playerPos[splitData[2]];
+                            game = new Game();
+                            gameState = "GAME";
+                            break;
+                        case 'pos':
+                            let pID = splitData[1];
+                            playerPos[pID].position.x = +splitData[2];
+                            playerPos[pID].position.y = +splitData[3];
+                            break;
+                        case 'name':
+                            idToName[splitData[1]] = splitData[2];
 
-                    if (splitData[0] == 'pos') {
-                        let pID = splitData[1];
-                        let pX = +splitData[2];
-                        let pY = +splitData[3];
-                        playerPos[pID].position.x = pX;
-                        playerPos[pID].position.y = pY;
-                    }
+                            this.state = "WAITROOM";
+                            this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
+                                ["PARTY MEMBERS:"].concat(Object.values(idToName)));
 
-                    if (splitData[0] == 'name') {
-                        idToName[splitData[1]] = splitData[2];
-
-                        this.state = "WAITROOM";
-                        this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
-                            ["PARTY MEMBERS:"].concat(Object.values(idToName)));
-
-                        let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-                        playerPos[splitData[1]] = otherPlayer;
-                    }
-
-                    if (splitData[0] == 'die') {
-                        playerPos[splitData[1]].visible = false;
-                    }
-
-                    if (splitData[0] == 'poweruppicked') {
-                        console.log(data)
-                        powerupsInUse.push(+splitData[1]);
-                        powerups[+splitData[1]].sprite.visible = false;
-                    }
-
-                    if (splitData[0] == 'powerupdropped') {
-                        console.log(data)
-
-                        let pID = +splitData[1];
-                        for (let p in powerupsInUse) {
-                            if (powerupsInUse[p] == pID) {
-                                powerupsInUse.splice(p, 1);
+                            let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                            playerPos[splitData[1]] = otherPlayer;
+                            break;
+                        case 'die':
+                            playerPos[splitData[1]].visible = false;
+                            break;
+                        case 'poweruppicked':
+                            powerupsInUse.push(+splitData[1]);
+                            powerups[+splitData[1]].sprite.visible = false;
+                            break;
+                        case 'powerupdropped':
+                            let powerupID = +splitData[1];
+                            for (let p in powerupsInUse) {
+                                if (powerupsInUse[p] == powerupID) {
+                                    powerupsInUse.splice(p, 1);
+                                }
                             }
-                        }
 
-                        powerups[pID].sprite.visible = true;
-                        powerups[pID].sprite.position.x = +splitData[2];
-                        powerups[pID].sprite.position.y = +splitData[3];
-                        powerups[pID].sprite.velocity.x = +splitData[4];
-                        powerups[pID].sprite.velocity.y = +splitData[5];
+                            powerups[powerupID].sprite.visible = true;
+                            powerups[powerupID].sprite.position.x = +splitData[2];
+                            powerups[powerupID].sprite.position.y = +splitData[3];
+                            powerups[powerupID].sprite.velocity.x = +splitData[4];
+                            powerups[powerupID].sprite.velocity.y = +splitData[5];
 
-                        // last arguments will be powerup specific
-                        if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
-                            powerups[pID].timeAvailable = +splitData[6];
-                        }
+                            // last arguments will be powerup specific
+                            if (['Boot', 'Torch'].includes(powerups[powerupID].constructor.name)) {
+                                powerups[powerupID].timeAvailable = +splitData[6];
+                            }
+                            break;
                     }
-
                 });
             });
         } else if (this.state == "SETNAME") {

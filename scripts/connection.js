@@ -41,58 +41,60 @@ function connectionHost() {
 
             conn.on('data', function (data) {
                 let splitData = data.split(',');
-                if (splitData[0] == 'pos') {
-                    playerPos[conn.peer].position.x = +splitData[1];
-                    playerPos[conn.peer].position.y = +splitData[2];
-                } else if (splitData[0] == 'name') {
-                    idToName[conn.peer] = splitData[1];
-                    menu.state = "CLIENTMODE";
-                    menu.eventHandler("CREATE PARTY");
+                switch (splitData[0]) {
+                    case 'pos':
+                        playerPos[conn.peer].position.x = +splitData[1];
+                        playerPos[conn.peer].position.y = +splitData[2];
+                        break;
+                    case 'name':
+                        idToName[conn.peer] = splitData[1];
+                        menu.state = "CLIENTMODE";
+                        menu.eventHandler("CREATE PARTY");
 
-                    conn.send("name," + peer.id + "," + idToName[peer.id]);
-                    for (let c in allConnections) {
+                        conn.send("name," + peer.id + "," + idToName[peer.id]);
+                        for (let c in allConnections) {
 
-                        if (allConnections[c].peer != conn.peer) {
-                            conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
-                            allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
+                            if (allConnections[c].peer != conn.peer) {
+                                conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
+                                allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
+                            }
                         }
-                    }
-                } else if (splitData[0] == 'die') {
-                    playerPos[conn.peer].visible = false;
+                        break;
+                    case 'die':
+                        playerPos[conn.peer].visible = false;
 
-                    for (let c of allConnections) {
-                        if (c.peer != conn.peer) {
-                            c.send('die,' + conn.peer);
+                        for (let c of allConnections) {
+
+                            if ((c && c.open) && (c.peer != conn.peer)) {
+                                c.send('die,' + conn.peer);
+                            }
                         }
-                    }
-                } else if (splitData[0] == 'poweruppicked') {
-                    console.log(data)
-                    powerupsInUse.push(+splitData[1]);
-                    powerups[+splitData[1]].sprite.visible = false;
-                    sendPowerupUsedInfo(+splitData[1]);
-
-                } else if (splitData[0] == 'powerupdropped') {
-                    console.log(data)
-                    let pID = +splitData[1];
-                    for (let p in powerupsInUse) {
-                        if (powerupsInUse[p] == pID) {
-                            powerupsInUse.splice(p, 1);
+                        break;
+                    case 'poweruppicked':
+                        powerupsInUse.push(+splitData[1]);
+                        powerups[+splitData[1]].sprite.visible = false;
+                        sendPowerupUsedInfo(+splitData[1]);
+                        break;
+                    case 'powerupdropped':
+                        let pID = +splitData[1];
+                        for (let p in powerupsInUse) {
+                            if (powerupsInUse[p] == pID) {
+                                powerupsInUse.splice(p, 1);
+                            }
                         }
-                    }
+                        powerups[pID].sprite.visible = true;
+                        powerups[pID].sprite.position.x = +splitData[2];
+                        powerups[pID].sprite.position.y = +splitData[3];
+                        powerups[pID].sprite.velocity.x = +splitData[4];
+                        powerups[pID].sprite.velocity.y = +splitData[5];
 
-                    powerups[pID].sprite.visible = true;
-                    powerups[pID].sprite.position.x = +splitData[2];
-                    powerups[pID].sprite.position.y = +splitData[3];
-                    powerups[pID].sprite.velocity.x = +splitData[4];
-                    powerups[pID].sprite.velocity.y = +splitData[5];
+                        if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
+                            powerups[pID].timeAvailable = +splitData[6];
+                        }
 
-                    if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
-                        powerups[pID].timeAvailable = +splitData[6];
-                    }
-
-                    sendPowerupDroppedInfo(data);
+                        sendPowerupDroppedInfo(data);
+                        break;
                 }
-
             });
         });
         let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
