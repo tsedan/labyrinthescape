@@ -56,8 +56,8 @@ let monster;
 let mazeSeed = 100;
 
 const numberOfMazes = 3;
-const mazeStartWidth = 12;
-const mazeStartHeight = 20;
+const mazeStartWidth = 10;
+const mazeStartHeight = 10;
 const holeProbability = 0.02;
 const powerUpNum = 6;
 

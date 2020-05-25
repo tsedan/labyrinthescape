@@ -27,7 +27,9 @@ class Game {
         drawSprite(backMaze);
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        drawSprites(powerups);
+        for (let p in powerups) {
+            powerups[p].update();
+        }
 
         drawSprite(exit);
         drawSprite(start);

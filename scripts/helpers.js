@@ -66,7 +66,7 @@ function genMaze(w, h, holes, numPowerups, seed) {
     backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, 0);
 
     walls = new Group();
-    powerups = new Group();
+    powerups = [];
 
     let singleSquares = new Set();
 
@@ -77,9 +77,10 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
         for (let j = 0; j < m.grid[0].length; j++) {
             for (let k of m.powerLocs)
-                if (j == k[1] && i == k[0])
-                    powerups.add(genObj(scale * j + scale / 2, scale * i + scale / 2, scale, scale, gameColors.power));
-
+                if (j == k[1] && i == k[0]) {
+                    let powerup = new Boot(genObj(scale * j + scale / 2, scale * i + scale / 2, scale / 2, scale / 2, gameColors.power), 20 * 60, 10);
+                    powerups.push(powerup);
+                }
             if (j < m.grid[0].length - 1) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {
                     rectangleLength += scale;
