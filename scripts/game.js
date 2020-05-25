@@ -9,6 +9,7 @@ class Game {
 
     draw() {
         sendPositionData();
+        sendVelocityData();
         background(0);
 
         if (mazesStarted > numberOfMazes) return;

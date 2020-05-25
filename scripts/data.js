@@ -22,7 +22,7 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
 // P2P
 let allConnections = [];
 let myID;
-for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
+for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length-1))]);
 let isHost = false;
 let playerPos = {};
 let allPlayers;

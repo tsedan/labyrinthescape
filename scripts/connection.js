@@ -42,6 +42,9 @@ function connectionHost() {
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];
                     playerPos[conn.peer].position.y = +splitData[2];
+                } else if (splitData[0] == 'vel') {
+                    playerPos[conn.peer].velocity.x = +splitData[1];
+                    playerPos[conn.peer].velocity.y = +splitData[2];
                 } else if (splitData[0] == 'name') {
                     idToName[conn.peer] = splitData[1];
                     menu.state = "CLIENTMODE";
@@ -72,6 +75,26 @@ function connectionHost() {
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });
+}
+
+function sendVelocityData() {
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('vel,' + player.velocity.x + ',' + player.velocity.y);
+        }
+    } else if (isHost) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('vel,' + peer.id + ',' + player.velocity.x + ',' + player.velocity.y);
+                for (let c2 in allConnections) {
+                    if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
+                        let peerID = allConnections[c2].peer;
+                        allConnections[c].send('vel,' + peerID + ',' + playerPos[peerID].velocity.x + ',' + playerPos[peerID].velocity.y);
+                    }
+                }
+            }
+        }
+    }
 }
 
 function sendPositionData() {

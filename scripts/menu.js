@@ -18,7 +18,6 @@ class Menu {
             } else if (data == "JOIN PARTY") {
                 this.state = "JOINPARTY";
                 this.currentMenu = new MenuPrompt("JOIN PARTY", "ask your party leader for the party id", "ENTER PARTY ID", myID.length);
-
             } else if (data == "SET NAME") {
                 this.state = "SETNAME";
                 this.currentMenu = new MenuPrompt("SET NAME", "choose a name that will be visible to all players", "ENTER USERNAME", 15);
@@ -42,15 +41,18 @@ class Menu {
 
             let conn = peer.connect(data);
 
-            conn.on('open', () => {
-                this.state = "WAITROOM";
-                this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
-                    ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+            this.state = "HANDSHAKING";
+            this.currentMenu = new MenuAlert('Connecting to the Party', 'please hold until the line picks up on the other side UwU', []);
 
+            conn.on('open', () => {
                 allConnections.push(conn);
 
                 conn.on('data', (data) => {
                     if (data == "starthandshake") {
+                        this.state = "WAITROOM";
+                        this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
+                            ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+
                         conn.send("confirmhandshake");
                         conn.send('name,' + idToName[myID]);
                     }
@@ -72,10 +74,16 @@ class Menu {
                         playerPos[pID].position.y = pY;
                     }
 
+                    if (splitData[0] == 'vel') {
+                        let pID = splitData[1];
+                        let vX = +splitData[2];
+                        let vY = +splitData[3];
+                        playerPos[pID].velocity.x = vX;
+                        playerPos[pID].velocity.y = vY;
+                    }
+
                     if (splitData[0] == 'name') {
                         idToName[splitData[1]] = splitData[2];
-
-                        console.log("bruh pls update");
 
                         this.state = "WAITROOM";
                         this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
