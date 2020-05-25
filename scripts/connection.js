@@ -39,40 +39,39 @@ function connectionHost() {
 
         conn.on('open', function () {
             conn.send('veryspecialtrash');
-        });
 
-        conn.on('data', function (data) {
+            conn.on('data', function (data) {
 
-            let splitData = data.split(",");
-            if (splitData[0] == 'pos') {
-                playerPos[conn.peer].position.x = +splitData[1];
-                playerPos[conn.peer].position.y = +splitData[2];
-            } else if (splitData[0] == 'name') {
-                idToName[conn.peer] = splitData[1];
-                menu.state = "CLIENTMODE";
-                menu.eventHandler("CREATE PARTY");
+                let splitData = data.split(",");
+                if (splitData[0] == 'pos') {
+                    playerPos[conn.peer].position.x = +splitData[1];
+                    playerPos[conn.peer].position.y = +splitData[2];
+                } else if (splitData[0] == 'name') {
+                    idToName[conn.peer] = splitData[1];
+                    menu.state = "CLIENTMODE";
+                    menu.eventHandler("CREATE PARTY");
 
-                conn.send("name," + peer.id + "," + idToName[peer.id]);
-                for (let c in allConnections) {
+                    conn.send("name," + peer.id + "," + idToName[peer.id]);
+                    for (let c in allConnections) {
 
-                    if (allConnections[c].peer != conn.peer) {
-                        conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
-                        allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
+                        if (allConnections[c].peer != conn.peer) {
+                            conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
+                            allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
+                        }
+                    }
+                } else if (splitData[0] == 'roblox_oof_sound.wav') {
+                    //lmaoo that guy died rippppp
+
+                    console.log('as the host, i formally declare ' + conn.peer + ' a dead man');
+
+                    for (let c of allConnections) {
+                        if (c.peer != conn.peer) {
+                            c.send('roblox_oof_sound.wav,' + conn.peer);
+                        }
                     }
                 }
-            } else if (splitData[0] == 'roblox_oof_sound.wav') {
-                //lmaoo that guy died rippppp
-
-                console.log('as the host, i formally declare ' + conn.peer + ' a dead man');
-
-                for (let c of allConnections) {
-                    if (c.peer != conn.peer) {
-                        c.send('roblox_oof_sound.wav,' + conn.peer);
-                    }
-                }
-            }
+            });
         });
-
         let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
         playerPos[conn.peer] = otherPlayer;
 

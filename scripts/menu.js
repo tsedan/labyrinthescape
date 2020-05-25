@@ -52,7 +52,7 @@ class Menu {
             });
 
             conn.on('data', (data) => {
-
+                console.log(data);
                 let splitData = data.split(",");
 
                 if (splitData[0] == 'start') {
