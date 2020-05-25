@@ -33,11 +33,11 @@ class Game {
     }
 
     draw() {
-        this.update();
-
         background(0);
 
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
+
+        this.update();
 
         drawSprite(exit);
         drawSprite(start);
