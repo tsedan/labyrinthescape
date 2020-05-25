@@ -39,11 +39,19 @@ class Powerup {
 
     sendDropInfo() {
         console.log(this.index)
+        let d = ['powerupdropped', this.index, this.sprite.position.x, this.sprite.position.y,
+            this.sprite.velocity.x, this.sprite.velocity.y, this.timeAvailable].join(',');
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
-                allConnections[0].send(['powerupdropped', this.index, this.sprite.position.x, this.sprite.position.y,
-                    this.sprite.velocity.x, this.sprite.velocity.y, this.timeAvailable].join(','));
+                allConnections[0].send(d);
             }
+        } else {
+            for (let p in powerupsInUse) {
+                if (powerupsInUse[p] == this.index) {
+                    powerupsInUse.splice(p, 1);
+                }
+            }
+            sendPowerupDroppedInfo(d)
         }
     }
 

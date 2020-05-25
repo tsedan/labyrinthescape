@@ -90,6 +90,8 @@ function connectionHost() {
                     if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
                         powerups[pID].timeAvailable = +splitData[6];
                     }
+
+                    sendPowerupDroppedInfo(data);
                 }
 
             });
@@ -139,6 +141,14 @@ function sendPowerupUsedInfo(pIndex) {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send('poweruppicked,' + pIndex);
+        }
+    }
+}
+
+function sendPowerupDroppedInfo(dataStr) {
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send(dataStr);
         }
     }
 }
