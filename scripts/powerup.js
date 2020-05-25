@@ -21,6 +21,8 @@ class Powerup {
         if (orientation == 270) this.sprite.position.y += -scale / 2
 
         this.sprite.setSpeed(10, orientation);
+
+        this.sendDropInfo();
     }
 
     sendPickupInfo() {
@@ -32,6 +34,16 @@ class Powerup {
         } else {
             powerupsInUse.push(this.index);
             sendPowerupUsedInfo(this.index);
+        }
+    }
+
+    sendDropInfo() {
+        console.log(this.index)
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send(['powerupdropped', this.index, this.sprite.position.x, this.sprite.position.y,
+                    this.sprite.velocity.x, this.sprite.velocity.y, this.timeAvailable].join(','));
+            }
         }
     }
 
@@ -80,7 +92,7 @@ class Boot extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up torch " + this.timeAvailable)
+                        console.log("picking up boots " + this.timeAvailable)
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;
@@ -147,7 +159,7 @@ class Torch extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up boots " + this.timeAvailable)
+                        console.log("picking up torch " + this.timeAvailable)
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;

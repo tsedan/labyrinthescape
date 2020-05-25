@@ -69,7 +69,28 @@ function connectionHost() {
                     powerupsInUse.push(+splitData[1]);
                     powerups[+splitData[1]].sprite.visible = false;
                     sendPowerupUsedInfo(+splitData[1]);
+
+                } else if (splitData[0] == 'powerupdropped') {
+                    console.log(data)
+                    let pID = +splitData[1];
+                    for (let p in powerupsInUse) {
+                        if (powerupsInUse[p] == pID) {
+                            powerupsInUse.splice(p, 1);
+                        }
+                    }
+
+                    powerups[pID].sprite.visible = true;
+                    powerups[pID].sprite.position.x = +splitData[2];
+                    powerups[pID].sprite.position.y = +splitData[3];
+                    powerups[pID].sprite.velocity.x = +splitData[4];
+                    powerups[pID].sprite.velocity.y = +splitData[5];
+
+                    // last arguments will be powerup specific
+                    if (['Boot', 'Torch'].includes(powerups[pID].constructor.name)) {
+                        powerups[pID].timeAvailable = +splitData[6];
+                    }
                 }
+
             });
         });
         let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
