@@ -7,25 +7,32 @@ class Game {
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
     }
 
-    draw() {
-        if (!isDead) sendPositionData();
-        background(0);
-
-        if (mazesStarted > numberOfMazes) return;
-
+    update() {
         camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
         camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
 
         updateVelocities();
+
         for (let spr of allPlayers) {
             if (spr == player && isDead) continue;
             spr.collide(walls);
         }
-        player.overlap(monster, die);
-        player.collide(exit, this.newMaze);
-        if (!isDead || !player.overlap(walls)) minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        drawSprite(backMaze);
+        if (!isDead) {
+            player.overlap(monster, die);
+            player.collide(exit, this.newMaze);
+            minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
+            sendPositionData();
+        } else {
+            minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
+        }
+    }
+
+    draw() {
+        this.update();
+
+        background(0);
+
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
         drawSprites(powerups);

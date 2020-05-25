@@ -1,6 +1,4 @@
 function die() {
-    if (isDead) return;
-
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
             allConnections[0].send('die');
@@ -13,8 +11,11 @@ function die() {
         }
     }
 
+    minimap.revealAll();
+
     player.visible = false;
     maxRenderDist = 10;
+    maxSpeed = 30;
     isDead = true;
 }
 

@@ -42,7 +42,7 @@ let maxRenderDist = 4;
 // PLAYER
 let player;
 const friction = 9;
-const maxSpeed = 20;
+let maxSpeed = 20;
 let isMonster;
 let isDead = false;
 
@@ -51,7 +51,6 @@ let m;
 let walls;
 let exit;
 let powerups;
-let backMaze;
 let monster;
 
 let mazeSeed;

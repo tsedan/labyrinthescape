@@ -63,7 +63,6 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
     start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
     exit = genObj((m.end[1] + 0.5) * scale, (m.end[0] + 0.5) * scale, scale, scale, gameColors.end);
-    backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, 0);
 
     walls = new Group();
     powerups = new Group();
