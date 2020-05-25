@@ -1,19 +1,21 @@
 function die() {
-    //lmaoooooooo get rekt noob
+    if (isDead) return;
 
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('roblox_oof_sound.wav');
+            allConnections[0].send('die');
         }
     } else if (isHost) {
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('roblox_oof_sound.wav,' + myID);
+                allConnections[c].send('die,' + myID);
             }
         }
     }
 
-    // oof myself
+    player.visible = false;
+    maxRenderDist = 10;
+    isDead = true;
 }
 
 function initializePeer() {
@@ -38,13 +40,10 @@ function connectionHost() {
             conn.send('starthandshake');
 
             conn.on('data', function (data) {
-                let splitData = data.split(",");
+                let splitData = data.split(',');
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];
                     playerPos[conn.peer].position.y = +splitData[2];
-                } else if (splitData[0] == 'vel') {
-                    playerPos[conn.peer].velocity.x = +splitData[1];
-                    playerPos[conn.peer].velocity.y = +splitData[2];
                 } else if (splitData[0] == 'name') {
                     idToName[conn.peer] = splitData[1];
                     menu.state = "CLIENTMODE";
@@ -58,12 +57,12 @@ function connectionHost() {
                             allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
                         }
                     }
-                } else if (splitData[0] == 'roblox_oof_sound.wav') {
-                    //lmaoo that guy died rippppp
+                } else if (splitData[0] == 'die') {
+                    playerPos[conn.peer].visible = false;
 
                     for (let c of allConnections) {
                         if (c.peer != conn.peer) {
-                            c.send('roblox_oof_sound.wav,' + conn.peer);
+                            c.send('die,' + conn.peer);
                         }
                     }
                 }
@@ -75,26 +74,6 @@ function connectionHost() {
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });
-}
-
-function sendVelocityData() {
-    if (!isHost && allConnections.length == 1) {
-        if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('vel,' + player.velocity.x + ',' + player.velocity.y);
-        }
-    } else if (isHost) {
-        for (let c in allConnections) {
-            if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('vel,' + peer.id + ',' + player.velocity.x + ',' + player.velocity.y);
-                for (let c2 in allConnections) {
-                    if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
-                        let peerID = allConnections[c2].peer;
-                        allConnections[c].send('vel,' + peerID + ',' + playerPos[peerID].velocity.x + ',' + playerPos[peerID].velocity.y);
-                    }
-                }
-            }
-        }
-    }
 }
 
 function sendPositionData() {
@@ -124,6 +103,7 @@ function sendStartInfo() {
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
+            console.log("CACHUNGUS");
             allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
         }
     }

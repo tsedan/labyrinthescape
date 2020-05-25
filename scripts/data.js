@@ -37,13 +37,14 @@ const peerConfig = {
 // VIEWPORT
 const desiredFPS = 30;
 const scale = 120;
-const maxRenderDist = 4;
+let maxRenderDist = 4;
 
 // PLAYER
 let player;
 const friction = 9;
 const maxSpeed = 20;
 let isMonster;
+let isDead = false;
 
 // MAZE
 let m;
@@ -53,7 +54,7 @@ let powerups;
 let backMaze;
 let monster;
 
-let mazeSeed = 100;
+let mazeSeed;
 
 const numberOfMazes = 3;
 const mazeStartWidth = 12;
@@ -69,7 +70,6 @@ let minimapScale;
 
 // FONTS
 let font;
-const widtohei = 5 / 7;
 
 // COLORS
 const gameColors = {

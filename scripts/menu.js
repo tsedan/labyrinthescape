@@ -74,14 +74,6 @@ class Menu {
                         playerPos[pID].position.y = pY;
                     }
 
-                    if (splitData[0] == 'vel') {
-                        let pID = splitData[1];
-                        let vX = +splitData[2];
-                        let vY = +splitData[3];
-                        playerPos[pID].velocity.x = vX;
-                        playerPos[pID].velocity.y = vY;
-                    }
-
                     if (splitData[0] == 'name') {
                         idToName[splitData[1]] = splitData[2];
 
@@ -93,9 +85,8 @@ class Menu {
                         playerPos[splitData[1]] = otherPlayer;
                     }
 
-                    if (splitData[0] == 'roblox_oof_sound.wav') {
-                        // splitData[1] is dead ooooooof
-                        console.log(splitData[1] + ' is dead F');
+                    if (splitData[0] == 'die') {
+                        playerPos[splitData[1]].visible = false;
                     }
                 });
             });
