@@ -27,9 +27,8 @@ function initializePeer() {
         player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
         allPlayers.add(player);
         playerPos[id] = player;
+        connectionHost();
     });
-
-    connectionHost();
 }
 
 function connectionHost() {
@@ -38,7 +37,7 @@ function connectionHost() {
         allConnections.push(conn);
 
         conn.on('open', function () {
-            conn.send('veryspecialtrash');
+            conn.send('connectionwork');
 
             conn.on('data', function (data) {
                 console.log(data)

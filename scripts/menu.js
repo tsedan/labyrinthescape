@@ -45,10 +45,6 @@ class Menu {
             conn.on('open', () => {
 
 
-
-                conn.send("uberspecialtrash");
-                conn.send('name,' + idToName[myID]);
-
                 this.state = "WAITROOM";
                 this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
                     ["PARTY MEMBERS:"].concat(Object.values(idToName)));
@@ -56,7 +52,11 @@ class Menu {
                 allConnections.push(conn);
 
                 conn.on('data', (data) => {
-                    console.log(data);
+                    if (data == "connectionwork") {
+                        conn.send("uberspecialtrash");
+                        conn.send('name,' + idToName[myID]);
+                    }
+
                     let splitData = data.split(",");
 
                     if (splitData[0] == 'start') {
