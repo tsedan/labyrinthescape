@@ -52,6 +52,7 @@ let m;
 let walls;
 let exit;
 let powerups;
+let powerupsInUse;
 let backMaze;
 let monster;
 

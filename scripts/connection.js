@@ -38,6 +38,7 @@ function connectionHost() {
             conn.send('starthandshake');
 
             conn.on('data', function (data) {
+
                 let splitData = data.split(",");
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];
@@ -63,6 +64,11 @@ function connectionHost() {
                             c.send('roblox_oof_sound.wav,' + conn.peer);
                         }
                     }
+                } else if (splitData[0] == 'poweruppicked') {
+                    console.log(data)
+                    powerupsInUse.push(+splitData[1]);
+                    powerups[+splitData[1]].sprite.visible = false;
+                    sendPowerupUsedInfo(+splitData[1]);
                 }
             });
         });
@@ -102,6 +108,14 @@ function sendStartInfo() {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
+        }
+    }
+}
+
+function sendPowerupUsedInfo(pIndex) {
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send('poweruppicked,' + pIndex);
         }
     }
 }

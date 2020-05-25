@@ -73,6 +73,8 @@ function genMaze(w, h, holes, numPowerups, seed) {
 
     walls = new Group();
 
+    powerupsInUse = [];
+
     powerups = [
         new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
         new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
@@ -83,6 +85,12 @@ function genMaze(w, h, holes, numPowerups, seed) {
     ];
 
     shuffleArray(powerups);
+
+    for (let p in powerups) {
+        powerups[p].setIndex();
+    }
+
+    console.log(powerups)
 
     let numP = 0;
 
@@ -172,8 +180,9 @@ function genMaze(w, h, holes, numPowerups, seed) {
 }
 
 function shuffleArray(array) {
+    randomSeed(mazeSeed);
     for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
+        let j = floor(random() * (i + 1));
         let temp = array[i];
         array[i] = array[j];
         array[j] = temp;

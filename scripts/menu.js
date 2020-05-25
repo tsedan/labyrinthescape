@@ -87,6 +87,12 @@ class Menu {
                         // splitData[1] is dead ooooooof
                         console.log(splitData[1] + ' is dead F');
                     }
+
+                    if (splitData[0] == 'poweruppicked') {
+                        console.log(data)
+                        powerupsInUse.push(+splitData[1]);
+                        powerups[+splitData[1]].sprite.visible = false;
+                    }
                 });
             });
         } else if (this.state == "SETNAME") {

@@ -22,6 +22,27 @@ class Powerup {
 
         this.sprite.setSpeed(10, orientation);
     }
+
+    sendPickupInfo() {
+        console.log(this.index)
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send('poweruppicked,' + this.index);
+            }
+        } else {
+            powerupsInUse.push(this.index);
+            sendPowerupUsedInfo(this.index);
+        }
+    }
+
+    setIndex() {
+        for (let p in powerups) {
+            if (powerups[p] == this) {
+                this.index = p;
+                break;
+            }
+        }
+    }
 }
 
 class Boot extends Powerup {
@@ -43,16 +64,29 @@ class Boot extends Powerup {
     }
 
     update() {
+        super.draw();
+
         switch (this.used) {
             case 0:
                 if (heldItem) break;
 
+                let alreadyInUse = false;
+
                 player.overlap(this.sprite, () => {
-                    console.log("picking up boots " + this.timeAvailable)
-                    this.sprite.visible = false;
-                    this.startEffect();
-                    this.used = 1;
-                    heldItem = this;
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        console.log("picking up torch " + this.timeAvailable)
+                        this.sprite.visible = false;
+                        this.startEffect();
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
                 });
                 break;
 
@@ -75,8 +109,6 @@ class Boot extends Powerup {
 
                 break;
         }
-
-        super.draw();
     }
 }
 
@@ -99,16 +131,29 @@ class Torch extends Powerup {
     }
 
     update() {
+        super.draw();
+
         switch (this.used) {
             case 0:
                 if (heldItem) break;
 
+                let alreadyInUse = false;
+
                 player.overlap(this.sprite, () => {
-                    console.log("picking up torch " + this.timeAvailable)
-                    this.sprite.visible = false;
-                    this.startEffect();
-                    this.used = 1;
-                    heldItem = this;
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        console.log("picking up boots " + this.timeAvailable)
+                        this.sprite.visible = false;
+                        this.startEffect();
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
                 });
                 break;
 
@@ -131,7 +176,5 @@ class Torch extends Powerup {
 
                 break;
         }
-
-        super.draw();
     }
 }
