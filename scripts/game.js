@@ -19,7 +19,6 @@ class Game {
         updateVelocities();
         allPlayers.collide(walls);
         player.overlap(monster, function () {
-            console.log('so help me god');
             if (isMonster) die();
         });
         player.collide(exit, this.newMaze);

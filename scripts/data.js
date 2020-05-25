@@ -31,8 +31,7 @@ let idToName = {};
 const peerConfig = {
     secure: true,
     host: 'labyrinth-escape.herokuapp.com',
-    port: 443,
-    debug: 3
+    port: 443
 };
 
 // VIEWPORT

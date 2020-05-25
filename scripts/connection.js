@@ -1,8 +1,6 @@
 function die() {
     //lmaoooooooo get rekt noob
 
-    console.log('that happened');
-
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
             allConnections[0].send('roblox_oof_sound.wav');
@@ -37,10 +35,9 @@ function connectionHost() {
         allConnections.push(conn);
 
         conn.on('open', function () {
-            conn.send('connectionwork');
+            conn.send('starthandshake');
 
             conn.on('data', function (data) {
-                console.log(data)
                 let splitData = data.split(",");
                 if (splitData[0] == 'pos') {
                     playerPos[conn.peer].position.x = +splitData[1];
@@ -60,8 +57,6 @@ function connectionHost() {
                     }
                 } else if (splitData[0] == 'roblox_oof_sound.wav') {
                     //lmaoo that guy died rippppp
-
-                    console.log('as the host, i formally declare ' + conn.peer + ' a dead man');
 
                     for (let c of allConnections) {
                         if (c.peer != conn.peer) {

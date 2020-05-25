@@ -43,8 +43,6 @@ class Menu {
             let conn = peer.connect(data);
 
             conn.on('open', () => {
-
-
                 this.state = "WAITROOM";
                 this.currentMenu = new MenuAlert('Room Joined', 'ask the host to start the game once all players are in',
                     ["PARTY MEMBERS:"].concat(Object.values(idToName)));
@@ -52,8 +50,8 @@ class Menu {
                 allConnections.push(conn);
 
                 conn.on('data', (data) => {
-                    if (data == "connectionwork") {
-                        conn.send("uberspecialtrash");
+                    if (data == "starthandshake") {
+                        conn.send("confirmhandshake");
                         conn.send('name,' + idToName[myID]);
                     }
 
