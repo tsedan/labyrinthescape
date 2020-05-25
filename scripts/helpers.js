@@ -1,6 +1,12 @@
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
 
+    // starts facing west, clockwise to match p5
+    if (a) orientation = 180;
+    if (d) orientation = 0;
+    if (w) orientation = 270;
+    if (s) orientation = 90;
+
     if (a ? d : !d) {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
@@ -66,7 +72,19 @@ function genMaze(w, h, holes, numPowerups, seed) {
     backMaze = genObj(m.W / 2 * scale, m.H / 2 * scale, m.W * scale, m.H * scale, 0);
 
     walls = new Group();
-    powerups = [];
+
+    powerups = [
+        new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
+        new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
+        new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
+    ];
+
+    shuffleArray(powerups);
+
+    let numP = 0;
 
     let singleSquares = new Set();
 
@@ -78,8 +96,10 @@ function genMaze(w, h, holes, numPowerups, seed) {
         for (let j = 0; j < m.grid[0].length; j++) {
             for (let k of m.powerLocs)
                 if (j == k[1] && i == k[0]) {
-                    let powerup = new Boot(genObj(scale * j + scale / 2, scale * i + scale / 2, scale / 2, scale / 2, gameColors.power), 20 * 60, 10);
-                    powerups.push(powerup);
+                    currP = powerups[numP];
+                    currP.sprite.position.x = scale * j + scale / 2;
+                    currP.sprite.position.y = scale * i + scale / 2;
+                    numP++;
                 }
             if (j < m.grid[0].length - 1) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {
@@ -149,4 +169,13 @@ function genMaze(w, h, holes, numPowerups, seed) {
     walls.add(genObj(m.W * scale + scale / 2, m.H * scale / 2, scale, m.H * scale, gameColors.wall));
 
     minimap = new Minimap();
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }

@@ -22,7 +22,7 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
 // P2P
 let allConnections = [];
 let myID;
-for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
+for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
 let isHost = false;
 let playerPos = {};
 let allPlayers;
@@ -37,13 +37,15 @@ const peerConfig = {
 // VIEWPORT
 const desiredFPS = 30;
 const scale = 120;
-const maxRenderDist = 4;
+let maxRenderDist = 4;
 
 // PLAYER
 let player;
 const friction = 9;
-const maxSpeed = 20;
+let maxSpeed = 20;
 let isMonster;
+let heldItem = null;
+let orientation = 0;
 
 // MAZE
 let m;
