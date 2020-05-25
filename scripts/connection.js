@@ -37,7 +37,10 @@ function connectionHost() {
         isHost = true;
         allConnections.push(conn);
 
-        conn.send('veryspecialtrash');
+        conn.on('open', function () {
+            conn.send('veryspecialtrash');
+        });
+
         conn.on('data', function (data) {
 
             let splitData = data.split(",");
