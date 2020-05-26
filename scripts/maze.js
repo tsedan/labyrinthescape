@@ -6,9 +6,7 @@ class MazeGenerator {
         this.powers = powerups;
     }
 
-    generate(seed) {
-        randomSeed(seed);
-        
+    generate() {
         this.H = 2 * this.h + 1;
         this.W = 2 * this.w + 1;
         this.holes = floor(this.W * this.H * this.holes);

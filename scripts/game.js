@@ -1,9 +1,11 @@
 class Game {
     constructor() {
+        randomSeed(mazeSeed);
         this.newMaze();
     }
 
     newMaze() {
+        heldItem = null;
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
     }
 

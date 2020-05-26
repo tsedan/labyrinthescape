@@ -28,10 +28,10 @@ function genObj(x, y, w, h, c) {
     return box;
 }
 
-function genMaze(w, h, holes, numPowerups, seed) {
+function genMaze(w, h, holes, numPowerups) {
     mazesStarted++;
     m = new MazeGenerator(w, h, holes, numPowerups);
-    m.generate(seed);
+    m.generate();
 
     minimapScale = scale / max(m.h, m.w);
 
@@ -174,7 +174,6 @@ function genMaze(w, h, holes, numPowerups, seed) {
 }
 
 function shuffleArray(array) {
-    randomSeed(mazeSeed);
     for (let i = array.length - 1; i > 0; i--) {
         let j = floor(random() * (i + 1));
         let temp = array[i];

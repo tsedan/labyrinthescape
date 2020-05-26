@@ -16,6 +16,7 @@ function die() {
     maxRenderDist = 10;
     maxSpeed = 30;
     isDead = true;
+    heldItem = null;
 }
 
 function initializePeer() {
