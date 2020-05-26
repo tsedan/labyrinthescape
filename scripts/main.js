@@ -21,9 +21,9 @@ function setup() {
         floorImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
 
     idToName[myID] = myID;
-    initializePeer();
 
     allPlayers = new Group();
+    initializePeer();
     menu = new Menu();
 }
 

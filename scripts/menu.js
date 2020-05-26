@@ -83,6 +83,7 @@ class Menu {
                             break;
                         case 'die':
                             playerPos[splitData[1]].visible = false;
+                            deadPlayers.push(playerPos[splitData[1]]);
                             break;
                         case 'poweruppicked':
                             powerupsInUse.push(+splitData[1]);

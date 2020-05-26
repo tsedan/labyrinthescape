@@ -26,6 +26,7 @@ for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random(
 let isHost = false;
 let playerPos = {};
 let allPlayers;
+let deadPlayers = [];
 let connectedToServer;
 let idToName = {};
 const peerConfig = {

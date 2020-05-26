@@ -6,7 +6,7 @@ class Game {
 
     newMaze() {
         heldItem = null;
-        genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum, mazeSeed);
+        genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum);
     }
 
     update() {

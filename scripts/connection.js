@@ -13,6 +13,7 @@ function die() {
 
     minimap.revealAll();
     player.visible = false;
+    deadPlayers.push(player);
     maxRenderDist = 10;
     maxSpeed = 30;
     isDead = true;
@@ -63,7 +64,7 @@ function connectionHost() {
                         break;
                     case 'die':
                         playerPos[conn.peer].visible = false;
-
+                        deadPlayers.push(playerPos[conn.peer]);
                         for (let c of allConnections) {
 
                             if ((c && c.open) && (c.peer != conn.peer)) {
