@@ -76,9 +76,9 @@ function genMaze(w, h, holes, numPowerups, seed) {
         new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
         new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
         new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
-        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
-        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
-        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 1),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
+        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
     ];
 
     shuffleArray(powerups);
