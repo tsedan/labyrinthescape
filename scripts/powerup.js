@@ -67,6 +67,7 @@ class Boot extends Powerup {
     constructor(sprite, timeAvailable, speedIncrease) {
         super(sprite)
         this.timeAvailable = timeAvailable;
+        this.maxTime = timeAvailable;
         this.speedIncrease = speedIncrease;
         // 0 - never used, 1 - in use, 2 - already used
         this.used = 0;
@@ -74,7 +75,6 @@ class Boot extends Powerup {
 
     startEffect() {
         maxSpeed += this.speedIncrease;
-        this.timeStarted = Date.now();
     }
 
     removeEffect() {
@@ -113,7 +113,8 @@ class Boot extends Powerup {
                 break;
 
             case 1:
-                if (Date.now() - this.timeStarted > this.timeAvailable) {
+                this.timeAvailable -= deltaTime;
+                if (this.timeAvailable < 0) {
                     console.log("losing my speed increase")
                     this.removeEffect();
                     this.used = 2;
@@ -123,7 +124,6 @@ class Boot extends Powerup {
                 // q
                 if (keyIsDown(81)) {
                     this.removeEffect();
-                    this.timeAvailable = this.timeAvailable - (Date.now() - this.timeStarted);
                     this.used = 0;
                     heldItem = null;
                     super.drop();
@@ -138,6 +138,7 @@ class Torch extends Powerup {
     constructor(sprite, timeAvailable, renderIncrease) {
         super(sprite)
         this.timeAvailable = timeAvailable;
+        this.maxTime = timeAvailable;
         this.renderIncrease = renderIncrease;
         // 0 - never used, 1 - in use, 2 - already used
         this.used = 0;
@@ -145,7 +146,6 @@ class Torch extends Powerup {
 
     startEffect() {
         maxRenderDist += this.renderIncrease;
-        this.timeStarted = Date.now();
     }
 
     removeEffect() {
@@ -184,7 +184,8 @@ class Torch extends Powerup {
                 break;
 
             case 1:
-                if (Date.now() - this.timeStarted > this.timeAvailable) {
+                this.timeAvailable -= deltaTime;
+                if (this.timeAvailable < 0) {
                     console.log("losing my render increase")
                     this.removeEffect();
                     this.used = 2;
@@ -194,7 +195,6 @@ class Torch extends Powerup {
                 // q
                 if (keyIsDown(81)) {
                     this.removeEffect();
-                    this.timeAvailable = this.timeAvailable - (Date.now() - this.timeStarted);
                     this.used = 0;
                     heldItem = null;
                     super.drop();

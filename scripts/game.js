@@ -55,5 +55,6 @@ class Game {
 
         camera.off();
         minimap.draw();
+        drawInventory();
     }
 }

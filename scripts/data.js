@@ -22,7 +22,7 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
 // P2P
 let allConnections = [];
 let myID;
-for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length-1))]);
+for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
 let isHost = false;
 let playerPos = {};
 let allPlayers;
@@ -82,5 +82,6 @@ const gameColors = {
     start: '#33d9b2',
     end: '#ffb142',
     wall: '#000000',
-    minimap: '#d1ccc0'
+    minimap: '#d1ccc0',
+    inv: '#8c8c89',
 }

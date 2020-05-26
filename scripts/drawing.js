@@ -1,15 +1,15 @@
 function drawMenuBackground() {
     const lineSize = scale / 4;
-    const radius = windowWidth/2;
-    const mX = cos(frameCount/16)*radius;
-    const mY = sin(frameCount/16)*radius;
+    const radius = windowWidth / 2;
+    const mX = cos(frameCount / 16) * radius;
+    const mY = sin(frameCount / 16) * radius;
     strokeWeight(5);
     stroke(40);
 
-    for (let i = -windowWidth; i < 2*windowWidth; i += lineSize) {
-        for (let j = -windowHeight; j < 2*windowHeight; j += lineSize) {
+    for (let i = -windowWidth; i < 2 * windowWidth; i += lineSize) {
+        for (let j = -windowHeight; j < 2 * windowHeight; j += lineSize) {
             const xLoc = i - mX, yLoc = j - mY;
-            if (xLoc >= -lineSize && xLoc <= windowWidth+lineSize && yLoc >= -lineSize && yLoc <= windowHeight+lineSize)
+            if (xLoc >= -lineSize && xLoc <= windowWidth + lineSize && yLoc >= -lineSize && yLoc <= windowHeight + lineSize)
                 round(noise(i, j)) ? line(xLoc, yLoc, xLoc + lineSize, yLoc + lineSize) : line(xLoc + lineSize, yLoc, xLoc, yLoc + lineSize);
         }
     }
@@ -50,4 +50,69 @@ function drawMaze(pX, pY) {
             image(imageArray[floor(99 * hyp / maxHyp)], locX, locY, scale, scale);
         }
     }
+}
+
+
+function drawInventory() {
+    push();
+    noStroke();
+    rectMode(CORNER);
+
+    const w = 200;
+    const edgeX = 0, edgeY = windowHeight;
+    const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
+    const pad = 20;
+
+    const topCorner = edgeX + offset, leftCorner = edgeY - w - offset - pad;
+
+    fill(gameColors.inv);
+    // so that it is aligned with the minimap
+    rect(topCorner - minimapScale / 2, leftCorner - minimapScale / 2, w + minimapScale, w + minimapScale);
+
+    fill(gameColors.minimap);
+    rect(topCorner, leftCorner, w, w);
+
+    if (heldItem && heldItem != null) {
+        // draw item sprite
+        rectMode(CENTER);
+        fill(gameColors.power);
+        rect(topCorner + w / 2, leftCorner + w / 2, scale, scale);
+
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textFont(font);
+        textSize(32);
+        text("PRESS Q TO DROP", topCorner + w / 2, leftCorner - pad);
+
+        if (['Torch', 'Boot'].includes(heldItem.constructor.name)) {
+            // items that are passive for some amount of time
+            const weight = 2;
+            const barWidth = 20;
+            strokeWeight(weight);
+            stroke(0);
+            fill(gameColors.minimap);
+            rect(topCorner + w / 2, leftCorner + w - barWidth, scale, barWidth);
+            noStroke();
+
+            let used = heldItem.timeAvailable / heldItem.maxTime;
+            let inter;
+            if (used > 0.5) {
+                // green -> yellow, reversed because going opposite
+                inter = lerpColor(color(255, 255, 0), color(0, 255, 0), 2 * used - 1);
+            } else {
+                // yellow -> red, reversed because going opposite
+                inter = lerpColor(color(255, 0, 0), color(255, 255, 0), used * 2);
+            }
+
+            fill(inter);
+            rectMode(CORNER);
+            rect(topCorner + w / 2 - scale / 2 + weight / 2, leftCorner + w - barWidth * 1.5 + weight / 2, used * (scale - weight), barWidth - weight);
+        } else {
+            // powerups that are one time use
+            textAlign(CENTER, CENTER);
+            text("PRESS [SPACE] TO USE", topCorner + w / 2, leftCorner + w + pad);
+        }
+    }
+
+    pop();
 }
