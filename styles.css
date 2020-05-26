@@ -6,8 +6,6 @@ head, body {
   width: 100%;
   overflow: hidden;
   background-color: #000000;
-  color: white;
-  font-family: 'Roboto Mono', monospace;
 }
 
 canvas {

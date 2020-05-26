@@ -1,27 +1,3 @@
-function updateVelocities() {
-    const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
-
-    if (a ? d : !d) {
-        player.velocity.x *= friction / (friction + 1);
-    } else if (a) {
-        player.velocity.x = (friction * player.velocity.x - maxSpeed) / (friction + 1);
-        orientation = 180;
-    } else if (d) {
-        player.velocity.x = (friction * player.velocity.x + maxSpeed) / (friction + 1);
-        orientation = 0;
-    }
-
-    if (w ? s : !s) {
-        player.velocity.y *= friction / (friction + 1);
-    } else if (w) {
-        player.velocity.y = (friction * player.velocity.y - maxSpeed) / (friction + 1);
-        orientation = 270;
-    } else if (s) {
-        player.velocity.y = (friction * player.velocity.y + maxSpeed) / (friction + 1);
-        orientation = 90;
-    }
-}
-
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
     box.shapeColor = c;
