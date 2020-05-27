@@ -204,3 +204,126 @@ class Torch extends Powerup {
         }
     }
 }
+
+class GPS extends Powerup {
+    constructor(sprite, timeAvailable) {
+        super(sprite)
+        this.angle = 0;
+        this.chosen = player;
+
+        this.timeAvailable = timeAvailable;
+        this.maxTime = timeAvailable;
+
+        this.arrowHeadDist = 120;
+        this.arrowInnerDist = 80
+        this.arrowWingAngle = Math.PI * 15 / 180;
+
+        // 0 - never used, 1 - in inv, 2 - in use, 3 - already used
+        this.used = 0;
+    }
+
+    choosePlayer() {
+        console.log("gps was used");
+
+        if (allPlayers.length == 1) return;
+
+        if (isMonster) {
+            this.chosen = allPlayers[Math.floor(Math.random() * allPlayers.length)]
+            while (this.chosen == player) {
+                this.chosen = allPlayers[Math.floor(Math.random() * allPlayers.length)]
+            }
+        } else {
+            this.chosen = monster;
+        }
+    }
+
+    setAngle() {
+        this.angle = Math.atan2(-(this.chosen.position.y - player.position.y), this.chosen.position.x - player.position.x);
+    }
+
+    draw() {
+        super.draw();
+    }
+
+    update() {
+        this.draw();
+
+        switch (this.used) {
+            case 0:
+                if (heldItem) break;
+
+                let alreadyInUse = false;
+
+                player.overlap(this.sprite, () => {
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        console.log("picking up gps")
+                        this.sprite.visible = false;
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
+                });
+                break;
+
+            case 1:
+
+                // q
+                if (keyIsDown(81)) {
+                    this.used = 0;
+                    heldItem = null;
+                    super.drop();
+                }
+
+                // space
+                if (keyIsDown(32)) {
+                    this.used = 2;
+
+                    this.choosePlayer();
+                }
+
+                break;
+
+            case 2:
+                this.timeAvailable -= deltaTime;
+
+                this.setAngle();
+
+                fill(255);
+                noStroke();
+                triangle(
+                    player.position.x + Math.cos(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.y - Math.sin(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.x + Math.cos(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.y - Math.sin(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.x + Math.cos(this.angle) * this.arrowHeadDist,
+                    player.position.y - Math.sin(this.angle) * this.arrowHeadDist,
+                );
+
+                camera.off();
+                fill(255);
+                textFont(font);
+                textAlign(CENTER, TOP);
+                textSize(36);
+
+                let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale)
+                if (this.chosen == monster)
+                    text("THE TRACKED PLAYER IS " + d + " UNITS AWAY FROM YOU", width / 2, 20)
+                else
+                    text("THE MONSTER IS " + d + " UNITS AWAY FROM YOU", width / 2, 20)
+
+                camera.on();
+
+                if (this.timeAvailable < 0) {
+                    console.log("losing my GPS")
+                    this.used = 3;
+                    heldItem = null;
+                }
+        }
+    }
+}

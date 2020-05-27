@@ -108,7 +108,7 @@ function drawInventory() {
         textSize(32);
         text("PRESS Q TO DROP", topCorner + w / 2, leftCorner - pad);
 
-        if (['Torch', 'Boot'].includes(heldItem.constructor.name)) {
+        if (['Torch', 'Boot', 'GPS'].includes(heldItem.constructor.name)) {
             // items that are passive for some amount of time
             const weight = 2;
             const barWidth = 20;
@@ -131,8 +131,11 @@ function drawInventory() {
             fill(inter);
             rectMode(CORNER);
             rect(topCorner + w / 2 - scale / 2 + weight / 2, leftCorner + w - barWidth * 1.5 + weight / 2, used * (scale - weight), barWidth - weight);
-        } else {
+        }
+
+        if (['GPS'].includes(heldItem.constructor.name)) {
             // powerups that are one time use
+            fill(255)
             textAlign(CENTER, CENTER);
             text("PRESS [SPACE] TO USE", topCorner + w / 2, leftCorner + w + pad);
         }

@@ -130,7 +130,7 @@ function sendPositionData() {
 function sendStartInfo() {
     let monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
-    isMonster = player != monster;
+    isMonster = player == monster;
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {

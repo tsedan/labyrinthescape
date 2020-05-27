@@ -63,6 +63,7 @@ class Menu {
                         case 'start':
                             mazeSeed = +splitData[1];
                             monster = playerPos[splitData[2]];
+                            isMonster = player == monster;
                             game = new Game();
                             gameState = "GAME";
                             break;
