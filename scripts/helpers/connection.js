@@ -38,7 +38,6 @@ function checkMazeCompletion() {
     }
     if (finishedPlayers.length == 0) return;
     if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
-        mazesStarted++;
         if (mazesStarted == numberOfMazes) {
             console.log("THE GAME IS OVER, PLAYERS WIN");
             gameState = "MENU";
