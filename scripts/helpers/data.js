@@ -39,6 +39,7 @@ const peerConfig = {
 const desiredFPS = 30;
 const scale = 120;
 let maxRenderDist = 4;
+const uiPadding = 30;
 
 // PLAYER
 let player;

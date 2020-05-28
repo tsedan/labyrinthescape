@@ -1,3 +1,7 @@
+function gameOver(didWin) {
+    
+}
+
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
     box.shapeColor = c;

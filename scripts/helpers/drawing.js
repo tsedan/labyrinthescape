@@ -52,13 +52,12 @@ function drawBasicMenu(header, subtitle) {
 
     const bottom = windowHeight;
     const left = 0;
-    const pad = 20;
 
     textAlign(LEFT, BOTTOM);
     textSize(64);
-    text(header, left + pad, bottom - pad - 32);
+    text(header, left + uiPadding, bottom - uiPadding - 32);
     textSize(32);
-    text(subtitle, left + pad, bottom - pad);
+    text(subtitle, left + uiPadding, bottom - uiPadding);
 }
 
 function drawMaze(pX, pY) {
@@ -84,14 +83,11 @@ function drawInventory() {
 
     const w = 200;
     const edgeX = 0, edgeY = windowHeight;
-    const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
-    const pad = 20;
 
-    const topCorner = edgeX + offset, leftCorner = edgeY - w - offset - pad;
+    const topCorner = edgeX + uiPadding, leftCorner = edgeY - w - uiPadding;
 
     fill(gameColors.inv);
-    // so that it is aligned with the minimap
-    rect(topCorner - minimapScale / 2, leftCorner - minimapScale / 2, w + minimapScale, w + minimapScale);
+    rect(topCorner - minimapScale, leftCorner - minimapScale, w + 2*minimapScale, w + 2*minimapScale);
 
     fill(gameColors.minimap);
     rect(topCorner, leftCorner, w, w);
@@ -106,7 +102,7 @@ function drawInventory() {
         textAlign(CENTER, CENTER);
         textFont(font);
         textSize(32);
-        text("PRESS Q TO DROP", topCorner + w / 2, leftCorner - pad);
+        text("[Q] TO DROP", topCorner + w / 2, leftCorner - uiPadding);
 
         if (['Torch', 'Boot', 'GPS'].includes(heldItem.constructor.name)) {
             // items that are passive for some amount of time
@@ -118,8 +114,7 @@ function drawInventory() {
             rect(topCorner + w / 2, leftCorner + w - barWidth, scale, barWidth);
             noStroke();
 
-            let used = heldItem.timeAvailable / heldItem.maxTime;
-            let inter;
+            let used = heldItem.timeAvailable / heldItem.maxTime, inter;
             if (used > 0.5) {
                 // green -> yellow, reversed because going opposite
                 inter = lerpColor(color(255, 255, 0), color(0, 255, 0), 2 * used - 1);
@@ -135,9 +130,9 @@ function drawInventory() {
 
         if (['GPS'].includes(heldItem.constructor.name)) {
             // powerups that are one time use
-            fill(255)
+            fill(255);
             textAlign(CENTER, CENTER);
-            text("PRESS [SPACE] TO USE", topCorner + w / 2, leftCorner + w + pad);
+            text("[SPACE] TO USE", topCorner + w / 2, leftCorner - uiPadding - 32);
         }
     }
 

@@ -312,10 +312,7 @@ class GPS extends Powerup {
                 textSize(36);
 
                 let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale)
-                if (this.chosen == monster)
-                    text("THE TRACKED PLAYER IS " + d + " UNITS AWAY FROM YOU", width / 2, 20)
-                else
-                    text("THE MONSTER IS " + d + " UNITS AWAY FROM YOU", width / 2, 20)
+                text("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU", width / 2, uiPadding)
 
                 camera.on();
 

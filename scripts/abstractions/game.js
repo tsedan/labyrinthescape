@@ -56,6 +56,15 @@ class Game {
         }
 
         camera.off();
+
+        if (isDead) {
+            fill(255);
+            textAlign(LEFT, TOP);
+            textFont(font);
+            textSize(64);
+            text("Currently Spectating", uiPadding, uiPadding);
+        }
+
         minimap.draw();
         drawInventory();
     }

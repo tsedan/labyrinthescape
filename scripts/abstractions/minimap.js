@@ -34,9 +34,8 @@ class Minimap {
 
         const w = minimapScale * m.W, h = minimapScale * m.H;
         const edgeX = windowWidth, edgeY = windowHeight;
-        const offset = ((windowHeight < windowWidth) ? windowHeight : windowWidth) / 20;
 
-        const topCorner = edgeX - w - offset, leftCorner = edgeY - h - offset;
+        const topCorner = edgeX - w - uiPadding, leftCorner = edgeY - h - uiPadding;
 
         fill(gameColors.minimap);
         rect(topCorner - minimapScale, leftCorner - minimapScale, w + 2 * minimapScale, h + 2 * minimapScale);

@@ -142,9 +142,8 @@ class MenuAlert {
 
         textAlign(LEFT, TOP);
         textSize(48);
-        const pad = 20;
         for (let i = 0; i < this.upperText.length; i++) {
-            text(this.upperText[i], pad, pad + 48 * i);
+            text(this.upperText[i], uiPadding, uiPadding + 48 * i);
         }
     }
 }
@@ -185,15 +184,14 @@ class MenuPrompt {
 
         const bottom = windowHeight;
         const right = windowWidth;
-        const pad = 20;
 
         textAlign(RIGHT, BOTTOM);
         textSize(64);
         if (this.input == "") {
             fill(140);
-            text(this.placeholder, right - pad, bottom - pad);
+            text(this.placeholder, right - uiPadding, bottom - uiPadding);
         } else {
-            text(this.input, right - pad, bottom - pad);
+            text(this.input, right - uiPadding, bottom - uiPadding);
         }
     }
 }
@@ -227,18 +225,17 @@ class MenuOptions {
         drawBasicMenu(this.header, this.subtitle);
         const bottom = windowHeight;
         const right = windowWidth;
-        const pad = 20;
 
         textAlign(RIGHT, BOTTOM);
         textSize(64);
         for (let i = 0; i < this.options.length; i++) {
-            text((i == this.currentOption ? "> " : "") + this.options[i], right - pad, bottom - pad - 64 * i);
+            text((i == this.currentOption ? "> " : "") + this.options[i], right - uiPadding, bottom - uiPadding - 64 * i);
         }
 
         textAlign(LEFT, TOP);
         textSize(48);
         for (let i = 0; i < this.upperText.length; i++) {
-            text(this.upperText[i], pad, pad + 48 * i);
+            text(this.upperText[i], uiPadding, uiPadding + 48 * i);
         }
     }
 }
