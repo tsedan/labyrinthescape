@@ -312,7 +312,7 @@ class GPS extends Powerup {
                 );
 
                 let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
-                alertMsg = "THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU";
+                alertMsg = "THE " + (this.chosen == monster ? "MONSTER" : "TRACKED PLAYER") + "IS " + d + " UNITS AWAY FROM YOU";
                 alertTime = 255;
 
                 if (this.timeAvailable < 0) {
