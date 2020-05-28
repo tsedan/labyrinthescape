@@ -22,7 +22,7 @@ class Game {
 
         if (!isDead) {
             player.overlap(monster, die);
-            player.collide(exit, this.newMaze);
+            player.collide(exit, exitReached);
             minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
             sendPositionData();
 
@@ -32,6 +32,8 @@ class Game {
 
             for (let p in powerups) powerups[p].draw();
         }
+
+        alertTime = Math.max(alertTime-alertRate,0);
     }
 
     draw() {
@@ -57,13 +59,13 @@ class Game {
 
         camera.off();
 
-        if (isDead) {
-            fill(255);
-            textAlign(LEFT, TOP);
-            textFont(font);
-            textSize(64);
-            text("Currently Spectating", uiPadding, uiPadding);
-        }
+        const alertFillColor = color(255);
+        alertFillColor.setAlpha(alertTime);
+        fill(alertFillColor);
+        textFont(font);
+        textAlign(CENTER, TOP);
+        textSize(48);
+        text(alertMsg, width / 2, uiPadding);
 
         minimap.draw();
         drawInventory();

@@ -109,6 +109,9 @@ class Menu {
                                 powerups[powerupID].timeAvailable = +splitData[6];
                             }
                             break;
+                        case 'comp':
+                            someoneCompleted(splitData[1]);
+                            break;
                     }
                 });
             });

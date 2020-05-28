@@ -1,3 +1,23 @@
+function exitReached() {
+    if (isMonster) {
+        newAlert("THE MONSTER CAN'T LEAVE THE MAZE");
+        return;
+    }
+
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('comp');
+        }
+    } else if (isHost) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('comp,' + myID);
+            }
+        }
+        someoneCompleted(myID);
+    }
+}
+
 function die() {
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
@@ -18,6 +38,7 @@ function die() {
     maxSpeed = 30;
     isDead = true;
     heldItem = null;
+    newAlert("YOU DIED AND ENTERED SPECTATOR MODE");
 }
 
 function initializePeer() {
@@ -96,6 +117,10 @@ function connectionHost() {
 
                         sendPowerupDroppedInfo(data);
                         break;
+                    case 'comp':
+                        someoneCompleted(conn.peer);
+                        sendCompletionInfo(conn.peer);
+                        break;
                 }
             });
         });
@@ -105,6 +130,14 @@ function connectionHost() {
         menu.state = "CLIENTMODE";
         menu.eventHandler("CREATE PARTY");
     });
+}
+
+function sendCompletionInfo(id) {
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send('comp,' + id);
+        }
+    }
 }
 
 function sendPositionData() {

@@ -69,6 +69,11 @@ const powerUpNum = 6;
 
 let mazesStarted = 0;
 
+let alertMsg = '';
+let alertTime = 0;
+const alertRate = 5;
+const alertMaxTime = 855;
+
 // MINIMAP
 let minimap;
 let minimapScale;

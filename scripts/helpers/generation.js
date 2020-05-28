@@ -1,5 +1,14 @@
+function someoneCompleted(id) {
+    newAlert(idToName[id] + " COMPLETED THE MAZE!");
+}
+
+function newAlert(msg) {
+    alertMsg = msg;
+    alertTime = alertMaxTime;
+}
+
 function gameOver(didWin) {
-    
+    console.log("Wohooo!");
 }
 
 function genObj(x, y, w, h, c) {

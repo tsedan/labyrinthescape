@@ -10,11 +10,9 @@ class Minimap {
     }
 
     revealAll() {
-        for (let i = 0; i < m.H; i++) {
-            for (let j = 0; j < m.W; j++) {
+        for (let i = 0; i < m.H; i++)
+            for (let j = 0; j < m.W; j++)
                 if (!m.grid[i][j]) this.pointsVisited.add(j + "," + i);
-            }
-        }
     }
 
     updateLoc(row, col) {
@@ -34,7 +32,6 @@ class Minimap {
 
         const w = minimapScale * m.W, h = minimapScale * m.H;
         const edgeX = windowWidth, edgeY = windowHeight;
-
         const topCorner = edgeX - w - uiPadding, leftCorner = edgeY - h - uiPadding;
 
         fill(gameColors.minimap);

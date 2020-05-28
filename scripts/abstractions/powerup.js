@@ -285,6 +285,9 @@ class GPS extends Powerup {
                     this.used = 2;
 
                     this.choosePlayer();
+
+                    let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
+                    newAlert("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU");
                 }
 
                 break;
@@ -305,16 +308,9 @@ class GPS extends Powerup {
                     player.position.y - Math.sin(this.angle) * this.arrowHeadDist,
                 );
 
-                camera.off();
-                fill(255);
-                textFont(font);
-                textAlign(CENTER, TOP);
-                textSize(36);
-
-                let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale)
-                text("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU", width / 2, uiPadding)
-
-                camera.on();
+                let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
+                alertMsg = "THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU";
+                alertTime = 255;
 
                 if (this.timeAvailable < 0) {
                     console.log("losing my GPS")
