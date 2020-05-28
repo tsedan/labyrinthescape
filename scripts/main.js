@@ -20,11 +20,17 @@ function setup() {
     for (let i = 0; i <= 100; i += lightingInterval)
         floorImages.push(loadImage(imgPrefix + i + '.png', img => { assetsLoaded++; }));
 
-    idToName[myID] = myID;
-
-    allPlayers = new Group();
+    resetGame();
     initializePeer();
+}
+
+function resetGame() {
+    resetAllValues();
     menu = new Menu();
+    allPlayers = new Group();
+    player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+    allPlayers.add(player);
+    playerPos[myID] = player;
 }
 
 function windowResized() {

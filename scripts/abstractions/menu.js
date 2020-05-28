@@ -133,6 +133,8 @@ class Menu {
             idToName[myID] = data;
             this.state = "CLIENTMODE";
             this.currentMenu = new MenuOptions(...mainMenu, [idToName[myID]]);
+        } else if (this.state == "GAMEOVER") {
+            resetGame();
         }
     }
 

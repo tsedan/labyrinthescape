@@ -14,6 +14,8 @@ class Game {
         camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
         camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
 
+        alertTime = Math.max(alertTime-alertRate,0);
+
         updateVelocities();
 
         for (let spr of allPlayers) {
@@ -33,8 +35,6 @@ class Game {
 
             for (let p in powerups) powerups[p].update();
         }
-
-        alertTime = Math.max(alertTime-alertRate,0);
     }
 
     draw() {

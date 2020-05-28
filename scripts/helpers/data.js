@@ -19,12 +19,10 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
     "SET NAME"
 ]];
 const winMenu = ["You won!", "pat yourself on the back and flex on your friends", [
-    "Play Again",
-    "Change Parties"
+    "Back to Title Screen"
 ]];
 const loseMenu = ["You lost...", "you can always go for another round", [
-    "Play Again",
-    "Change Parties"
+    "Back to Title Screen"
 ]];
 
 // P2P
@@ -101,4 +99,41 @@ const gameColors = {
     wall: '#000000',
     minimap: '#d1ccc0',
     inv: '#8c8c89',
+}
+
+function resetAllValues() {
+    for (let c of allConnections) c.close();
+    for (let spr of getSprites()) spr.remove();
+
+    gameState = "MENU";
+    game = null;
+    menu = null;
+    allConnections = [];
+    playerPos = {};
+    finishedPlayers = null;
+    allPlayers = null;
+    deadPlayers = [];
+    idToName = [];
+    idToName[myID] = myID;
+    maxRenderDist = 4;
+    player = null;
+    maxSpeed = 20;
+    isMonster = null;
+    heldItem = null;
+    orientation = 0;
+    isDead = false;
+    spectating = false;
+    m = null;
+    walls = null;
+    exit = null;
+    powerups = null;
+    powerupsInUse = null;
+    border = null;
+    monster = null;
+    mazeSeed = null;
+    mazesStarted = 0;
+    alertMsg = '';
+    alertTime = 0;
+    minimap = null;
+    minimapScale = null;
 }

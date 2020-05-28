@@ -89,9 +89,6 @@ function initializePeer() {
 
     peer.on('open', function (id) {
         connectedToServer = true;
-        player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-        allPlayers.add(player);
-        playerPos[id] = player;
         connectionHost();
     });
 }
