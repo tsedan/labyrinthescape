@@ -225,13 +225,16 @@ class GPS extends Powerup {
     choosePlayer() {
         console.log("gps was used");
 
-        if (allPlayers.length == 1) return;
-
         if (isMonster) {
-            this.chosen = allPlayers[Math.floor(Math.random() * allPlayers.length)]
-            while (this.chosen == player) {
-                this.chosen = allPlayers[Math.floor(Math.random() * allPlayers.length)]
+            let potential = [];
+            for (let p of allPlayers) {
+                if (p != player && deadPlayers.indexOf(p) == -1) potential.push(p);
             }
+
+            if (potential.length == 0) return;
+
+            this.chosen = potential[Math.floor(Math.random() * potential.length)]
+
         } else {
             this.chosen = monster;
         }
@@ -287,7 +290,7 @@ class GPS extends Powerup {
                     this.choosePlayer();
 
                     let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
-                    newAlert("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + "IS " + d + " UNITS AWAY FROM YOU");
+                    newAlert("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + " IS " + d + " UNITS AWAY FROM YOU");
                 }
 
                 break;
