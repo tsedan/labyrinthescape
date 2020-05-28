@@ -116,6 +116,16 @@ class Menu {
                             game.newMaze();
                             newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
                             break;
+                        case 'playerwin':
+                            gameState = "MENU";
+                            menu.state = "GAMEOVER";
+                            menu.currentMenu = new MenuOptions(...(!isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+                            break;
+                        case 'monsterwin':
+                            gameState = "MENU";
+                            menu.state = "GAMEOVER";
+                            menu.currentMenu = new MenuOptions(...(isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+                            break;
                     }
                 });
             });

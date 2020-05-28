@@ -18,6 +18,14 @@ const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus
     "JOIN PARTY",
     "SET NAME"
 ]];
+const winMenu = ["You won!", "pat yourself on the back and flex on your friends", [
+    "Play Again",
+    "Change Parties"
+]];
+const loseMenu = ["You lost...", "you can always go for another round", [
+    "Play Again",
+    "Change Parties"
+]];
 
 // P2P
 let allConnections = [];
