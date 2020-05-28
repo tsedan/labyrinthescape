@@ -66,12 +66,18 @@ function genMaze(w, h, holes, numPowerups) {
     powerupsInUse = [];
 
     powerups = [
-        new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
-        new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
-        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
-        new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
-        new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        // new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
+        // new Boot(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 10),
+        // new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
+        // new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
+        // new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        // new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
     ];
 
     shuffleArray(powerups);

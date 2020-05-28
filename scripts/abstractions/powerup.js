@@ -323,3 +323,93 @@ class GPS extends Powerup {
         }
     }
 }
+
+class Flare extends Powerup {
+    constructor(sprite, timeAvailable) {
+        super(sprite);
+        this.timeAvailable = timeAvailable;
+
+        // 0 - never used, 1 - in inv, 2 - used
+        this.used = 0;
+    }
+
+    use() {
+        let d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), player.shapeColor, this.timeAvailable];
+
+        if (isMonster) {
+            let potential = [];
+            for (let p of allPlayers) {
+                if (p != player && deadPlayers.indexOf(p) == -1) potential.push(p);
+            }
+
+            if (potential.length != 0) {
+                let chosen = potential[Math.floor(Math.random() * potential.length)]
+                d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), chosen.shapeColor, this.timeAvailable];
+
+                minimap.flareLocations[d[1] + "," + d[2]] = color(d[3]);
+                minimap.flareTimings[d[1] + "," + d[2]] = this.timeAvailable;
+            }
+        }
+
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send(d.join(','));
+            }
+        } else {
+            minimap.flareLocations[d[1] + "," + d[2]] = color(d[3]);
+            minimap.flareTimings[d[1] + "," + d[2]] = this.timeAvailable;
+
+            sendFlareUsedInfo(d.join(','));
+        }
+    }
+
+    draw() {
+        super.draw();
+    }
+
+    update() {
+        this.draw();
+
+        switch (this.used) {
+            case 0:
+                if (heldItem) break;
+
+                let alreadyInUse = false;
+
+                player.overlap(this.sprite, () => {
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        console.log("picking up flare")
+                        this.sprite.visible = false;
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
+                });
+                break;
+
+            case 1:
+
+                // space
+                if (keyIsDown(32)) {
+                    this.used = 2;
+                    this.use();
+                    heldItem = null;
+                }
+
+                // q
+                if (keyIsDown(81)) {
+                    this.used = 0;
+                    heldItem = null;
+                    super.drop();
+                }
+
+                break;
+        }
+    }
+}
