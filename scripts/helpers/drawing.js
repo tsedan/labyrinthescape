@@ -1,3 +1,21 @@
+function spectatorMode() {
+    minimap.revealAll();
+    player.visible = false;
+    maxRenderDist = 10;
+    maxSpeed = 30;
+    heldItem = null;
+    spectating = true;
+}
+
+function normalMode() {
+    minimap.reset();
+    player.visible = true;
+    maxRenderDist = 4;
+    maxSpeed = 20;
+    heldItem = null;
+    spectating = false;
+}
+
 function drawMenuBackground() {
     const lineSize = scale / 4;
     const radius = windowWidth / 2;

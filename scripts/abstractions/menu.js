@@ -112,6 +112,10 @@ class Menu {
                         case 'comp':
                             someoneCompleted(splitData[1]);
                             break;
+                        case 'nextmaze':
+                            game.newMaze();
+                            newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
+                            break;
                     }
                 });
             });

@@ -4,6 +4,8 @@ function exitReached() {
         return;
     }
 
+    someoneCompleted(myID);
+
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
             allConnections[0].send('comp');
@@ -14,11 +16,30 @@ function exitReached() {
                 allConnections[c].send('comp,' + myID);
             }
         }
-        someoneCompleted(myID);
+        finishedPlayers.push(myID);
+        checkMazeCompletion();
+    }
+}
+
+function checkMazeCompletion() {
+    if (finishedPlayers.length == 0) return;
+    if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('nextmaze');
+            }
+        }
+        game.newMaze();
+        newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
     }
 }
 
 function die() {
+    spectatorMode();
+    isDead = true;
+    deadPlayers.push(player);
+    newAlert("YOU DIED AND ENTERED SPECTATOR MODE");
+
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
             allConnections[0].send('die');
@@ -29,16 +50,8 @@ function die() {
                 allConnections[c].send('die,' + myID);
             }
         }
+        checkMazeCompletion();
     }
-
-    minimap.revealAll();
-    player.visible = false;
-    deadPlayers.push(player);
-    maxRenderDist = 10;
-    maxSpeed = 30;
-    isDead = true;
-    heldItem = null;
-    newAlert("YOU DIED AND ENTERED SPECTATOR MODE");
 }
 
 function initializePeer() {
@@ -87,11 +100,11 @@ function connectionHost() {
                         playerPos[conn.peer].visible = false;
                         deadPlayers.push(playerPos[conn.peer]);
                         for (let c of allConnections) {
-
                             if ((c && c.open) && (c.peer != conn.peer)) {
                                 c.send('die,' + conn.peer);
                             }
                         }
+                        checkMazeCompletion();
                         break;
                     case 'poweruppicked':
                         powerupsInUse.push(+splitData[1]);
@@ -118,8 +131,10 @@ function connectionHost() {
                         sendPowerupDroppedInfo(data);
                         break;
                     case 'comp':
+                        finishedPlayers.push(conn.peer);
                         someoneCompleted(conn.peer);
                         sendCompletionInfo(conn.peer);
+                        checkMazeCompletion();
                         break;
                 }
             });
@@ -134,7 +149,7 @@ function connectionHost() {
 
 function sendCompletionInfo(id) {
     for (let c in allConnections) {
-        if (allConnections[c] && allConnections[c].open) {
+        if (allConnections[c] && allConnections[c].open && allConnections[c].peer != id) {
             allConnections[c].send('comp,' + id);
         }
     }
@@ -161,7 +176,7 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
-    let monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
+    const monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     isMonster = player == monster;
 

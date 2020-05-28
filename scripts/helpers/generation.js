@@ -1,11 +1,6 @@
 function someoneCompleted(id) {
     if (id == myID) {
-        minimap.revealAll();
-        player.visible = false;
-        maxRenderDist = 10;
-        maxSpeed = 30;
-        isDead = true;
-        heldItem = null;
+        spectatorMode();
         newAlert("YOU EXITED THE MAZE. WAIT FOR YOUR PARTYMATES TO CATCH UP");
     } else {
         newAlert(idToName[id] + " COMPLETED THE MAZE!");
@@ -44,7 +39,6 @@ function genMaze(w, h, holes, numPowerups) {
         if (!doNotRemove)
             spr.remove();
     }
-
 
     for (let key in playerPos) {
         if (playerPos.hasOwnProperty(key)) {

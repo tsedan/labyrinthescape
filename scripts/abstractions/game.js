@@ -5,8 +5,9 @@ class Game {
     }
 
     newMaze() {
-        heldItem = null;
+        finishedPlayers = [];
         genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum);
+        if (isDead) { spectatorMode() } else { normalMode() }
     }
 
     update() {
@@ -16,21 +17,21 @@ class Game {
         updateVelocities();
 
         for (let spr of allPlayers) {
-            if (!(spr == player && isDead)) spr.collide(walls);
+            if (spr != player || !spectating) spr.collide(walls);
             spr.collide(border);
         }
 
-        if (!isDead) {
+        if (spectating) {
+            minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
+
+            for (let p in powerups) powerups[p].draw();
+        } else {
             player.overlap(monster, die);
             player.collide(exit, exitReached);
             minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
             sendPositionData();
 
             for (let p in powerups) powerups[p].update();
-        } else {
-            minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
-
-            for (let p in powerups) powerups[p].draw();
         }
 
         alertTime = Math.max(alertTime-alertRate,0);

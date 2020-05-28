@@ -25,6 +25,7 @@ let myID;
 for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
 let isHost = false;
 let playerPos = {};
+let finishedPlayers;
 let allPlayers;
 let deadPlayers = [];
 let connectedToServer;
@@ -49,6 +50,7 @@ let isMonster;
 let heldItem = null;
 let orientation = 0;
 let isDead = false;
+let spectating = false;
 
 // MAZE
 let m;
