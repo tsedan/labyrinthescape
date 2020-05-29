@@ -1,59 +1,98 @@
 class Menu {
     constructor() {
-        this.state = "CLIENTMODE";
-
-        this.title = "";
-        this.subtitle = "";
-        this.upper = "";
-        this.options = [];
+        this.changeMenu("CLIENTMODE", "LABYRINTH ESCAPE", "use [up], [down] and [enter] to navigate the menus", [idToName[myID]],
+            [
+                new MenuOption("CREATE PARTY"),
+                new MenuPrompt("Enter Party ID", 6),
+                new MenuOption("SET NAME")
+            ],
+        0);
     }
 
-    eventHandler(data) {
+    eventHandler() {
+        //ENTER WAS PRESSED
+        console.log(this.options[this.currOption].value);
+    }
 
+    changeMenu(state, title, subtitle, upper, options, currOption) {
+        this.state = state;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.upper = upper;
+        this.options = options;
+        this.currOption = currOption;
     }
 
     handleKey(code, key) {
-
-    }
-
-    handleClick(x, y) {
-
+        if (code == 38) {
+            this.currOption++;
+            this.currOption %= this.options.length;
+        } else if (code == 40) {
+            this.currOption--;
+            if (this.currOption < 0) this.currOption = this.options.length-1;
+        } else if (code == 13) {
+            this.eventHandler();
+        } else {
+            this.options[this.currOption].handleKey(code, key);
+        }
     }
 
     draw() {
         drawBasicMenu(this.title, this.subtitle, this.upper);
 
         for (let opt in this.options) {
-            opt.draw(windowWidth,windowHeight);
+            this.options[opt].draw(windowWidth, windowHeight - opt*48, this.currOption == opt);
         }
     }
 }
 
-class MenuOption {
-    constructor(text) {
-        this.text = text;
+class MenuPrompt {
+    constructor(placeholder, maxLength) {
+        this.value = "";
+        this.placeholder = placeholder;
+
+        this.maxLength = maxLength;
+        this.maxBackspaceDelay = 15;
+        this.backspaceDelay = this.maxBackspaceDelay;
     }
 
-    handleKey() {
+    handleKey(code, key) {
+        if (code == 8 && this.value != "") {
+            this.value = this.value.substring(0, this.value.length - 1);
+            this.backspaceDelay = this.maxBackspaceDelay;
+        }
 
+        if (validCharacters.includes(key) && this.value.length < this.maxLength) this.value += key;
     }
 
-    draw(bottom, right) {
+    draw(right, bottom, isSelected) {
+        if (isSelected && keyIsDown(8)) {
+            this.backspaceDelay--;
+            if (this.backspaceDelay < 0) {
+                this.backspaceDelay = 1;
+                this.value = this.value.substring(0, this.value.length - 1);
+            }
+        }
 
+        textAlign(RIGHT, BOTTOM);
+        textSize(64);
+        fill(this.value == "" ? 140 : 255);
+        text((isSelected ? "> " : "") + (this.value == "" ? this.placeholder : this.value), right - uiPadding, bottom - uiPadding);
     }
 }
 
-class MenuPrompt {
-    constructor() {
-
+class MenuOption {
+    constructor(value) {
+        this.value = value;
     }
 
-    handleKey() {
+    handleKey(code, key) {}
 
-    }
-
-    draw(bottom, right) {
-
+    draw(right, bottom, isSelected) {
+        textAlign(RIGHT, BOTTOM);
+        textSize(64);
+        fill(255);
+        text((isSelected ? "> " : "") + this.value, right - uiPadding, bottom - uiPadding);
     }
 }
 
