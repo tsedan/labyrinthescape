@@ -13,17 +13,13 @@ let totalAssets;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
-const mainMenu = ["LABYRINTH ESCAPE", "use w, s, and enter to navigate the menus", [
-    "CREATE PARTY",
-    "JOIN PARTY",
-    "SET NAME"
-]];
-const winMenu = ["You won!", "pat yourself on the back and flex on your friends", [
-    "Back to Title Screen"
-]];
-const loseMenu = ["You lost...", "you can always go for another round", [
-    "Back to Title Screen"
-]];
+let mainMenu;
+let nameMenu;
+let joinMenu;
+let connMenu;
+let waitMenu;
+let hostMenu;
+let modeMenu;
 
 // P2P
 let allConnections = [];
@@ -101,6 +97,29 @@ const gameColors = {
     inv: '#8c8c89',
 }
 
+function initMenus() {
+    mainMenu = [
+        "MAINMENU", "LABYRINTH ESCAPE", "use [up], [down] and [enter] to navigate the menus",
+        [
+            new MenuOption("CREATE PARTY"),
+            new MenuOption("JOIN PARTY"),
+            new MenuOption("CHANGE NAME")
+        ]
+    ];
+    nameMenu = [
+        "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",
+        [
+            new MenuPrompt("TYPE YOUR USERNAME", 10),
+            new MenuOption("BACK")
+        ]
+    ];
+    // joinMenu;
+    // connMenu;
+    // waitMenu;
+    // hostMenu;
+    // modeMenu;
+}
+
 function resetAllValues() {
     for (let c of allConnections) c.close();
     for (let spr of getSprites()) spr.remove();
@@ -113,8 +132,9 @@ function resetAllValues() {
     finishedPlayers = null;
     allPlayers = null;
     deadPlayers = [];
+    const myName = idToName[myID];
     idToName = [];
-    idToName[myID] = myID;
+    idToName[myID] = (myName ? myName : myID);
     maxRenderDist = 4;
     player = null;
     maxSpeed = 20;
@@ -141,7 +161,9 @@ function resetAllValues() {
 
 function resetGame() {
     resetAllValues();
+    initMenus();
     menu = new Menu();
+    menu.changeMenu(...mainMenu);
     allPlayers = new Group();
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
     allPlayers.add(player);

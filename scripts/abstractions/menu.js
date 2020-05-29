@@ -1,27 +1,44 @@
 class Menu {
-    constructor() {
-        this.changeMenu("CLIENTMODE", "LABYRINTH ESCAPE", "use [up], [down] and [enter] to navigate the menus", [idToName[myID]],
-            [
-                new MenuOption("CREATE PARTY"),
-                new MenuPrompt("Enter Party ID", 6),
-                new MenuOption("SET NAME")
-            ],
-        0);
-    }
+    constructor() {}
 
     eventHandler() {
-        //ENTER WAS PRESSED
-        console.log(this.options[this.currOption].value);
+        const data = this.options[this.currOption].value;
+        const index = this.currOption;
+        const mode = this.state;
+
+        if (mode == mainMenu[0]) {
+            if (index == 0) {
+                //CREATE PARTY
+            }
+            if (index == 1) {
+                //JOIN PARTY
+            }
+            if (index == 2) {
+                this.changeMenu(...nameMenu);
+            }
+        }
+
+        if (mode == nameMenu[0]) {
+            if (index == 0) {
+                idToName[myID] = data;
+                this.changeMenu(...mainMenu);
+            }
+            if (index == 1) {
+                this.changeMenu(...mainMenu);
+            }
+        }
     }
 
-    changeMenu(state, title, subtitle, upper, options, currOption) {
+    changeMenu(state, title, subtitle, options) {
         this.state = state;
         this.title = title;
         this.subtitle = subtitle;
-        this.upper = upper;
         this.options = options;
-        this.currOption = currOption;
+        this.currOption = 0;
+        this.updateUpper();
     }
+
+    updateUpper() { this.upper = Object.values(idToName) }
 
     handleKey(code, key) {
         if (code == 38) {
