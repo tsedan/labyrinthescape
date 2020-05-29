@@ -23,7 +23,6 @@ function exitReached() {
 
 function checkMazeCompletion() {
     if (deadPlayers.length == Object.keys(playerPos).length - 1) {
-        console.log("THE GAME IS OVER, MONSTER WINS");
         gameState = "MENU";
         menu.state = "GAMEOVER";
         menu.currentMenu = new MenuOptions(...(isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));
@@ -39,7 +38,6 @@ function checkMazeCompletion() {
     if (finishedPlayers.length == 0) return;
     if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
-            console.log("THE GAME IS OVER, PLAYERS WIN");
             gameState = "MENU";
             menu.state = "GAMEOVER";
             menu.currentMenu = new MenuOptions(...(!isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));

@@ -102,7 +102,6 @@ class Boot extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up boots " + this.timeAvailable)
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;
@@ -115,7 +114,6 @@ class Boot extends Powerup {
             case 1:
                 this.timeAvailable -= deltaTime;
                 if (this.timeAvailable < 0) {
-                    console.log("losing my speed increase")
                     this.removeEffect();
                     this.used = 2;
                     heldItem = null;
@@ -173,7 +171,6 @@ class Torch extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up torch " + this.timeAvailable)
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;
@@ -186,7 +183,6 @@ class Torch extends Powerup {
             case 1:
                 this.timeAvailable -= deltaTime;
                 if (this.timeAvailable < 0) {
-                    console.log("losing my render increase")
                     this.removeEffect();
                     this.used = 2;
                     heldItem = null;
@@ -223,8 +219,6 @@ class GPS extends Powerup {
     }
 
     choosePlayer() {
-        console.log("gps was used");
-
         if (isMonster) {
             let potential = [];
             for (let p of allPlayers) {
@@ -265,7 +259,6 @@ class GPS extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up gps")
                         this.sprite.visible = false;
                         this.used = 1;
                         heldItem = this;
@@ -316,7 +309,6 @@ class GPS extends Powerup {
                 alertTime = 255;
 
                 if (this.timeAvailable < 0) {
-                    console.log("losing my GPS")
                     this.used = 3;
                     heldItem = null;
                 }

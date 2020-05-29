@@ -136,4 +136,14 @@ function resetAllValues() {
     alertTime = 0;
     minimap = null;
     minimapScale = null;
+    isHost = false;
+}
+
+function resetGame() {
+    resetAllValues();
+    menu = new Menu();
+    allPlayers = new Group();
+    player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+    allPlayers.add(player);
+    playerPos[myID] = player;
 }

@@ -24,15 +24,6 @@ function setup() {
     initializePeer();
 }
 
-function resetGame() {
-    resetAllValues();
-    menu = new Menu();
-    allPlayers = new Group();
-    player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-    allPlayers.add(player);
-    playerPos[myID] = player;
-}
-
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }

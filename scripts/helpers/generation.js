@@ -12,10 +12,6 @@ function newAlert(msg) {
     alertTime = alertMaxTime;
 }
 
-function gameOver(didWin) {
-    console.log("Wohooo!");
-}
-
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
     box.shapeColor = c;
