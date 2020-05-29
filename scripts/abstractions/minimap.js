@@ -3,6 +3,8 @@ class Minimap {
         this.pointsVisited = new Set();
         this.currX = m.start[0];
         this.currY = m.start[1];
+        this.flareLocations = {};
+        this.flareTimings = {};
     }
 
     reset() {
@@ -49,6 +51,21 @@ class Minimap {
 
         fill(gameColors.player);
         rect(topCorner + this.currX * minimapScale, leftCorner + this.currY * minimapScale, minimapScale, minimapScale);
+
+        for (let key of Object.keys(this.flareLocations)) {
+            this.flareLocations[key].setAlpha(floor(sin(5 * frameCount) * 255 / 2 + 255 / 2))
+
+            fill(this.flareLocations[key]);
+            let s = key.split(',');
+            rect(topCorner + parseInt(s[0]) * minimapScale, leftCorner + parseInt(s[1]) * minimapScale, minimapScale, minimapScale);
+
+            this.flareTimings[key] -= deltaTime;
+
+            if (this.flareTimings[key] < 0) {
+                delete this.flareLocations[key];
+                delete this.flareTimings[key];
+            }
+        }
 
         pop();
     }

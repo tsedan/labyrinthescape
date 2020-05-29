@@ -105,7 +105,7 @@ function drawInventory() {
     const topCorner = edgeX + uiPadding, leftCorner = edgeY - w - uiPadding;
 
     fill(gameColors.inv);
-    rect(topCorner - minimapScale, leftCorner - minimapScale, w + 2*minimapScale, w + 2*minimapScale);
+    rect(topCorner - minimapScale, leftCorner - minimapScale, w + 2 * minimapScale, w + 2 * minimapScale);
 
     fill(gameColors.minimap);
     rect(topCorner, leftCorner, w, w);
@@ -146,7 +146,7 @@ function drawInventory() {
             rect(topCorner + w / 2 - scale / 2 + weight / 2, leftCorner + w - barWidth * 1.5 + weight / 2, used * (scale - weight), barWidth - weight);
         }
 
-        if (['GPS'].includes(heldItem.constructor.name)) {
+        if (['GPS', 'Flare'].includes(heldItem.constructor.name)) {
             // powerups that are one time use
             fill(255);
             textAlign(CENTER, CENTER);

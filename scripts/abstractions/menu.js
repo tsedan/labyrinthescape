@@ -109,6 +109,11 @@ class Menu {
                                 powerups[powerupID].timeAvailable = +splitData[6];
                             }
                             break;
+                        case 'flareused':
+                            console.log(data)
+                            minimap.flareLocations[splitData[1] + "," + splitData[2]] = color(splitData[3]);
+                            minimap.flareTimings[splitData[1] + "," + splitData[2]] = splitData[4];
+                            break;
                         case 'comp':
                             someoneCompleted(splitData[1]);
                             break;

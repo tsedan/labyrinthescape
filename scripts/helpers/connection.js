@@ -153,6 +153,13 @@ function connectionHost() {
 
                         sendPowerupDroppedInfo(data);
                         break;
+                    case 'flareused':
+                        if (!isMonster) {
+                            minimap.flareLocations[splitData[1] + "," + splitData[2]] = color(splitData[3]);
+                            minimap.flareTimings[splitData[1] + "," + splitData[2]] = splitData[4];
+                        }
+                        sendFlareUsedInfo(data);
+                        break;
                     case 'comp':
                         finishedPlayers.push(conn.peer);
                         someoneCompleted(conn.peer);
@@ -221,6 +228,14 @@ function sendPowerupUsedInfo(pIndex) {
 function sendPowerupDroppedInfo(dataStr) {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send(dataStr);
+        }
+    }
+}
+
+function sendFlareUsedInfo(dataStr) {
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open && playerPos[allConnections[c].peer] != monster) {
             allConnections[c].send(dataStr);
         }
     }
