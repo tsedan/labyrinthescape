@@ -3,25 +3,50 @@ class Menu {
 
     eventHandler() {
         const data = this.options[this.currOption].value;
-        const index = this.currOption;
-        const mode = this.state;
+        const index = this.currOption, mode = this.state;
 
         if (mode == mainMenu[0]) {
             if (index == 0) {
-                //CREATE PARTY
+                this.changeMenu(...hostMenu)
             }
             if (index == 1) {
-                //JOIN PARTY
+                this.changeMenu(...joinMenu);
             }
             if (index == 2) {
                 this.changeMenu(...nameMenu);
             }
         }
 
+        if (mode == hostMenu[0]) {
+            if (index == 0) {
+                mazeSeed = Date.now();
+                sendStartInfo();
+                game = new Game();
+                gameState = "GAME";
+            }
+            if (index == 1) {
+                //open config menu
+            }
+            if (index == 2) {
+                this.changeMenu(...mainMenu);
+            }
+        }
+
+        if (mode == joinMenu[0]) {
+            if (index == 0) {
+                //attempt to join with id = data
+            }
+            if (index == 1) {
+                this.changeMenu(...mainMenu);
+            }
+        }
+
         if (mode == nameMenu[0]) {
             if (index == 0) {
-                idToName[myID] = data;
-                this.changeMenu(...mainMenu);
+                if (data != "") {
+                    idToName[myID] = data;
+                    this.changeMenu(...mainMenu);
+                }
             }
             if (index == 1) {
                 this.changeMenu(...mainMenu);
@@ -35,10 +60,12 @@ class Menu {
         this.subtitle = subtitle;
         this.options = options;
         this.currOption = 0;
-        this.updateUpper();
+        this.update();
     }
 
-    updateUpper() { this.upper = Object.values(idToName) }
+    update() {
+        this.upper = Object.values(idToName);
+    }
 
     handleKey(code, key) {
         if (code == 38) {

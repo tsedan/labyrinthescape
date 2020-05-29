@@ -13,6 +13,7 @@ let totalAssets;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
+const maxUsernameLength = 10;
 let mainMenu;
 let nameMenu;
 let joinMenu;
@@ -23,8 +24,9 @@ let modeMenu;
 
 // P2P
 let allConnections = [];
+const idLength = 6;
 let myID;
-for (myID = ''; myID.length < 6; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
+for (myID = ''; myID.length < idLength; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
 let isHost = false;
 let playerPos = {};
 let finishedPlayers;
@@ -99,7 +101,7 @@ const gameColors = {
 
 function initMenus() {
     mainMenu = [
-        "MAINMENU", "LABYRINTH ESCAPE", "use [up], [down] and [enter] to navigate the menus",
+        "MAINMENU", "MAIN MENU", "use [up], [down] and [enter] to navigate the menus",
         [
             new MenuOption("CREATE PARTY"),
             new MenuOption("JOIN PARTY"),
@@ -109,14 +111,27 @@ function initMenus() {
     nameMenu = [
         "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",
         [
-            new MenuPrompt("TYPE YOUR USERNAME", 10),
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength),
             new MenuOption("BACK")
         ]
     ];
-    // joinMenu;
+    joinMenu = [
+        "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
+        [
+            new MenuPrompt("TYPE THE PARTY ID", idLength),
+            new MenuOption("BACK")
+        ]
+    ];
     // connMenu;
     // waitMenu;
-    // hostMenu;
+    hostMenu = [
+        "HOSTMENU", "ID: " + myID + ", 1P", "share this party id with your friends",
+        [
+            new MenuOption("START"),
+            new MenuOption("CONFIG"),
+            new MenuOption("BACK")
+        ]
+    ];
     // modeMenu;
 }
 
