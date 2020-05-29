@@ -31,7 +31,7 @@ function windowResized() {
 function draw() {
     if (assetsLoaded < totalAssets || !connectedToServer) {
         const percentLoaded = floor(100 * assetsLoaded / totalAssets);
-        drawBasicMenu('Loading...', (percentLoaded == 100 ? 'Awaiting Server Connection' : 'Loading Assets: ' + percentLoaded + '%'));
+        drawBasicMenu('Loading...', (percentLoaded == 100 ? 'Awaiting Server Connection' : 'Loading Assets: ' + percentLoaded + '%'), []);
     } else {
         switch (gameState) {
             case "MENU":

@@ -1,6 +1,66 @@
 class Menu {
     constructor() {
         this.state = "CLIENTMODE";
+
+        this.title = "";
+        this.subtitle = "";
+        this.upper = "";
+        this.options = [];
+    }
+
+    eventHandler(data) {
+
+    }
+
+    handleKey(code, key) {
+
+    }
+
+    handleClick(x, y) {
+
+    }
+
+    draw() {
+        drawBasicMenu(this.title, this.subtitle, this.upper);
+
+        for (let opt in this.options) {
+            opt.draw(windowWidth,windowHeight);
+        }
+    }
+}
+
+class MenuOption {
+    constructor(text) {
+        this.text = text;
+    }
+
+    handleKey() {
+
+    }
+
+    draw(bottom, right) {
+
+    }
+}
+
+class MenuPrompt {
+    constructor() {
+
+    }
+
+    handleKey() {
+
+    }
+
+    draw(bottom, right) {
+
+    }
+}
+
+/*
+class Menu {
+    constructor() {
+        this.state = "CLIENTMODE";
         this.currentMenu = new MenuOptions(...mainMenu, [idToName[myID]]);
     }
 
@@ -172,6 +232,61 @@ class MenuAlert {
     }
 }
 
+class MenuHybrid {
+    constructor(header, subtitle, placeholder, maxLength, options, upperText) {
+        this.header = header;
+        this.subtitle = subtitle;
+
+        this.placeholder = placeholder;
+        this.input = "";
+        this.maxLength = maxLength;
+        this.maxBackspaceDelay = 15;
+        this.backspaceDelay = this.maxBackspaceDelay;
+
+        this.options = options;
+        this.currentOption = -1;
+        this.upperText = upperText;
+    }
+
+    handleKey(code, key) {
+        if (this.currentOption == -1) {
+            if (code == 8 && this.input != "") {
+                this.input = this.input.substring(0, this.input.length - 1);
+                this.backspaceDelay = this.maxBackspaceDelay;
+            }
+
+            if (code == 13) return this.input;
+
+            if (validCharacters.includes(key) && this.input.length < this.maxLength) this.input += key;
+
+            if (code == 38) this.currentOption = 0;
+            if (code == 40) this.currentOption = this.options.length-1;
+            return 0;
+        } else {
+            if (code == 87 || code == 38) {
+                this.currentOption++;
+                if (this.currentOption == this.options.length) this.currentOption = -1;
+                return 0;
+            }
+            if (code == 83 || code == 40) {
+                this.currentOption--;
+                return 0;
+            }
+            if (code == 13) return this.options[this.currentOption];
+        }
+    }
+
+    draw() {
+        if (keyIsDown(8) && this.currentOption == -1) {
+            this.backspaceDelay--;
+            if (this.backspaceDelay < 0) {
+                this.backspaceDelay = 1;
+                this.input = this.input.substring(0, this.input.length - 1);
+            }
+        }
+    }
+}
+
 class MenuPrompt {
     constructor(header, subtitle, placeholder, maxLength) {
         this.header = header;
@@ -221,13 +336,12 @@ class MenuPrompt {
 }
 
 class MenuOptions {
-    constructor(header, subtitle, options, upperText, enterHandler) {
+    constructor(header, subtitle, options, upperText) {
         this.header = header;
         this.subtitle = subtitle;
         this.options = options;
         this.currentOption = 0;
         this.upperText = upperText;
-        this.enterHandler = enterHandler;
     }
 
     handleKey(code, key) {
@@ -262,4 +376,4 @@ class MenuOptions {
             text(this.upperText[i], uiPadding, uiPadding + 48 * i);
         }
     }
-}
+}*/

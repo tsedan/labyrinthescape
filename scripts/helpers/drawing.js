@@ -57,7 +57,7 @@ function updateVelocities() {
     }
 }
 
-function drawBasicMenu(header, subtitle) {
+function drawBasicMenu(header, subtitle, upper) {
     camera.position.x = windowWidth / 2;
     camera.position.y = windowHeight / 2;
     background(gameColors.wall);
@@ -76,6 +76,12 @@ function drawBasicMenu(header, subtitle) {
     text(header, left + uiPadding, bottom - uiPadding - 32);
     textSize(32);
     text(subtitle, left + uiPadding, bottom - uiPadding);
+
+    textAlign(LEFT, TOP);
+    textSize(48);
+    for (let i = 0; i < upper.length; i++) {
+        text(upper[i], uiPadding, uiPadding + 48 * i);
+    }
 }
 
 function drawMaze(pX, pY) {

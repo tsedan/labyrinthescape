@@ -376,7 +376,6 @@ class Flare extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        console.log("picking up flare")
                         this.sprite.visible = false;
                         this.used = 1;
                         heldItem = this;
