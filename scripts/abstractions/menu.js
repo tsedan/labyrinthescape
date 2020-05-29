@@ -50,6 +50,15 @@ class Menu {
                 this.changeMenu(...mainMenu);
             }
         }
+
+        if (mode == winMenu[0]) {
+            if (index == 0) {
+                //PLAY AGAIN
+            }
+            if (index == 1) {
+                resetGame();
+            }
+        }
     }
 
     changeMenu(state, title, subtitle, options) {
@@ -86,7 +95,7 @@ class Menu {
         drawBasicMenu(this.title, this.subtitle, this.upper);
 
         for (let opt in this.options) {
-            this.options[opt].draw(windowWidth, windowHeight - opt*48, this.currOption == opt);
+            this.options[opt].draw(windowWidth, windowHeight - opt*64, this.currOption == opt);
         }
     }
 }
