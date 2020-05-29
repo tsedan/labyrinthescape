@@ -1,3 +1,94 @@
+function connectToHost(id) {
+    for (let c of allConnections) c.close();
+
+    let conn = peer.connect(id);
+
+    conn.on('open', () => {
+        conn.on('data', (data) => {
+            if (data == "starthandshake") {
+                allConnections.push(conn);
+
+                menu.changeMenu(...waitMenu);
+
+                conn.send("confirmhandshake");
+                conn.send('name,' + idToName[myID]);
+            }
+
+            if (allConnections.length == 0) return; //Dont handle events unless we got 'starthandshake'
+
+            let splitData = data.split(",");
+
+            switch (splitData[0]) {
+                case 'start':
+                    mazeSeed = +splitData[1];
+                    monster = playerPos[splitData[2]];
+                    isMonster = player == monster;
+                    game = new Game();
+                    gameState = "GAME";
+                    break;
+                case 'pos':
+                    let pID = splitData[1];
+                    playerPos[pID].position.x = +splitData[2];
+                    playerPos[pID].position.y = +splitData[3];
+                    break;
+                case 'name':
+                    idToName[splitData[1]] = splitData[2];
+                    menu.update();
+
+                    let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                    playerPos[splitData[1]] = otherPlayer;
+                    break;
+                case 'die':
+                    playerPos[splitData[1]].visible = false;
+                    deadPlayers.push(playerPos[splitData[1]]);
+                    break;
+                case 'poweruppicked':
+                    powerupsInUse.push(+splitData[1]);
+                    powerups[+splitData[1]].sprite.visible = false;
+                    break;
+                case 'powerupdropped':
+                    let powerupID = +splitData[1];
+                    for (let p in powerupsInUse) {
+                        if (powerupsInUse[p] == powerupID) {
+                            powerupsInUse.splice(p, 1);
+                        }
+                    }
+
+                    powerups[powerupID].sprite.visible = true;
+                    powerups[powerupID].sprite.position.x = +splitData[2];
+                    powerups[powerupID].sprite.position.y = +splitData[3];
+                    powerups[powerupID].sprite.velocity.x = +splitData[4];
+                    powerups[powerupID].sprite.velocity.y = +splitData[5];
+
+                    // last arguments will be powerup specific
+                    if (['Boot', 'Torch'].includes(powerups[powerupID].constructor.name)) {
+                        powerups[powerupID].timeAvailable = +splitData[6];
+                    }
+                    break;
+                case 'flareused':
+                    minimap.flareLocations[splitData[1] + "," + splitData[2]] = color(splitData[3]);
+                    minimap.flareTimings[splitData[1] + "," + splitData[2]] = splitData[4];
+                    break;
+                case 'comp':
+                    someoneCompleted(splitData[1]);
+                    break;
+                case 'nextmaze':
+                    game.newMaze();
+                    newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
+                    break;
+                case 'playerwin':
+                    gameState = "MENU";
+                    menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
+                    break;
+                case 'monsterwin':
+                    gameState = "MENU";
+                    menu.changeMenu(...(isMonster ? winMenu : loseMenu));
+                    break;
+            }
+        });
+    });
+}
+
 function exitReached() {
     if (isMonster) {
         newAlert("THE MONSTER CAN'T LEAVE THE MAZE");
@@ -24,8 +115,7 @@ function exitReached() {
 function checkMazeCompletion() {
     if (deadPlayers.length == Object.keys(playerPos).length - 1) {
         gameState = "MENU";
-        menu.state = "GAMEOVER";
-        menu.currentMenu = new MenuOptions(...(isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+        menu.changeMenu(...(isMonster ? winMenu : loseMenu));
 
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
@@ -39,8 +129,7 @@ function checkMazeCompletion() {
     if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
             gameState = "MENU";
-            menu.state = "GAMEOVER";
-            menu.currentMenu = new MenuOptions(...(!isMonster ? winMenu : loseMenu), ["PARTY MEMBERS:"].concat(Object.values(idToName)));
+            menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
 
             for (let c in allConnections) {
                 if (allConnections[c] && allConnections[c].open) {
@@ -93,13 +182,18 @@ function initializePeer() {
 function connectionHost() {
     peer.on('connection', function (conn) {
         isHost = true;
-        allConnections.push(conn);
 
         conn.on('open', function () {
             conn.send('starthandshake');
 
             conn.on('data', function (data) {
                 let splitData = data.split(',');
+                if (splitData[0] == 'confirmhandshake') {
+                    allConnections.push(conn);
+                    playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                    menu.update();
+                }
+                if (allConnections.indexOf(conn) == -1) return; //Dont handle events if i havent recieved confirmhandshake
                 switch (splitData[0]) {
                     case 'pos':
                         playerPos[conn.peer].position.x = +splitData[1];
@@ -107,8 +201,7 @@ function connectionHost() {
                         break;
                     case 'name':
                         idToName[conn.peer] = splitData[1];
-                        menu.state = "CLIENTMODE";
-                        menu.eventHandler("CREATE PARTY");
+                        menu.update();
 
                         conn.send("name," + peer.id + "," + idToName[peer.id]);
                         for (let c in allConnections) {
@@ -169,11 +262,6 @@ function connectionHost() {
                 }
             });
         });
-        let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-        playerPos[conn.peer] = otherPlayer;
-
-        menu.state = "CLIENTMODE";
-        menu.eventHandler("CREATE PARTY");
     });
 }
 

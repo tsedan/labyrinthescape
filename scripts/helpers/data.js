@@ -16,11 +16,9 @@ const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKL
 const maxUsernameLength = 10;
 let mainMenu;
 let nameMenu;
-let joinMenu;
-let connMenu;
-let waitMenu;
-let hostMenu;
-let modeMenu;
+let joinMenu, connMenu, waitMenu;
+let hostMenu, modeMenu;
+let winMenu, loseMenu;
 
 // P2P
 let allConnections = [];
@@ -108,6 +106,7 @@ function initMenus() {
             new MenuOption("CHANGE NAME")
         ]
     ];
+
     nameMenu = [
         "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",
         [
@@ -115,6 +114,7 @@ function initMenus() {
             new MenuOption("BACK")
         ]
     ];
+
     joinMenu = [
         "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
         [
@@ -122,17 +122,38 @@ function initMenus() {
             new MenuOption("BACK")
         ]
     ];
-    // connMenu;
-    // waitMenu;
+    connMenu = [
+        "CONNMENU", "Awaiting Host", "please wait for the party connection to initialize", []
+    ];
+    waitMenu = [
+        "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
+    ];
+
     hostMenu = [
-        "HOSTMENU", "ID: " + myID + ", 1P", "share this party id with your friends",
+        "HOSTMENU", "ID: myID, nmPlP", "share this party id with your friends",
         [
             new MenuOption("START"),
             new MenuOption("CONFIG"),
             new MenuOption("BACK")
         ]
     ];
-    // modeMenu;
+    modeMenu = [
+        "MODEMENU", hostMenu[1], "change the game's settings",
+        [
+            new MenuOption("BACK")
+        ]
+    ];
+
+    winMenu = [
+        "OVERMENU", "YOU WON!", "flex on your friends, or go for another round",
+        [
+            new MenuOption("PLAY AGAIN"),
+            new MenuOption("CONTINUE")
+        ]
+    ];
+    loseMenu = [
+        winMenu[0], "YOU LOST...", "remember, you can always play another round", winMenu[3]
+    ];
 }
 
 function resetAllValues() {
