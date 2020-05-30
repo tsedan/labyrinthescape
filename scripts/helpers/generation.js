@@ -177,3 +177,41 @@ function shuffleArray(array) {
         array[j] = temp;
     }
 }
+
+function removeWall(chosen) {
+    m.grid[chosen[1]][chosen[0]] = 0;
+
+    for (let s of walls) {
+
+        let tlCorner = [floor((s.position.x - s.width / 2 + 1) / scale), floor((s.position.y - s.height / 2 + 1) / scale)];
+        let brCorner = [floor((s.position.x + s.width / 2 - 1) / scale), floor((s.position.y + s.height / 2 - 1) / scale)];
+
+        if (chosen[0] >= tlCorner[0] && chosen[0] <= brCorner[0] &&
+            chosen[1] >= tlCorner[1] && chosen[1] <= brCorner[1]) {
+            walls.remove(s);
+
+            if (s.width > s.height) {
+                let newWidth = (chosen[0] - tlCorner[0]) * scale;
+                let newX = tlCorner[0] * scale + newWidth / 2;
+                if (newWidth > 0)
+                    walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
+
+                newWidth = (brCorner[0] - chosen[0]) * scale;
+                newX = (brCorner[0] + 1) * scale - newWidth / 2;
+                if (newWidth > 0)
+                    walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
+            } else if (s.height > s.width) {
+                let newHeight = (chosen[1] - tlCorner[1]) * scale;
+                let newY = tlCorner[1] * scale + newHeight / 2;
+                if (newHeight > 0)
+                    walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
+
+                newHeight = (brCorner[1] - chosen[1]) * scale;
+                newY = (brCorner[1] + 1) * scale - newHeight / 2;
+                if (newHeight > 0)
+                    walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
+            }
+
+        }
+    }
+}

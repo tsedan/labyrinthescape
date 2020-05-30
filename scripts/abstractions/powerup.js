@@ -406,9 +406,12 @@ class Flare extends Powerup {
 }
 
 class Hammer extends Powerup {
-    constructor(sprite, numUses) {
+    constructor(sprite, timeAvailable) {
         super(sprite);
-        this.numUses = numUses;
+
+        // number of uses, weird name so inv works
+        this.timeAvailable = timeAvailable;
+        this.maxTime = timeAvailable;
 
         // 0 - never used, 1 - in inv, 2 - used
         this.used = 0;
@@ -425,45 +428,18 @@ class Hammer extends Powerup {
         if (orientation == 90 && cY < m.H - 1) chosen = [cX, cY + 1];
         if (orientation == 270 && cY > 0) chosen = [cX, cY - 1];
 
-        if (chosen === null) return;
+        if (chosen === null || m.grid[chosen[1]][chosen[0]] == 0) return;
+        this.timeAvailable--;
 
-        console.log(chosen)
-
-        m.grid[chosen[1]][chosen[0]] = 0;
-
-        for (let s of walls) {
-
-            let tlCorner = [floor((s.position.x - s.width / 2 + 1) / scale), floor((s.position.y - s.height / 2 + 1) / scale)];
-            let brCorner = [floor((s.position.x + s.width / 2 - 1) / scale), floor((s.position.y + s.height / 2 - 1) / scale)];
-
-            if (chosen[0] >= tlCorner[0] && chosen[0] <= brCorner[0] &&
-                chosen[1] >= tlCorner[1] && chosen[1] <= brCorner[1]) {
-                walls.remove(s);
-
-                if (s.width > s.height) {
-                    let newWidth = (chosen[0] - tlCorner[0]) * scale;
-                    let newX = tlCorner[0] * scale + newWidth / 2;
-                    if (newWidth > 0)
-                        walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
-
-                    newWidth = (brCorner[0] - chosen[0]) * scale;
-                    newX = (brCorner[0] + 1) * scale - newWidth / 2;
-                    if (newWidth > 0)
-                        walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
-                } else if (s.height > s.width) {
-                    let newHeight = (chosen[1] - tlCorner[1]) * scale;
-                    let newY = tlCorner[1] * scale + newHeight / 2;
-                    if (newHeight > 0)
-                        walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
-
-                    newHeight = (brCorner[1] - chosen[1]) * scale;
-                    newY = (brCorner[1] + 1) * scale - newHeight / 2;
-                    if (newHeight > 0)
-                        walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
-                }
-
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send("hammerused," + chosen[0] + "," + chosen[1]);
             }
+        } else {
+            removeWall(chosen);
+            sendHammerUsedInfo(chosen);
         }
+
     }
 
     draw() {
@@ -499,9 +475,11 @@ class Hammer extends Powerup {
 
                 // space
                 if (keyIsDown(32)) {
-                    // this.used = 2;
                     this.use();
-                    // heldItem = null;
+                    if (this.timeAvailable <= 0) {
+                        this.used = 2;
+                        heldItem = null;
+                    }
                 }
 
                 // q
