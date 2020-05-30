@@ -40,14 +40,17 @@ const peerConfig = {
 
 // VIEWPORT
 const desiredFPS = 30;
-const scale = 120;
+const originalScale = 120;
+let scale = originalScale;
 let maxRenderDist = 4;
 const uiPadding = 30;
 
 // PLAYER
 let player;
 const friction = 9;
-let maxSpeed = 20;
+const trueMaxSpeed = 6;
+const spectatorMaxSpeed = 4;
+let maxSpeed = trueMaxSpeed;
 let isMonster;
 let heldItem = null;
 let orientation = 0;
@@ -173,7 +176,7 @@ function resetAllValues() {
     idToName[myID] = (myName ? myName : myID);
     maxRenderDist = 4;
     player = null;
-    maxSpeed = 20;
+    maxSpeed = trueMaxSpeed;
     isMonster = null;
     heldItem = null;
     orientation = 0;
@@ -193,6 +196,7 @@ function resetAllValues() {
     minimap = null;
     minimapScale = null;
     isHost = false;
+    scale = originalScale;
 }
 
 function resetGame() {

@@ -1,19 +1,32 @@
+function changeScale(newScale) {
+    for (let spr of getSprites()) {
+        spr.position.x *= newScale/scale;
+        spr.position.y *= newScale/scale;
+        spr.velocity.x *= newScale/scale;
+        spr.velocity.y *= newScale/scale;
+        spr.scale = newScale/originalScale;
+    }
+    scale = newScale;
+}
+
 function spectatorMode() {
     minimap.revealAll();
     player.visible = false;
     maxRenderDist = 10;
-    maxSpeed = 30;
+    maxSpeed = spectatorMaxSpeed;
     heldItem = null;
     spectating = true;
+    changeScale(originalScale/2);
 }
 
 function normalMode() {
     minimap.reset();
     player.visible = true;
     maxRenderDist = 4;
-    maxSpeed = 20;
+    maxSpeed = trueMaxSpeed;
     heldItem = null;
     spectating = false;
+    changeScale(originalScale);
 }
 
 function drawMenuBackground() {
@@ -39,20 +52,20 @@ function updateVelocities() {
     if (a ? d : !d) {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
-        player.velocity.x = (friction * player.velocity.x - maxSpeed) / (friction + 1);
+        player.velocity.x = (friction * player.velocity.x - (scale/maxSpeed)) / (friction + 1);
         orientation = 180;
     } else if (d) {
-        player.velocity.x = (friction * player.velocity.x + maxSpeed) / (friction + 1);
+        player.velocity.x = (friction * player.velocity.x + (scale/maxSpeed)) / (friction + 1);
         orientation = 0;
     }
 
     if (w ? s : !s) {
         player.velocity.y *= friction / (friction + 1);
     } else if (w) {
-        player.velocity.y = (friction * player.velocity.y - maxSpeed) / (friction + 1);
+        player.velocity.y = (friction * player.velocity.y - (scale/maxSpeed)) / (friction + 1);
         orientation = 270;
     } else if (s) {
-        player.velocity.y = (friction * player.velocity.y + maxSpeed) / (friction + 1);
+        player.velocity.y = (friction * player.velocity.y + (scale/maxSpeed)) / (friction + 1);
         orientation = 90;
     }
 }

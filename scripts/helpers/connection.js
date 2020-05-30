@@ -15,8 +15,8 @@ function connectionHost() {
                 if (allConnections.indexOf(conn) == -1) return; //Dont handle events if i havent recieved confirmhandshake
                 switch (splitData[0]) {
                     case 'pos':
-                        playerPos[conn.peer].position.x = +splitData[1];
-                        playerPos[conn.peer].position.y = +splitData[2];
+                        playerPos[conn.peer].position.x = splitData[1]*scale;
+                        playerPos[conn.peer].position.y = splitData[2]*scale;
                         break;
                     case 'name':
                         idToName[conn.peer] = splitData[1];
@@ -54,10 +54,10 @@ function connectionHost() {
                             }
                         }
                         powerups[pID].sprite.visible = true;
-                        powerups[pID].sprite.position.x = +splitData[2];
-                        powerups[pID].sprite.position.y = +splitData[3];
-                        powerups[pID].sprite.velocity.x = +splitData[4];
-                        powerups[pID].sprite.velocity.y = +splitData[5];
+                        powerups[pID].sprite.position.x = splitData[2]*scale;
+                        powerups[pID].sprite.position.y = splitData[3]*scale;
+                        powerups[pID].sprite.velocity.x = splitData[4]*scale;
+                        powerups[pID].sprite.velocity.y = splitData[5]*scale;
 
                         if (['Boot', 'Torch', 'Hammer'].includes(powerups[pID].constructor.name)) {
                             powerups[pID].timeAvailable = +splitData[6];
@@ -118,8 +118,8 @@ function connectToHost(id) {
                     break;
                 case 'pos':
                     let pID = splitData[1];
-                    playerPos[pID].position.x = +splitData[2];
-                    playerPos[pID].position.y = +splitData[3];
+                    playerPos[pID].position.x = splitData[2]*scale;
+                    playerPos[pID].position.y = splitData[3]*scale;
                     break;
                 case 'name':
                     idToName[splitData[1]] = splitData[2];
@@ -145,10 +145,10 @@ function connectToHost(id) {
                     }
 
                     powerups[powerupID].sprite.visible = true;
-                    powerups[powerupID].sprite.position.x = +splitData[2];
-                    powerups[powerupID].sprite.position.y = +splitData[3];
-                    powerups[powerupID].sprite.velocity.x = +splitData[4];
-                    powerups[powerupID].sprite.velocity.y = +splitData[5];
+                    powerups[powerupID].sprite.position.x = splitData[2]*scale;
+                    powerups[powerupID].sprite.position.y = splitData[3]*scale;
+                    powerups[powerupID].sprite.velocity.x = splitData[4]*scale;
+                    powerups[powerupID].sprite.velocity.y = splitData[5]*scale;
 
                     // last arguments will be powerup specific
                     if (['Boot', 'Torch', 'Hammer'].includes(powerups[powerupID].constructor.name)) {
@@ -283,16 +283,16 @@ function sendCompletionInfo(id) {
 function sendPositionData() {
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('pos,' + player.position.x + ',' + player.position.y);
+            allConnections[0].send('pos,' + (player.position.x/scale) + ',' + (player.position.y/scale));
         }
     } else if (isHost) {
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('pos,' + peer.id + ',' + player.position.x + ',' + player.position.y);
+                allConnections[c].send('pos,' + peer.id + ',' + (player.position.x/scale) + ',' + (player.position.y/scale));
                 for (let c2 in allConnections) {
                     if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
                         let peerID = allConnections[c2].peer;
-                        allConnections[c].send('pos,' + peerID + ',' + playerPos[peerID].position.x + ',' + playerPos[peerID].position.y);
+                        allConnections[c].send('pos,' + peerID + ',' + (playerPos[peerID].position.x/scale) + ',' + (playerPos[peerID].position.y/scale));
                     }
                 }
             }

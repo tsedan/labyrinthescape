@@ -50,7 +50,7 @@ class Game {
         drawSprites(allPlayers);
 
         textAlign(CENTER, BOTTOM);
-        fill(gameColors.player)
+        fill(gameColors.player);
         textFont(font);
         textSize(32);
         for (let k of Object.keys(playerPos)) {
