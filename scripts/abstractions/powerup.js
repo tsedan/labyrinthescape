@@ -404,3 +404,114 @@ class Flare extends Powerup {
         }
     }
 }
+
+class Hammer extends Powerup {
+    constructor(sprite, numUses) {
+        super(sprite);
+        this.numUses = numUses;
+
+        // 0 - never used, 1 - in inv, 2 - used
+        this.used = 0;
+    }
+
+    use() {
+        let cX = floor(player.position.x / scale);
+        let cY = floor(player.position.y / scale);
+
+        let chosen = null;
+
+        if (orientation == 0 && cX < m.W - 1) chosen = [cX + 1, cY];
+        if (orientation == 180 && cX > 0) chosen = [cX - 1, cY];
+        if (orientation == 90 && cY < m.H - 1) chosen = [cX, cY + 1];
+        if (orientation == 270 && cY > 0) chosen = [cX, cY - 1];
+
+        if (chosen === null) return;
+
+        console.log(chosen)
+
+        m.grid[chosen[1]][chosen[0]] = 0;
+
+        for (let s of walls) {
+
+            let tlCorner = [floor((s.position.x - s.width / 2 + 1) / scale), floor((s.position.y - s.height / 2 + 1) / scale)];
+            let brCorner = [floor((s.position.x + s.width / 2 - 1) / scale), floor((s.position.y + s.height / 2 - 1) / scale)];
+
+            if (chosen[0] >= tlCorner[0] && chosen[0] <= brCorner[0] &&
+                chosen[1] >= tlCorner[1] && chosen[1] <= brCorner[1]) {
+                walls.remove(s);
+
+                if (s.width > s.height) {
+                    let newWidth = (chosen[0] - tlCorner[0]) * scale;
+                    let newX = tlCorner[0] * scale + newWidth / 2;
+                    if (newWidth > 0)
+                        walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
+
+                    newWidth = (brCorner[0] - chosen[0]) * scale;
+                    newX = (brCorner[0] + 1) * scale - newWidth / 2;
+                    if (newWidth > 0)
+                        walls.add(genObj(newX, s.position.y, newWidth, scale, gameColors.wall));
+                } else if (s.height > s.width) {
+                    let newHeight = (chosen[1] - tlCorner[1]) * scale;
+                    let newY = tlCorner[1] * scale + newHeight / 2;
+                    if (newHeight > 0)
+                        walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
+
+                    newHeight = (brCorner[1] - chosen[1]) * scale;
+                    newY = (brCorner[1] + 1) * scale - newHeight / 2;
+                    if (newHeight > 0)
+                        walls.add(genObj(s.position.x, newY, scale, newHeight, gameColors.wall));
+                }
+
+            }
+        }
+    }
+
+    draw() {
+        super.draw();
+    }
+
+    update() {
+        this.draw();
+
+        switch (this.used) {
+            case 0:
+                if (heldItem) break;
+
+                let alreadyInUse = false;
+
+                player.overlap(this.sprite, () => {
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        this.sprite.visible = false;
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
+                });
+                break;
+
+            case 1:
+
+                // space
+                if (keyIsDown(32)) {
+                    // this.used = 2;
+                    this.use();
+                    // heldItem = null;
+                }
+
+                // q
+                if (keyIsDown(81)) {
+                    this.used = 0;
+                    heldItem = null;
+                    super.drop();
+                }
+
+                break;
+        }
+    }
+}

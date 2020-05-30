@@ -14,6 +14,7 @@ function newAlert(msg) {
 
 function genObj(x, y, w, h, c) {
     const box = createSprite(x, y, w, h);
+    box.setDefaultCollider();
     box.shapeColor = c;
     return box;
 }
@@ -68,12 +69,12 @@ function genMaze(w, h, holes, numPowerups) {
         // new Torch(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 20 * 1000, 2),
         // new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
         // new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
-        new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
     ];
 
     shuffleArray(powerups);
