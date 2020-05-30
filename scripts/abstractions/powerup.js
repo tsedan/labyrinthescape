@@ -37,8 +37,8 @@ class Powerup {
     }
 
     sendDropInfo() {
-        let d = ['powerupdropped', this.index, this.sprite.position.x/scale, this.sprite.position.y/scale,
-            this.sprite.velocity.x/scale, this.sprite.velocity.y/scale, this.timeAvailable].join(',');
+        let d = ['powerupdropped', this.index, this.sprite.position.x / scale, this.sprite.position.y / scale,
+            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.timeAvailable].join(',');
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
                 allConnections[0].send(d);
@@ -74,11 +74,11 @@ class Boot extends Powerup {
     }
 
     startEffect() {
-        maxSpeed += this.speedIncrease;
+        maxSpeed -= this.speedIncrease;
     }
 
     removeEffect() {
-        maxSpeed -= this.speedIncrease;
+        maxSpeed += this.speedIncrease;
     }
 
     draw() {
