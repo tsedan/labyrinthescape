@@ -2,6 +2,7 @@ class Menu {
     constructor() { }
 
     eventHandler() {
+        if (this.options.length == 0) return;
         const data = this.options[this.currOption].value;
         const index = this.currOption, mode = this.state;
 
@@ -45,9 +46,16 @@ class Menu {
             if (index == 0) {
                 connectToHost(data);
                 this.changeMenu(...connMenu);
+                this.connectionTimer = connectionFailTime;
             }
             if (index == 1) {
                 this.changeMenu(...mainMenu);
+            }
+        }
+
+        if (mode == connFailMenu[0]) {
+            if (index == 0) {
+                this.changeMenu(...joinMenu);
             }
         }
 
@@ -99,13 +107,21 @@ class Menu {
         } else if (code == 13) {
             this.eventHandler();
         } else {
-            this.options[this.currOption].handleKey(code, key);
+            if (this.options.length > 0)
+                this.options[this.currOption].handleKey(code, key);
         }
     }
 
     draw() {
         if (this.state == "MODEMENU" && this.currOption > 0 && (keyIsDown(37) || keyIsDown(39))) {
             this.eventHandler();
+        }
+
+        if (this.connectionTimer && this.state == "CONNMENU") {
+            if (this.connectionTimer > 0)
+                this.connectionTimer -= deltaTime;
+            else
+                this.changeMenu(...connFailMenu);
         }
 
         drawBasicMenu(this.title, this.subtitle, this.upper);

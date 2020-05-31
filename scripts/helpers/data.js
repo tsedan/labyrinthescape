@@ -14,6 +14,7 @@ let totalAssets;
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 const maxUsernameLength = 10;
+const connectionFailTime = 3000;
 let mainMenu;
 let nameMenu;
 let joinMenu, connMenu, waitMenu;
@@ -127,8 +128,15 @@ function initMenus() {
         ]
     ];
     connMenu = [
-        "CONNMENU", "Awaiting Host", "please wait for the party connection to initialize", []
+        "CONNMENU", "AWAITING CONNECTION", "please wait for the party connection to initialize", []
     ];
+
+    connFailMenu = [
+        "CONNFAILMENU", "CONNECTION FAILED", "unable to establish connection, please check entered ID", [
+            new MenuOption("BACK")
+        ]
+    ];
+
     waitMenu = [
         "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
     ];
