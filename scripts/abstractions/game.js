@@ -5,7 +5,7 @@ class Game {
     }
 
     newMaze() {
-        changeScale(originalScale);
+        changeScale(correctScale());
         finishedPlayers = [];
         genMaze(mazeStartWidth + mazesStarted * mazeGrow, mazeStartHeight + mazesStarted * mazeGrow, holeProbability, powerUpNum);
         if (isDead) { spectatorMode() } else { normalMode() }

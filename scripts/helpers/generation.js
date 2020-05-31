@@ -1,3 +1,16 @@
+function startGame() {
+    game = new Game();
+    gameState = "GAME";
+    camera.position.x = player.position.x;
+    camera.position.y = player.position.y;
+    changeScale(correctScale());
+}
+
+function correctScale() {
+    const smallerDim = (windowWidth < windowHeight ? windowWidth : windowHeight);
+    return round(smallerDim/8);
+}
+
 function someoneCompleted(id) {
     if (id == myID) {
         spectatorMode();

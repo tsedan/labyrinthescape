@@ -113,8 +113,7 @@ function connectToHost(id) {
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     isMonster = player == monster;
-                    game = new Game();
-                    gameState = "GAME";
+                    startGame();
                     break;
                 case 'pos':
                     let pID = splitData[1];
@@ -170,12 +169,12 @@ function connectToHost(id) {
                     newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
                     break;
                 case 'playerwin':
-                    changeScale(originalScale);
+                    changeScale(correctScale());
                     gameState = "MENU";
                     menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
                     break;
                 case 'monsterwin':
-                    changeScale(originalScale);
+                    changeScale(correctScale());
                     gameState = "MENU";
                     menu.changeMenu(...(isMonster ? winMenu : loseMenu));
                     break;
@@ -209,7 +208,7 @@ function exitReached() {
 
 function checkMazeCompletion() {
     if (deadPlayers.length == Object.keys(playerPos).length - 1) {
-        changeScale(originalScale);
+        changeScale(correctScale());
         gameState = "MENU";
         menu.changeMenu(...(isMonster ? winMenu : loseMenu));
 
@@ -224,7 +223,7 @@ function checkMazeCompletion() {
     if (finishedPlayers.length == 0) return;
     if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
-            changeScale(originalScale);
+            changeScale(correctScale());
             gameState = "MENU";
             menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
 

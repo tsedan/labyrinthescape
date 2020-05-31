@@ -26,6 +26,10 @@ function setup() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    if (gameState == "GAME") {
+        if (spectating) changeScale(correctScale()/2);
+        else changeScale(correctScale());
+    }
 }
 
 function draw() {

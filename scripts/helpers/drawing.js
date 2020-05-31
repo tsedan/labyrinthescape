@@ -16,7 +16,7 @@ function spectatorMode() {
     maxSpeed = spectatorMaxSpeed;
     heldItem = null;
     spectating = true;
-    changeScale(originalScale/2);
+    changeScale(correctScale()/2);
 }
 
 function normalMode() {
@@ -26,7 +26,7 @@ function normalMode() {
     maxSpeed = trueMaxSpeed;
     heldItem = null;
     spectating = false;
-    changeScale(originalScale);
+    changeScale(correctScale());
 }
 
 function drawMenuBackground() {

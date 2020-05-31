@@ -3,6 +3,7 @@ class Menu {
 
     eventHandler() {
         if (this.options.length == 0) return;
+
         const data = this.options[this.currOption].value;
         const index = this.currOption, mode = this.state;
 
@@ -13,8 +14,7 @@ class Menu {
             if (index == 0) {
                 mazeSeed = Date.now();
                 sendStartInfo();
-                game = new Game();
-                gameState = "GAME";
+                startGame();
             }
             if (index == 1) {
                 this.changeMenu(...modeMenu);
@@ -98,6 +98,7 @@ class Menu {
     }
 
     handleKey(code, key) {
+        if (this.options.length == 0) return;
         if (code == 38) {
             this.currOption++;
             this.currOption %= this.options.length;
@@ -107,8 +108,7 @@ class Menu {
         } else if (code == 13) {
             this.eventHandler();
         } else {
-            if (this.options.length > 0)
-                this.options[this.currOption].handleKey(code, key);
+            this.options[this.currOption].handleKey(code, key);
         }
     }
 
