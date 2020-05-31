@@ -1,5 +1,5 @@
 class Menu {
-    constructor() {}
+    constructor() { }
 
     eventHandler() {
         const data = this.options[this.currOption].value;
@@ -26,6 +26,18 @@ class Menu {
         if (mode == modeMenu[0]) {
             if (index == 0) {
                 this.changeMenu(...hostMenu);
+            }
+            if (index == 1) {
+                mazeStartWidth = data;
+            }
+            if (index == 2) {
+                mazeStartHeight = data;
+            }
+            if (index == 3) {
+                numberOfMazes = data;
+            }
+            if (index == 4) {
+                holeProbability = (10 - data) / 100;
             }
         }
 
@@ -74,7 +86,7 @@ class Menu {
         this.upper = Object.values(idToName);
 
         if (this.state == hostMenu[0] || this.state == modeMenu[0])
-            this.title = hostMenu[1].replace("myID",myID).replace("nmPl",allConnections.length+1);
+            this.title = hostMenu[1].replace("myID", myID).replace("nmPl", allConnections.length + 1);
     }
 
     handleKey(code, key) {
@@ -83,7 +95,7 @@ class Menu {
             this.currOption %= this.options.length;
         } else if (code == 40) {
             this.currOption--;
-            if (this.currOption < 0) this.currOption = this.options.length-1;
+            if (this.currOption < 0) this.currOption = this.options.length - 1;
         } else if (code == 13) {
             this.eventHandler();
         } else {
@@ -92,10 +104,14 @@ class Menu {
     }
 
     draw() {
+        if (this.state == "MODEMENU" && this.currOption > 0 && (keyIsDown(37) || keyIsDown(39))) {
+            this.eventHandler();
+        }
+
         drawBasicMenu(this.title, this.subtitle, this.upper);
 
         for (let opt in this.options) {
-            this.options[opt].draw(windowWidth, windowHeight - opt*64, this.currOption == opt);
+            this.options[opt].draw(windowWidth, windowHeight - opt * 64, this.currOption == opt);
         }
     }
 }
@@ -140,12 +156,63 @@ class MenuOption {
         this.value = value;
     }
 
-    handleKey(code, key) {}
+    handleKey(code, key) { }
 
     draw(right, bottom, isSelected) {
         textAlign(RIGHT, BOTTOM);
         textSize(64);
         fill(255);
         text((isSelected ? "> " : "") + this.value, right - uiPadding, bottom - uiPadding);
+    }
+}
+
+class MenuSlide {
+    constructor(def, minVal, maxVal, label) {
+        this.value = def;
+
+        this.minVal = minVal;
+        this.maxVal = maxVal;
+
+        this.label = label;
+
+        this.maxDelay = 15;
+        this.leftDelay = this.maxDelay;
+        this.rightDelay = this.maxDelay;
+    }
+
+    handleKey(code, key) {
+
+        if (code == 37 && this.value > this.minVal) {
+            this.value--;
+            this.leftDelay = this.maxDelay;
+        }
+
+        if (code == 39 && this.value < this.maxVal) {
+            this.value++;
+            this.rightDelay = this.maxDelay;
+        }
+    }
+
+    draw(right, bottom, isSelected) {
+        if (isSelected && keyIsDown(37) && this.value > this.minVal) {
+            this.leftDelay--;
+            if (this.leftDelay < 0) {
+                this.leftDelay = 1;
+                this.value--;
+            }
+        }
+
+        if (isSelected && keyIsDown(39) && this.value < this.maxVal) {
+            this.rightDelay--;
+            if (this.rightDelay < 0) {
+                this.rightDelay = 1;
+                this.value++;
+            }
+        }
+
+        textAlign(RIGHT, BOTTOM);
+        textSize(64);
+        fill(255);
+        text((isSelected ? "> " : "") + this.label + ": " + this.value, right - uiPadding, bottom - uiPadding);
     }
 }

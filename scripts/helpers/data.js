@@ -68,11 +68,12 @@ let monster;
 
 let mazeSeed;
 
-const numberOfMazes = 2;
-const mazeStartWidth = 20;
-const mazeStartHeight = 20;
-const holeProbability = 0.02;
+let numberOfMazes = 3;
+let mazeStartWidth = 14;
+let mazeStartHeight = 14;
+let holeProbability = 0.02;
 const powerUpNum = 6;
+const mazeGrow = 2;
 
 let mazesStarted = 0;
 
@@ -141,9 +142,13 @@ function initMenus() {
         ]
     ];
     modeMenu = [
-        "MODEMENU", hostMenu[1], "change the game's settings",
+        "MODEMENU", hostMenu[1], "change the game's settings with [left] and [right]",
         [
-            new MenuOption("BACK")
+            new MenuOption("BACK"),
+            new MenuSlide(mazeStartWidth, 8, 24, "WIDTH"),
+            new MenuSlide(mazeStartHeight, 8, 24, "HEIGHT"),
+            new MenuSlide(numberOfMazes, 1, 7, "QUANTITY"),
+            new MenuSlide(10 - (holeProbability * 100), 0, 10, "DIFFICULTY"),
         ]
     ];
 

@@ -5,16 +5,16 @@ class Game {
     }
 
     newMaze() {
+        changeScale(originalScale);
         finishedPlayers = [];
-        genMaze(mazeStartWidth, mazeStartHeight, holeProbability, powerUpNum);
+        genMaze(mazeStartWidth + mazesStarted * mazeGrow, mazeStartHeight + mazesStarted * mazeGrow, holeProbability, powerUpNum);
         if (isDead) { spectatorMode() } else { normalMode() }
     }
 
     update() {
         camera.position.x = (friction * camera.position.x + player.position.x) / (friction + 1);
         camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
-
-        alertTime = Math.max(alertTime-alertRate,0);
+        alertTime = Math.max(alertTime - alertRate, 0);
 
         updateVelocities();
 
