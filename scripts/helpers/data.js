@@ -43,7 +43,8 @@ const peerConfig = {
 const desiredFPS = 30;
 const originalScale = 120;
 let scale = originalScale;
-let maxRenderDist = 4;
+const trueMaxRenderDist = 4;
+let maxRenderDist = trueMaxRenderDist;
 const uiPadding = 30;
 
 // PLAYER
@@ -187,7 +188,7 @@ function resetAllValues() {
     const myName = idToName[myID];
     idToName = [];
     idToName[myID] = (myName ? myName : myID);
-    maxRenderDist = 4;
+    maxRenderDist = trueMaxRenderDist;
     player = null;
     maxSpeed = trueMaxSpeed;
     isMonster = null;

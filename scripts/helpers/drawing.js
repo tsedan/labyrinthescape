@@ -4,7 +4,7 @@ function changeScale(newScale) {
         spr.position.y *= newScale/scale;
         spr.velocity.x *= newScale/scale;
         spr.velocity.y *= newScale/scale;
-        spr.scale = newScale/originalScale;
+        spr.scale *= newScale/scale;
     }
     scale = newScale;
 }
@@ -12,7 +12,7 @@ function changeScale(newScale) {
 function spectatorMode() {
     minimap.revealAll();
     player.visible = false;
-    maxRenderDist = 10;
+    maxRenderDist = trueMaxRenderDist*2;
     maxSpeed = spectatorMaxSpeed;
     heldItem = null;
     spectating = true;
@@ -22,7 +22,8 @@ function spectatorMode() {
 function normalMode() {
     minimap.reset();
     player.visible = true;
-    maxRenderDist = 4;
+    maxRenderDist = trueMaxRenderDist;
+    if (isMonster) maxRenderDist = 6*trueMaxRenderDist/4;
     maxSpeed = trueMaxSpeed;
     heldItem = null;
     spectating = false;

@@ -8,7 +8,7 @@ function startGame() {
 
 function correctScale() {
     const smallerDim = (windowWidth < windowHeight ? windowWidth : windowHeight);
-    return round(smallerDim/8);
+    return (isMonster ? round(smallerDim/12) : round(smallerDim/8));
 }
 
 function someoneCompleted(id) {
