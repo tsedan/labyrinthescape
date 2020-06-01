@@ -15,9 +15,9 @@ let totalAssets;
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 const maxUsernameLength = 10;
 const connectionFailTime = 5000;
-let mainMenu, nameMenu;
+let mainMenu, nameMenu, waitMenu;
 let kickMenu, failMenu;
-let joinMenu, connMenu, waitMenu;
+let joinMenu, connMenu;
 let hostMenu, modeMenu;
 let winMenu, loseMenu;
 
@@ -33,7 +33,7 @@ let allPlayers;
 let deadPlayers = [];
 let connectedToServer;
 let idToName = {};
-const partySizeMinimum = 1; //should probably be 2 later on
+const partySizeMinimum = 1;
 const partySizeMaximum = 5;
 const peerConfig = {
     secure: true,

@@ -4,7 +4,8 @@ function changeScale(newScale) {
         spr.position.y *= newScale/scale;
         spr.velocity.x *= newScale/scale;
         spr.velocity.y *= newScale/scale;
-        spr.scale *= newScale/scale;
+        spr.width *= newScale/scale;
+        spr.height *= newScale/scale;
     }
     scale = newScale;
 }
