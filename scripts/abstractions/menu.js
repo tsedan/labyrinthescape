@@ -3,92 +3,8 @@ class Menu {
 
     eventHandler() {
         if (this.options.length == 0) return;
-
-        const data = this.options[this.currOption].value;
-        const index = this.currOption, mode = this.state;
-
-        if (mode == mainMenu[0])
-            this.changeMenu(...(index == 0 ? hostMenu : (index == 1 ? joinMenu : nameMenu)));
-
-        if (mode == hostMenu[0]) {
-            if (index == 0) {
-                if (allConnections.length+1 >= partySizeMinimum) {
-                    mazeSeed = Date.now();
-                    sendStartInfo();
-                    startGame();
-                } else {
-                    this.subtitle = "please invite more players before starting a game";
-                }
-            }
-            if (index == 1) {
-                this.changeMenu(...modeMenu);
-            }
-            if (index == 2) {
-                this.changeMenu(...mainMenu);
-            }
-        }
-
-        if (mode == modeMenu[0]) {
-            if (index == 0) {
-                this.changeMenu(...hostMenu);
-            }
-            if (index == 1) {
-                mazeStartWidth = data;
-            }
-            if (index == 2) {
-                mazeStartHeight = data;
-            }
-            if (index == 3) {
-                numberOfMazes = data;
-            }
-            if (index == 4) {
-                holeProbability = (10 - data) / 100;
-            }
-        }
-
-        if (mode == joinMenu[0]) {
-            if (index == 0) {
-                connectToHost(data);
-                this.changeMenu(...connMenu);
-                this.connectionTimer = connectionFailTime;
-            }
-            if (index == 1) {
-                this.changeMenu(...mainMenu);
-            }
-        }
-
-        if (mode == kickMenu[0]) {
-            if (index == 0) {
-                this.changeMenu(...joinMenu);
-            }
-        }
-
-        if (mode == connFailMenu[0]) {
-            if (index == 0) {
-                this.changeMenu(...joinMenu);
-            }
-        }
-
-        if (mode == nameMenu[0]) {
-            if (index == 0) {
-                if (data != "") {
-                    idToName[myID] = data;
-                    this.changeMenu(...mainMenu);
-                }
-            }
-            if (index == 1) {
-                this.changeMenu(...mainMenu);
-            }
-        }
-
-        if (mode == winMenu[0]) {
-            if (index == 0) {
-                //TODO: PLAY AGAIN
-            }
-            if (index == 1) {
-                resetGame();
-            }
-        }
+        const opt = this.options[this.currOption];
+        opt.eventHandler(opt.value);
     }
 
     changeMenu(state, title, subtitle, options) {
@@ -123,15 +39,15 @@ class Menu {
     }
 
     draw() {
-        if (this.state == "MODEMENU" && this.currOption > 0 && (keyIsDown(37) || keyIsDown(39))) {
+        if (this.state == modeMenu[0] && this.currOption > 0 && (keyIsDown(37) || keyIsDown(39))) {
             this.eventHandler();
         }
 
-        if (this.connectionTimer && this.state == "CONNMENU") {
+        if (this.connectionTimer && this.state == connMenu[0]) {
             if (this.connectionTimer > 0)
                 this.connectionTimer -= deltaTime;
             else
-                this.changeMenu(...connFailMenu);
+                this.changeMenu(...failMenu);
         }
 
         drawBasicMenu(this.title, this.subtitle, this.upper);
@@ -143,9 +59,11 @@ class Menu {
 }
 
 class MenuPrompt {
-    constructor(placeholder, maxLength) {
+    constructor(placeholder, maxLength, eventHandler) {
         this.value = "";
         this.placeholder = placeholder;
+
+        this.eventHandler = eventHandler;
 
         this.maxLength = maxLength;
         this.maxBackspaceDelay = 15;
@@ -178,8 +96,9 @@ class MenuPrompt {
 }
 
 class MenuOption {
-    constructor(value) {
+    constructor(value, eventHandler) {
         this.value = value;
+        this.eventHandler = eventHandler;
     }
 
     handleKey(code, key) { }
@@ -193,8 +112,10 @@ class MenuOption {
 }
 
 class MenuSlide {
-    constructor(def, minVal, maxVal, label) {
+    constructor(def, minVal, maxVal, label, eventHandler) {
         this.value = def;
+
+        this.eventHandler = eventHandler;
 
         this.minVal = minVal;
         this.maxVal = maxVal;

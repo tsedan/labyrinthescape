@@ -14,9 +14,9 @@ let totalAssets;
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 const maxUsernameLength = 10;
-const connectionFailTime = 3000;
-let mainMenu, kickMenu;
-let nameMenu;
+const connectionFailTime = 5000;
+let mainMenu, nameMenu;
+let kickMenu, failMenu;
 let joinMenu, connMenu, waitMenu;
 let hostMenu, modeMenu;
 let winMenu, loseMenu;
@@ -103,83 +103,6 @@ const gameColors = {
     wall: '#000000',
     minimap: '#d1ccc0',
     inv: '#8c8c89',
-}
-
-function initMenus() {
-    mainMenu = [
-        "MAINMENU", "MAIN MENU", "use [up], [down] and [enter] to navigate the menus",
-        [
-            new MenuOption("CREATE PARTY"),
-            new MenuOption("JOIN PARTY"),
-            new MenuOption("CHANGE NAME")
-        ]
-    ];
-
-    kickMenu = [
-        "KICKMENU", "KICKED FROM THE PARTY", "",
-        [
-            new MenuOption("DANG IT")
-        ]
-    ]
-
-    nameMenu = [
-        "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",
-        [
-            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength),
-            new MenuOption("BACK")
-        ]
-    ];
-
-    joinMenu = [
-        "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
-        [
-            new MenuPrompt("TYPE THE PARTY ID", idLength),
-            new MenuOption("BACK")
-        ]
-    ];
-    connMenu = [
-        "CONNMENU", "AWAITING CONNECTION", "please wait for the party connection to initialize", []
-    ];
-
-    connFailMenu = [
-        "CONNFAILMENU", "CONNECTION FAILED", "unable to establish connection, please check entered ID", [
-            new MenuOption("BACK")
-        ]
-    ];
-
-    waitMenu = [
-        "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
-    ];
-
-    hostMenu = [
-        "HOSTMENU", "ID: myID, nmPlP", "share this party id with your friends",
-        [
-            new MenuOption("START"),
-            new MenuOption("CONFIG"),
-            new MenuOption("BACK")
-        ]
-    ];
-    modeMenu = [
-        "MODEMENU", hostMenu[1], "change the game's settings with [left] and [right]",
-        [
-            new MenuOption("BACK"),
-            new MenuSlide(mazeStartWidth, 8, 24, "WIDTH"),
-            new MenuSlide(mazeStartHeight, 8, 24, "HEIGHT"),
-            new MenuSlide(numberOfMazes, 1, 7, "QUANTITY"),
-            new MenuSlide(10 - (holeProbability * 100), 0, 10, "DIFFICULTY"),
-        ]
-    ];
-
-    winMenu = [
-        "OVERMENU", "YOU WON!", "flex on your friends, or go for another round",
-        [
-            new MenuOption("PLAY AGAIN"),
-            new MenuOption("CONTINUE")
-        ]
-    ];
-    loseMenu = [
-        winMenu[0], "YOU LOST...", "remember, you can always play another round", winMenu[3]
-    ];
 }
 
 function resetAllValues() {
