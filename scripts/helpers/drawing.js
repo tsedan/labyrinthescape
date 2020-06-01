@@ -1,29 +1,32 @@
 function changeScale(newScale) {
     for (let spr of getSprites()) {
-        spr.position.x *= newScale/scale;
-        spr.position.y *= newScale/scale;
-        spr.velocity.x *= newScale/scale;
-        spr.velocity.y *= newScale/scale;
-        spr.scale *= newScale/scale;
+        spr.position.x *= newScale / scale;
+        spr.position.y *= newScale / scale;
+        spr.velocity.x *= newScale / scale;
+        spr.velocity.y *= newScale / scale;
+        spr.scale *= newScale / scale;
     }
     scale = newScale;
+
+    if (m)
+        minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 }
 
 function spectatorMode() {
     minimap.revealAll();
     player.visible = false;
-    maxRenderDist = trueMaxRenderDist*2;
+    maxRenderDist = trueMaxRenderDist * 2;
     maxSpeed = spectatorMaxSpeed;
     heldItem = null;
     spectating = true;
-    changeScale(correctScale()/2);
+    changeScale(correctScale() / 2);
 }
 
 function normalMode() {
     minimap.reset();
     player.visible = true;
     maxRenderDist = trueMaxRenderDist;
-    if (isMonster) maxRenderDist = 6*trueMaxRenderDist/4;
+    if (isMonster) maxRenderDist = 6 * trueMaxRenderDist / 4;
     maxSpeed = trueMaxSpeed;
     heldItem = null;
     spectating = false;
@@ -53,20 +56,20 @@ function updateVelocities() {
     if (a ? d : !d) {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
-        player.velocity.x = (friction * player.velocity.x - (scale/maxSpeed)) / (friction + 1);
+        player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
         orientation = 180;
     } else if (d) {
-        player.velocity.x = (friction * player.velocity.x + (scale/maxSpeed)) / (friction + 1);
+        player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
         orientation = 0;
     }
 
     if (w ? s : !s) {
         player.velocity.y *= friction / (friction + 1);
     } else if (w) {
-        player.velocity.y = (friction * player.velocity.y - (scale/maxSpeed)) / (friction + 1);
+        player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
         orientation = 270;
     } else if (s) {
-        player.velocity.y = (friction * player.velocity.y + (scale/maxSpeed)) / (friction + 1);
+        player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
         orientation = 90;
     }
 }
@@ -119,7 +122,7 @@ function drawInventory() {
     noStroke();
     rectMode(CORNER);
 
-    const w = 200;
+    const w = min(windowWidth, windowHeight) * minimapPercent;
     const edgeX = 0, edgeY = windowHeight;
 
     const topCorner = edgeX + uiPadding, leftCorner = edgeY - w - uiPadding;
@@ -131,10 +134,10 @@ function drawInventory() {
     rect(topCorner, leftCorner, w, w);
 
     if (heldItem && heldItem != null) {
-        // draw item sprite
+        // draw item sprite, this is only temporary
         rectMode(CENTER);
         fill(gameColors.power);
-        rect(topCorner + w / 2, leftCorner + w / 2, scale, scale);
+        rect(topCorner + w / 2, leftCorner + w / 2, w * 0.5, w * 0.5);
 
         fill(255);
         textAlign(CENTER, CENTER);
@@ -145,14 +148,16 @@ function drawInventory() {
         if (['Torch', 'Boot', 'GPS', 'Hammer'].includes(heldItem.constructor.name)) {
             // items that are passive for some amount of time
             const weight = 2;
-            const barWidth = 20;
+            const barWidth = w * 0.1;
             strokeWeight(weight);
             stroke(0);
             fill(gameColors.minimap);
-            rect(topCorner + w / 2, leftCorner + w - barWidth, scale, barWidth);
+            const width = w * 0.8;
+            rect(topCorner + w / 2, leftCorner + w * 0.85, width, barWidth);
             noStroke();
 
-            let used = heldItem.timeAvailable / heldItem.maxTime, inter;
+            const used = heldItem.timeAvailable / heldItem.maxTime;
+            let inter;
             if (used > 0.5) {
                 // green -> yellow, reversed because going opposite
                 inter = lerpColor(color(255, 255, 0), color(0, 255, 0), 2 * used - 1);
@@ -163,7 +168,7 @@ function drawInventory() {
 
             fill(inter);
             rectMode(CORNER);
-            rect(topCorner + w / 2 - scale / 2 + weight / 2, leftCorner + w - barWidth * 1.5 + weight / 2, used * (scale - weight), barWidth - weight);
+            rect(topCorner + w / 2 - width / 2 + weight / 2, leftCorner + w * 0.85 - barWidth / 2 + weight / 2, used * (width - weight), barWidth - weight);
         }
 
         if (['GPS', 'Flare', 'Hammer'].includes(heldItem.constructor.name)) {

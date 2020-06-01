@@ -89,6 +89,7 @@ const alertMaxTime = 855;
 // MINIMAP
 let minimap;
 let minimapScale;
+const minimapPercent = 0.3;
 
 // FONTS
 let font;

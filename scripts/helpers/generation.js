@@ -8,7 +8,7 @@ function startGame() {
 
 function correctScale() {
     const smallerDim = (windowWidth < windowHeight ? windowWidth : windowHeight);
-    return (isMonster ? round(smallerDim/12) : round(smallerDim/8));
+    return (isMonster ? round(smallerDim / 12) : round(smallerDim / 8));
 }
 
 function someoneCompleted(id) {
@@ -37,7 +37,7 @@ function genMaze(w, h, holes, numPowerups) {
     m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate();
 
-    minimapScale = scale / max(m.h, m.w);
+    minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 
     for (let spr of getSprites()) {
         let doNotRemove = false;
