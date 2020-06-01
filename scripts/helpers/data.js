@@ -15,7 +15,7 @@ let totalAssets;
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 const maxUsernameLength = 10;
 const connectionFailTime = 3000;
-let mainMenu;
+let mainMenu, kickMenu;
 let nameMenu;
 let joinMenu, connMenu, waitMenu;
 let hostMenu, modeMenu;
@@ -33,6 +33,8 @@ let allPlayers;
 let deadPlayers = [];
 let connectedToServer;
 let idToName = {};
+const partySizeMinimum = 1; //should probably be 2 later on
+const partySizeMaximum = 5;
 const peerConfig = {
     secure: true,
     host: 'labyrinth-escape.herokuapp.com',
@@ -112,6 +114,13 @@ function initMenus() {
             new MenuOption("CHANGE NAME")
         ]
     ];
+
+    kickMenu = [
+        "KICKMENU", "KICKED FROM THE PARTY", "",
+        [
+            new MenuOption("DANG IT")
+        ]
+    ]
 
     nameMenu = [
         "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",

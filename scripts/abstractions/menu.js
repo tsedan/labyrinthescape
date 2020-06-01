@@ -12,9 +12,13 @@ class Menu {
 
         if (mode == hostMenu[0]) {
             if (index == 0) {
-                mazeSeed = Date.now();
-                sendStartInfo();
-                startGame();
+                if (allConnections.length+1 >= partySizeMinimum) {
+                    mazeSeed = Date.now();
+                    sendStartInfo();
+                    startGame();
+                } else {
+                    this.subtitle = "please invite more players before starting a game";
+                }
             }
             if (index == 1) {
                 this.changeMenu(...modeMenu);
@@ -53,6 +57,12 @@ class Menu {
             }
         }
 
+        if (mode == kickMenu[0]) {
+            if (index == 0) {
+                this.changeMenu(...joinMenu);
+            }
+        }
+
         if (mode == connFailMenu[0]) {
             if (index == 0) {
                 this.changeMenu(...joinMenu);
@@ -73,7 +83,7 @@ class Menu {
 
         if (mode == winMenu[0]) {
             if (index == 0) {
-                //PLAY AGAIN
+                //TODO: PLAY AGAIN
             }
             if (index == 1) {
                 resetGame();

@@ -3,8 +3,6 @@ function connectionHost() {
         isHost = true;
 
         conn.on('open', function () {
-            conn.send('starthandshake');
-
             conn.on('data', function (data) {
                 let splitData = data.split(',');
                 if (splitData[0] == 'confirmhandshake') {
@@ -84,6 +82,13 @@ function connectionHost() {
                         break;
                 }
             });
+
+            if (allConnections.length+1 < partySizeMaximum) {
+                conn.send('starthandshake');
+            } else {
+                conn.send('refuseconnection,party player cap was reached');
+                setTimeout(() => { conn.close() }, 1000); // setting a timeout is required or else itll close before the message is sent
+            }
         });
     });
 }
@@ -95,18 +100,23 @@ function connectToHost(id) {
 
     conn.on('open', () => {
         conn.on('data', (data) => {
-            if (data == "starthandshake") {
+            let splitData = data.split(',');
+            if (splitData[0] == 'starthandshake') {
                 allConnections.push(conn);
 
                 menu.changeMenu(...waitMenu);
 
-                conn.send("confirmhandshake");
+                conn.send('confirmhandshake');
                 conn.send('name,' + idToName[myID]);
+            }
+            if (splitData[0] == 'refuseconnection') {
+                menu.changeMenu(...kickMenu);
+                menu.subtitle = splitData[1];
+                conn.close();
+                return;
             }
 
             if (allConnections.length == 0) return; //Dont handle events unless we got 'starthandshake'
-
-            let splitData = data.split(",");
 
             switch (splitData[0]) {
                 case 'start':
