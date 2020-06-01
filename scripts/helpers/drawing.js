@@ -31,7 +31,7 @@ function normalMode() {
 }
 
 function drawMenuBackground() {
-    const lineSize = scale / 4;
+    const lineSize = originalScale / 4;
     const radius = windowWidth / 2;
     const mX = cos(frameCount / 16) * radius;
     const mY = sin(frameCount / 16) * radius;
