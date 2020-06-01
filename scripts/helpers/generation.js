@@ -188,8 +188,7 @@ function shuffleArray(array) {
 function removeWall(chosen) {
     m.grid[chosen[1]][chosen[0]] = 0;
 
-    for (let s of walls) {
-
+    for (let s of walls) {        
         let tlCorner = [floor((s.position.x - s.width / 2 + 1) / scale), floor((s.position.y - s.height / 2 + 1) / scale)];
         let brCorner = [floor((s.position.x + s.width / 2 - 1) / scale), floor((s.position.y + s.height / 2 - 1) / scale)];
 

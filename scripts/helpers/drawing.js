@@ -1,10 +1,11 @@
 function changeScale(newScale) {
     for (let spr of getSprites()) {
-        spr.position.x *= newScale / scale;
-        spr.position.y *= newScale / scale;
-        spr.velocity.x *= newScale / scale;
-        spr.velocity.y *= newScale / scale;
-        spr.scale *= newScale / scale;
+        spr.position.x *= newScale/scale;
+        spr.position.y *= newScale/scale;
+        spr.velocity.x *= newScale/scale;
+        spr.velocity.y *= newScale/scale;
+        spr.width *= newScale/scale;
+        spr.height *= newScale/scale;
     }
     scale = newScale;
 
@@ -34,7 +35,7 @@ function normalMode() {
 }
 
 function drawMenuBackground() {
-    const lineSize = scale / 4;
+    const lineSize = originalScale / 4;
     const radius = windowWidth / 2;
     const mX = cos(frameCount / 16) * radius;
     const mY = sin(frameCount / 16) * radius;

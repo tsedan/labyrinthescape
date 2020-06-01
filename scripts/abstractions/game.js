@@ -52,10 +52,10 @@ class Game {
         textAlign(CENTER, BOTTOM);
         fill(gameColors.player);
         textFont(font);
-        textSize(32);
+        textSize(scale/2);
         for (let k of Object.keys(playerPos)) {
             if (!playerPos[k].visible) continue;
-            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].width / 2 - 10);
+            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].height/3);
         }
 
         camera.off();
