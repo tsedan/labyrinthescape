@@ -4,6 +4,8 @@ function startGame() {
     camera.position.x = player.position.x;
     camera.position.y = player.position.y;
     changeScale(correctScale());
+    if (isMonster) newAlert("YOU ARE THE MONSTER, HUNT THE PLAYERS!");
+    else newAlert("YOU ARE A PLAYER, ESCAPE THE MAZE!");
 }
 
 function correctScale() {
@@ -81,7 +83,7 @@ function genMaze(w, h, holes, numPowerups) {
         new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
         new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 10 * 1000),
         new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
-        new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
+        new ThrowingKnife(genObj(0, 0, scale / 4, scale / 4, gameColors.power)),
     ];
 
     shuffleArray(powerups);
@@ -188,7 +190,7 @@ function shuffleArray(array) {
 function removeWall(chosen) {
     m.grid[chosen[1]][chosen[0]] = 0;
 
-    for (let s of walls) {        
+    for (let s of walls) {
         let tlCorner = [floor((s.position.x - s.width / 2 + 1) / scale), floor((s.position.y - s.height / 2 + 1) / scale)];
         let brCorner = [floor((s.position.x + s.width / 2 - 1) / scale), floor((s.position.y + s.height / 2 - 1) / scale)];
 

@@ -4,9 +4,12 @@ class Powerup {
     }
 
     draw() {
-        this.sprite.collide(walls);
-        this.sprite.velocity.x *= friction / (friction + 1);
-        this.sprite.velocity.y *= friction / (friction + 1);
+        this.sprite.collide(walls, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
+        // this.sprite.velocity.x *= friction / (friction + 1);
+        // this.sprite.velocity.y *= friction / (friction + 1);
         drawSprite(this.sprite);
     }
 
@@ -21,6 +24,7 @@ class Powerup {
         if (orientation == 270) this.sprite.position.y += -scale / 2
 
         this.sprite.setSpeed(10, orientation);
+        this.sprite.friction = 0.1;
 
         this.sendDropInfo();
     }
@@ -38,7 +42,7 @@ class Powerup {
 
     sendDropInfo() {
         let d = ['powerupdropped', this.index, this.sprite.position.x / scale, this.sprite.position.y / scale,
-            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.timeAvailable].join(',');
+            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.sprite.friction, this.timeAvailable, false].join(',');
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
                 allConnections[0].send(d);
@@ -340,6 +344,7 @@ class Flare extends Powerup {
 
                 minimap.flareLocations[d[1] + "," + d[2]] = color(d[3]);
                 minimap.flareTimings[d[1] + "," + d[2]] = this.timeAvailable;
+                newAlert("A FLARE HAS BEEN USED");
             }
         }
 
@@ -350,6 +355,7 @@ class Flare extends Powerup {
         } else {
             minimap.flareLocations[d[1] + "," + d[2]] = color(d[3]);
             minimap.flareTimings[d[1] + "," + d[2]] = this.timeAvailable;
+            newAlert("A FLARE HAS BEEN USED");
 
             sendFlareUsedInfo(d.join(','));
         }
@@ -489,6 +495,121 @@ class Hammer extends Powerup {
                     super.drop();
                 }
 
+                break;
+        }
+    }
+}
+
+class ThrowingKnife extends Powerup {
+    constructor(sprite) {
+        super(sprite);
+
+        // 0 - never used, 1 - in inv, 2 - being thrown, 3 - used
+        this.used = 0;
+    }
+
+    use() {
+        this.sprite.visible = true;
+        this.sprite.position.x = player.position.x;
+        this.sprite.position.y = player.position.y;
+
+        if (orientation == 0) this.sprite.position.x += scale / 2
+        if (orientation == 180) this.sprite.position.x += -scale / 2
+        if (orientation == 90) this.sprite.position.y += scale / 2
+        if (orientation == 270) this.sprite.position.y += -scale / 2
+
+        this.sprite.setSpeed(20, orientation);
+        this.sprite.friction = 0;
+
+        let d = ['powerupdropped', this.index, this.sprite.position.x / scale, this.sprite.position.y / scale,
+            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.sprite.friction, this.timeAvailable, true].join(',');
+        if (!isHost && allConnections.length == 1) {
+            if (allConnections[0] && allConnections[0].open) {
+                allConnections[0].send(d);
+            }
+        } else {
+            for (let p in powerupsInUse) {
+                if (powerupsInUse[p] == this.index) {
+                    powerupsInUse.splice(p, 1);
+                }
+            }
+            sendPowerupDroppedInfo(d)
+        }
+    }
+
+    draw() {
+        super.draw();
+    }
+
+    update() {
+        this.draw();
+
+        switch (this.used) {
+            case 0:
+                if (heldItem) break;
+
+                let alreadyInUse = false;
+
+                player.overlap(this.sprite, () => {
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse && !isMonster) {
+                        this.sprite.visible = false;
+                        this.used = 1;
+                        heldItem = this;
+                        super.sendPickupInfo();
+                    }
+                });
+                break;
+
+            case 1:
+
+                // space
+                if (keyIsDown(32)) {
+                    this.use();
+                    this.used = 2;
+                    heldItem = null;
+                }
+
+                // q
+                if (keyIsDown(81)) {
+                    this.used = 0;
+                    heldItem = null;
+                    super.drop();
+                }
+
+                break;
+
+            case 2:
+                if (this.sprite.getSpeed() < 0.01) {
+                    this.used = 0;
+                }
+
+                player.overlap(this.sprite, () => {
+                    let alreadyInUse = false;
+
+                    for (let i in powerupsInUse) {
+                        if (powerupsInUse[i] == this.index) {
+                            alreadyInUse = true;
+                        }
+                    }
+
+                    if (!alreadyInUse) {
+                        if (isMonster) {
+                            this.used = 3;
+                            this.sprite.visible = false;
+                            super.sendPickupInfo();
+                            console.log("MONSTER GOT SHOT F")
+                        } else {
+                            this.sprite.setVelocity(0, 0);
+                            this.used = 0;
+                        }
+                    }
+                });
                 break;
         }
     }

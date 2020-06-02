@@ -128,6 +128,7 @@ function resetAllValues() {
     heldItem = null;
     orientation = 0;
     isDead = false;
+    tempDead = false;
     spectating = false;
     m = null;
     walls = null;

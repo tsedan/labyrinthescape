@@ -1,11 +1,11 @@
 function changeScale(newScale) {
     for (let spr of getSprites()) {
-        spr.position.x *= newScale/scale;
-        spr.position.y *= newScale/scale;
-        spr.velocity.x *= newScale/scale;
-        spr.velocity.y *= newScale/scale;
-        spr.width *= newScale/scale;
-        spr.height *= newScale/scale;
+        spr.position.x *= newScale / scale;
+        spr.position.y *= newScale / scale;
+        spr.velocity.x *= newScale / scale;
+        spr.velocity.y *= newScale / scale;
+        spr.width *= newScale / scale;
+        spr.height *= newScale / scale;
     }
     scale = newScale;
 
@@ -172,7 +172,7 @@ function drawInventory() {
             rect(topCorner + w / 2 - width / 2 + weight / 2, leftCorner + w * 0.85 - barWidth / 2 + weight / 2, used * (width - weight), barWidth - weight);
         }
 
-        if (['GPS', 'Flare', 'Hammer'].includes(heldItem.constructor.name)) {
+        if (['GPS', 'Flare', 'Hammer', 'ThrowingKnife'].includes(heldItem.constructor.name)) {
             // powerups that are one time use
             fill(255);
             textAlign(CENTER, CENTER);

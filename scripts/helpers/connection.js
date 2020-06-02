@@ -52,13 +52,18 @@ function connectionHost() {
                             }
                         }
                         powerups[pID].sprite.visible = true;
-                        powerups[pID].sprite.position.x = splitData[2] * scale;
-                        powerups[pID].sprite.position.y = splitData[3] * scale;
-                        powerups[pID].sprite.velocity.x = splitData[4] * scale;
-                        powerups[pID].sprite.velocity.y = splitData[5] * scale;
+                        powerups[pID].sprite.position.x = +splitData[2] * scale;
+                        powerups[pID].sprite.position.y = +splitData[3] * scale;
+                        powerups[pID].sprite.velocity.x = +splitData[4] * scale;
+                        powerups[pID].sprite.velocity.y = +splitData[5] * scale;
+                        powerups[pID].sprite.friction = +splitData[6];
+
+                        if (splitData[8] == 'true') {
+                            powerups[pID].used = 2;
+                        }
 
                         if (['Boot', 'Torch', 'Hammer'].includes(powerups[pID].constructor.name)) {
-                            powerups[pID].timeAvailable = +splitData[6];
+                            powerups[pID].timeAvailable = +splitData[7];
                         }
 
                         sendPowerupDroppedInfo(data);
@@ -67,6 +72,7 @@ function connectionHost() {
                         if (!isMonster) {
                             minimap.flareLocations[splitData[1] + "," + splitData[2]] = color(splitData[3]);
                             minimap.flareTimings[splitData[1] + "," + splitData[2]] = splitData[4];
+                            newAlert("A FLARE HAS BEEN USED");
                         }
                         sendFlareUsedInfo(data);
                         break;
@@ -83,7 +89,7 @@ function connectionHost() {
                 }
             });
 
-            if (allConnections.length+1 < partySizeMaximum) {
+            if (allConnections.length + 1 < partySizeMaximum) {
                 conn.send('starthandshake');
             } else {
                 conn.send('refuseconnection,party player cap was reached');
@@ -154,19 +160,25 @@ function connectToHost(id) {
                     }
 
                     powerups[powerupID].sprite.visible = true;
-                    powerups[powerupID].sprite.position.x = splitData[2] * scale;
-                    powerups[powerupID].sprite.position.y = splitData[3] * scale;
-                    powerups[powerupID].sprite.velocity.x = splitData[4] * scale;
-                    powerups[powerupID].sprite.velocity.y = splitData[5] * scale;
+                    powerups[powerupID].sprite.position.x = +splitData[2] * scale;
+                    powerups[powerupID].sprite.position.y = +splitData[3] * scale;
+                    powerups[powerupID].sprite.velocity.x = +splitData[4] * scale;
+                    powerups[powerupID].sprite.velocity.y = +splitData[5] * scale;
+                    powerups[powerupID].sprite.friction = +splitData[6];
+
+                    if (splitData[8] == 'true') {
+                        powerups[powerupID].used = 2;
+                    }
 
                     // last arguments will be powerup specific
                     if (['Boot', 'Torch', 'Hammer'].includes(powerups[powerupID].constructor.name)) {
-                        powerups[powerupID].timeAvailable = +splitData[6];
+                        powerups[powerupID].timeAvailable = +splitData[7];
                     }
                     break;
                 case 'flareused':
                     minimap.flareLocations[splitData[1] + "," + splitData[2]] = color(splitData[3]);
                     minimap.flareTimings[splitData[1] + "," + splitData[2]] = splitData[4];
+                    newAlert("A FLARE HAS BEEN USED");
                     break;
                 case 'hammerused':
                     removeWall([+splitData[1], +splitData[2]]);
