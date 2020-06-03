@@ -8,8 +8,6 @@ class Powerup {
             if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
             if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
         });
-        // this.sprite.velocity.x *= friction / (friction + 1);
-        // this.sprite.velocity.y *= friction / (friction + 1);
         drawSprite(this.sprite);
     }
 
@@ -24,7 +22,7 @@ class Powerup {
         if (orientation == 270) this.sprite.position.y += -scale / 2
 
         this.sprite.setSpeed(10, orientation);
-        this.sprite.friction = 0.1;
+        this.sprite.friction = (friction == 0 ? 0 : 1/friction);
 
         this.sendDropInfo();
     }
@@ -53,7 +51,7 @@ class Powerup {
                     powerupsInUse.splice(p, 1);
                 }
             }
-            sendPowerupDroppedInfo(d)
+            sendPowerupDroppedInfo(d);
         }
     }
 
