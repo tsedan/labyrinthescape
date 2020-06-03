@@ -9,8 +9,7 @@ function changeScale(newScale) {
     }
     scale = newScale;
 
-    if (m)
-        minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
+    if (m) minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 }
 
 function spectatorMode() {

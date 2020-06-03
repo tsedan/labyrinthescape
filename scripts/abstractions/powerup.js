@@ -1,13 +1,14 @@
 class Powerup {
     constructor(sprite) {
         this.sprite = sprite;
+
+        this.pickupDelay = 0;
+        this.maxPickupDelay = 60;
     }
 
     draw() {
-        this.sprite.collide(walls, () => {
-            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
-            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
-        });
+        this.pickupDelay = max(this.pickupDelay-1,0);
+        this.sprite.collide(walls);
         drawSprite(this.sprite);
     }
 
@@ -16,12 +17,12 @@ class Powerup {
         this.sprite.position.x = player.position.x;
         this.sprite.position.y = player.position.y;
 
-        if (orientation == 0) this.sprite.position.x += scale / 2
-        if (orientation == 180) this.sprite.position.x += -scale / 2
-        if (orientation == 90) this.sprite.position.y += scale / 2
-        if (orientation == 270) this.sprite.position.y += -scale / 2
+        // if (orientation == 0) this.sprite.position.x += scale / 2
+        // if (orientation == 180) this.sprite.position.x += -scale / 2
+        // if (orientation == 90) this.sprite.position.y += scale / 2
+        // if (orientation == 270) this.sprite.position.y += -scale / 2
 
-        this.sprite.setSpeed(10, orientation);
+        this.sprite.setSpeed(scale/5, orientation);
         this.sprite.friction = (friction == 0 ? 0 : 1/friction);
 
         this.sendDropInfo();
@@ -103,7 +104,8 @@ class Boot extends Powerup {
                         }
                     }
 
-                    if (!alreadyInUse) {
+                    if (!alreadyInUse && this.pickupDelay == 0) {
+                        this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;
@@ -172,7 +174,8 @@ class Torch extends Powerup {
                         }
                     }
 
-                    if (!alreadyInUse) {
+                    if (!alreadyInUse && this.pickupDelay == 0) {
+                        this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
                         this.startEffect();
                         this.used = 1;
@@ -260,7 +263,8 @@ class GPS extends Powerup {
                         }
                     }
 
-                    if (!alreadyInUse) {
+                    if (!alreadyInUse && this.pickupDelay == 0) {
+                        this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
                         this.used = 1;
                         heldItem = this;
@@ -379,7 +383,8 @@ class Flare extends Powerup {
                         }
                     }
 
-                    if (!alreadyInUse) {
+                    if (!alreadyInUse && this.pickupDelay == 0) {
+                        this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
                         this.used = 1;
                         heldItem = this;
@@ -466,7 +471,8 @@ class Hammer extends Powerup {
                         }
                     }
 
-                    if (!alreadyInUse) {
+                    if (!alreadyInUse && this.pickupDelay == 0) {
+                        this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
                         this.used = 1;
                         heldItem = this;
@@ -554,10 +560,13 @@ class ThrowingKnife extends Powerup {
 
                     if (!alreadyInUse) {
                         if (!isMonster) {
-                            this.sprite.visible = false;
-                            this.used = 1;
-                            heldItem = this;
-                            super.sendPickupInfo();
+                            if (this.pickupDelay == 0) {
+                                this.pickupDelay = this.maxPickupDelay;
+                                this.sprite.visible = false;
+                                this.used = 1;
+                                heldItem = this;
+                                super.sendPickupInfo();
+                            }
                         } else {
                             newAlert("AS THE MONSTER, YOU CANNOT PICK UP A KNIFE");
                         }
@@ -595,15 +604,19 @@ class ThrowingKnife extends Powerup {
                     }
 
                     if (!alreadyInUse) {
-                        this.sprite.setVelocity(0, 0);
-                        this.sprite.visible = false;
-                        super.sendPickupInfo();
                         if (isMonster) {
+                            this.sprite.setVelocity(0, 0);
+                            this.sprite.visible = false;
+                            super.sendPickupInfo();
                             this.used = 3;
                             player.position.x = originalMonsterLoc[0];
                             player.position.y = originalMonsterLoc[1];
                             newAlert("YOU'VE BEEN KILLED BY A PLAYER");
-                        } else {
+                        } else if (this.pickupDelay == 0) {
+                            this.pickupDelay = this.maxPickupDelay;
+                            this.sprite.setVelocity(0, 0);
+                            this.sprite.visible = false;
+                            super.sendPickupInfo();
                             this.used = 1;
                             heldItem = this;
                         }
