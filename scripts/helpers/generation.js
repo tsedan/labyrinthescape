@@ -83,7 +83,7 @@ function genMaze(w, h, holes, numPowerups) {
         new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
         new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 10 * 1000),
         new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
-        new ThrowingKnife(genObj(0, 0, scale / 4, scale / 4, gameColors.power)),
+        new ThrowingKnife(genObj(0, 0, scale / 2, scale / 2, gameColors.power)),
     ];
 
     shuffleArray(powerups);

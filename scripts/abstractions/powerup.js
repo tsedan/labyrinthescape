@@ -546,14 +546,11 @@ class ThrowingKnife extends Powerup {
             case 0:
                 if (heldItem) break;
 
-                let alreadyInUse = false;
-
                 player.overlap(this.sprite, () => {
-                    for (let i in powerupsInUse) {
-                        if (powerupsInUse[i] == this.index) {
+                    let alreadyInUse = false;
+                    for (let i in powerupsInUse)
+                        if (powerupsInUse[i] == this.index)
                             alreadyInUse = true;
-                        }
-                    }
 
                     if (!alreadyInUse && !isMonster) {
                         this.sprite.visible = false;
@@ -583,13 +580,10 @@ class ThrowingKnife extends Powerup {
                 break;
 
             case 2:
-                if (this.sprite.getSpeed() < 0.01) {
-                    this.used = 0;
-                }
+                if (this.sprite.getSpeed() < 0.01) this.used = 0;
 
                 player.overlap(this.sprite, () => {
                     let alreadyInUse = false;
-
                     for (let i in powerupsInUse) {
                         if (powerupsInUse[i] == this.index) {
                             alreadyInUse = true;
@@ -599,12 +593,13 @@ class ThrowingKnife extends Powerup {
                     if (!alreadyInUse) {
                         if (isMonster) {
                             this.used = 3;
-                            this.sprite.visible = false;
-                            super.sendPickupInfo();
-                            console.log("MONSTER GOT SHOT F")
+
+                            // todo: respawn the monster
                         } else {
                             this.sprite.setVelocity(0, 0);
-                            this.used = 0;
+                            this.used = 1;
+                            heldItem = this;
+                            super.sendPickupInfo();
                         }
                     }
                 });
