@@ -65,8 +65,11 @@ function genMaze(w, h, holes, numPowerups) {
         let cC = floor(random() * (m.W - 2)) + 1;
         if (m.grid[cR][cC] == 1) continue;
 
-        monster.position.x = (cC + 0.5) * scale;
-        monster.position.y = (cR + 0.5) * scale;
+        originalMonsterLoc[0] = (cC + 0.5) * scale;
+        originalMonsterLoc[1] = (cR + 0.5) * scale;
+
+        monster.position.x = originalMonsterLoc[0];
+        monster.position.y = originalMonsterLoc[1];
         break;
     }
 

@@ -69,6 +69,7 @@ let powerups;
 let powerupsInUse;
 let border;
 let monster;
+let originalMonsterLoc;
 
 let mazeSeed;
 
@@ -145,6 +146,7 @@ function resetAllValues() {
     minimapScale = null;
     isHost = false;
     scale = originalScale;
+    originalMonsterLoc = [];
 }
 
 function resetGame() {

@@ -552,11 +552,15 @@ class ThrowingKnife extends Powerup {
                         if (powerupsInUse[i] == this.index)
                             alreadyInUse = true;
 
-                    if (!alreadyInUse && !isMonster) {
-                        this.sprite.visible = false;
-                        this.used = 1;
-                        heldItem = this;
-                        super.sendPickupInfo();
+                    if (!alreadyInUse) {
+                        if (!isMonster) {
+                            this.sprite.visible = false;
+                            this.used = 1;
+                            heldItem = this;
+                            super.sendPickupInfo();
+                        } else {
+                            newAlert("AS THE MONSTER, YOU CANNOT PICK UP A KNIFE");
+                        }
                     }
                 });
                 break;
@@ -591,15 +595,17 @@ class ThrowingKnife extends Powerup {
                     }
 
                     if (!alreadyInUse) {
+                        this.sprite.setVelocity(0, 0);
+                        this.sprite.visible = false;
+                        super.sendPickupInfo();
                         if (isMonster) {
                             this.used = 3;
-
-                            // todo: respawn the monster
+                            player.position.x = originalMonsterLoc[0];
+                            player.position.y = originalMonsterLoc[1];
+                            newAlert("YOU'VE BEEN KILLED BY A PLAYER");
                         } else {
-                            this.sprite.setVelocity(0, 0);
                             this.used = 1;
                             heldItem = this;
-                            super.sendPickupInfo();
                         }
                     }
                 });
