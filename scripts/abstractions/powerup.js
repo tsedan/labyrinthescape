@@ -8,7 +8,10 @@ class Powerup {
 
     draw() {
         this.pickupDelay = max(this.pickupDelay-1,0);
-        this.sprite.collide(walls);
+        this.sprite.collide(walls, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
@@ -20,13 +23,8 @@ class Powerup {
         this.sprite.position.x = player.position.x;
         this.sprite.position.y = player.position.y;
 
-        // if (orientation == 0) this.sprite.position.x += scale / 2
-        // if (orientation == 180) this.sprite.position.x += -scale / 2
-        // if (orientation == 90) this.sprite.position.y += scale / 2
-        // if (orientation == 270) this.sprite.position.y += -scale / 2
-
-        this.sprite.setSpeed(scale/5, orientation);
-        this.sprite.friction = (friction == 0 ? 0 : 1/friction);
+        this.sprite.setSpeed(scale / 5, orientation);
+        this.sprite.friction = (friction == 0 ? 0 : 1 / friction);
 
         this.sendDropInfo();
     }
