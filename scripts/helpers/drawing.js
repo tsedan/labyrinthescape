@@ -104,14 +104,13 @@ function drawBasicMenu(header, subtitle, upper) {
 function drawMaze(pX, pY) {
     const bX = max(pX - maxRenderDist - 1, 0), tX = min(pX + maxRenderDist + 1, m.W);
     const bY = max(pY - maxRenderDist - 1, 0), tY = min(pY + maxRenderDist + 1, m.H);
+    const maxHyp = maxRenderDist * scale;
     for (let i = bY; i < tY; i++) {
         for (let j = bX; j < tX; j++) {
             const locX = (j + 0.5) * scale, locY = (i + 0.5) * scale;
             const hyp = dist(player.position.x, player.position.y, locX, locY);
             const imageArray = (m.grid[i][j] ? wallImages : floorImages);
-            const maxHyp = maxRenderDist * scale;
-            if (hyp > maxHyp) continue;
-            image(imageArray[floor(99 * hyp / maxHyp)], locX, locY, scale, scale);
+            if (hyp <= maxHyp) image(imageArray[floor(100 * hyp / maxHyp)], locX, locY, scale, scale);
         }
     }
 }

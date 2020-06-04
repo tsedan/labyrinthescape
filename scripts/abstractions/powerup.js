@@ -9,7 +9,10 @@ class Powerup {
     draw() {
         this.pickupDelay = max(this.pickupDelay-1,0);
         this.sprite.collide(walls);
-        drawSprite(this.sprite);
+        const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
+        const maxHyp = maxRenderDist * scale;
+        if (hyp <= maxHyp && this.sprite.visible)
+            image(torchImages[floor(100 * hyp / maxHyp)],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
     }
 
     drop() {

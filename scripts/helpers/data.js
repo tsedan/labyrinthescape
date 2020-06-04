@@ -7,6 +7,7 @@ let peer;
 // IMAGES
 let wallImages = [];
 let floorImages = [];
+let torchImages = [];
 const lightingInterval = 1;
 let assetsLoaded;
 let totalAssets;

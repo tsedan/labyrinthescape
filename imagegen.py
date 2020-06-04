@@ -1,11 +1,19 @@
 from PIL import Image
 
-stem = 'assets/wall/Wall'
-interval = 1
-img = Image.open(stem + '.png')
-black = Image.new('RGB', img.size, (0, 0, 0))
+path = 'assets/torch/Torch'
+original = Image.open(path + '.png')
+black = Image.new('RGBA', original.size, (0, 0, 0, 255))
+opacities = [pixel[3] for pixel in original.getdata()]
 
-for i in range(0, 101, interval):
-    mask = Image.new('L', img.size, 255 - int(255 * i/100))
-    im = Image.composite(img, black, mask)
-    im.save(stem + str(i) + '.png')
+for opacity in range(0, 101, 1):
+    mask = Image.new('L', original.size, 255 - int(255 * opacity/100))
+    masked = Image.composite(original, black, mask)
+    pixels = masked.getdata()
+
+    newPixels = []
+    for index, pixel in enumerate(pixels):
+        if (opacities[index] == 0): newPixels.append((0, 0, 0, 0))
+        else: newPixels.append(pixel)
+
+    masked.putdata(newPixels)
+    masked.save(path + str(opacity) + '.png')
