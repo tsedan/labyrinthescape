@@ -15,7 +15,7 @@ class Powerup {
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
-            image(torchImages[floor(100 * hyp / maxHyp)],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
+            image(allAssets.torch[floor(100 * hyp / maxHyp)],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
     }
 
     drop() {

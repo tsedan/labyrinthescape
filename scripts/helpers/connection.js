@@ -10,7 +10,7 @@ function connectionHost() {
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     menu.update();
                 }
-                if (allConnections.indexOf(conn) == -1) return; //Dont handle events if i havent recieved confirmhandshake
+                if (allConnections.indexOf(conn) == -1) return;
                 switch (splitData[0]) {
                     case 'pos':
                         playerPos[conn.peer].position.x = splitData[1] * scale;
@@ -93,7 +93,7 @@ function connectionHost() {
                 conn.send('starthandshake');
             } else {
                 conn.send('refuseconnection,party player cap was reached');
-                setTimeout(() => { conn.close() }, 1000); // setting a timeout is required or else itll close before the message is sent
+                setTimeout(() => { conn.close() }, 1000);
             }
         });
     });
@@ -122,7 +122,7 @@ function connectToHost(id) {
                 return;
             }
 
-            if (allConnections.length == 0) return; //Dont handle events unless we got 'starthandshake'
+            if (allConnections.length == 0) return;
 
             switch (splitData[0]) {
                 case 'start':
@@ -170,7 +170,6 @@ function connectToHost(id) {
                         powerups[powerupID].used = 2;
                     }
 
-                    // last arguments will be powerup specific
                     if (['Boot', 'Torch', 'Hammer'].includes(powerups[powerupID].constructor.name)) {
                         powerups[powerupID].timeAvailable = +splitData[7];
                     }

@@ -5,12 +5,10 @@ let game;
 let peer;
 
 // IMAGES
-let wallImages = [];
-let floorImages = [];
-let torchImages = [];
+const allAssets = { floor : [], torch : [], wall : [] }
 const lightingInterval = 1;
-let assetsLoaded;
-let totalAssets;
+let assetsLoaded = 0;
+let totalAssets = (101 / lightingInterval) * Object.keys(allAssets).length;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
