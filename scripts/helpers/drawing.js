@@ -110,7 +110,7 @@ function drawMaze(pX, pY) {
             const locX = (j + 0.5) * scale, locY = (i + 0.5) * scale;
             const hyp = dist(player.position.x, player.position.y, locX, locY);
             const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
-            if (hyp <= maxHyp) image(imageArray[floor(100 * hyp / maxHyp)], locX, locY, scale, scale);
+            if (hyp <= maxHyp) image(imageArray[floor((100/lightInt) * (hyp/maxHyp))], locX, locY, scale, scale);
         }
     }
 }

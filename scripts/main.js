@@ -10,7 +10,7 @@ function setup() {
     noSmooth();
 
     for (let key of Object.keys(allAssets))
-        for (let i = 0; i <= 100; i += lightingInterval)
+        for (let i = 0; i <= 100; i += lightInt)
             allAssets[key].push(loadImage("assets/" + key + "/opaque" + i + '.png', img => { assetsLoaded++; }));
 
     resetGame();

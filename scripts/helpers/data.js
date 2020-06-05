@@ -6,9 +6,9 @@ let peer;
 
 // IMAGES
 const allAssets = { floor : [], torch : [], wall : [] }
-const lightingInterval = 1;
+const lightInt = 1;
 let assetsLoaded = 0;
-let totalAssets = (101 / lightingInterval) * Object.keys(allAssets).length;
+const totalAssets = (101 / lightInt) * Object.keys(allAssets).length;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";

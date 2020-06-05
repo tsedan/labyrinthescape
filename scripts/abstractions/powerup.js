@@ -1,6 +1,7 @@
 class Powerup {
-    constructor(sprite) {
+    constructor(sprite, asset) {
         this.sprite = sprite;
+        this.asset = asset;
 
         this.pickupDelay = 0;
         this.maxPickupDelay = 60;
@@ -15,7 +16,7 @@ class Powerup {
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
-            image(allAssets.torch[floor(100 * hyp / maxHyp)],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
+            image(allAssets[this.asset][floor((100/lightInt) * (hyp/maxHyp))],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
     }
 
     drop() {
@@ -69,7 +70,7 @@ class Powerup {
 
 class Boot extends Powerup {
     constructor(sprite, timeAvailable, speedIncrease) {
-        super(sprite)
+        super(sprite, "torch");
         this.timeAvailable = timeAvailable;
         this.maxTime = timeAvailable;
         this.speedIncrease = speedIncrease;
@@ -139,7 +140,7 @@ class Boot extends Powerup {
 
 class Torch extends Powerup {
     constructor(sprite, timeAvailable, renderIncrease) {
-        super(sprite)
+        super(sprite, "torch");
         this.timeAvailable = timeAvailable;
         this.maxTime = timeAvailable;
         this.renderIncrease = renderIncrease;
@@ -209,7 +210,7 @@ class Torch extends Powerup {
 
 class GPS extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite)
+        super(sprite, "torch");
         this.angle = 0;
         this.chosen = player;
 
@@ -325,7 +326,7 @@ class GPS extends Powerup {
 
 class Flare extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite);
+        super(sprite, "torch");
         this.timeAvailable = timeAvailable;
 
         // 0 - never used, 1 - in inv, 2 - used
@@ -417,7 +418,7 @@ class Flare extends Powerup {
 
 class Hammer extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite);
+        super(sprite, "torch");
 
         // number of uses, weird name so inv works
         this.timeAvailable = timeAvailable;
@@ -507,7 +508,7 @@ class Hammer extends Powerup {
 
 class ThrowingKnife extends Powerup {
     constructor(sprite) {
-        super(sprite);
+        super(sprite, "torch");
 
         // 0 - never used, 1 - in inv, 2 - being thrown, 3 - used
         this.used = 0;
