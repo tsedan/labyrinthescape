@@ -418,7 +418,7 @@ class Flare extends Powerup {
 
 class Hammer extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite, "torch");
+        super(sprite, "hammer");
 
         // number of uses, weird name so inv works
         this.timeAvailable = timeAvailable;
