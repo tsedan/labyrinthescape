@@ -210,7 +210,7 @@ class Torch extends Powerup {
 
 class GPS extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite, "torch");
+        super(sprite, "gps");
         this.angle = 0;
         this.chosen = player;
 
@@ -326,7 +326,7 @@ class GPS extends Powerup {
 
 class Flare extends Powerup {
     constructor(sprite, timeAvailable) {
-        super(sprite, "torch");
+        super(sprite, "flare");
         this.timeAvailable = timeAvailable;
 
         // 0 - never used, 1 - in inv, 2 - used
@@ -508,9 +508,9 @@ class Hammer extends Powerup {
 
 class ThrowingKnife extends Powerup {
     constructor(sprite) {
-        super(sprite, "torch");
+        super(sprite, "knife");
 
-        // 0 - never used, 1 - in inv, 2 - being thrown, 3 - used
+        // 0 - never used, 1 - in inv, 2 - being thrown
         this.used = 0;
     }
 
