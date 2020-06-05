@@ -1,6 +1,6 @@
 from PIL import Image
 
-path = 'assets/hammer'
+path = 'assets/boots'
 original = Image.open(path + '/original.png')
 black = Image.new('RGBA', original.size, (0, 0, 0, 255))
 opacities = [pixel[3] for pixel in original.getdata()]

@@ -70,7 +70,7 @@ class Powerup {
 
 class Boot extends Powerup {
     constructor(sprite, timeAvailable, speedIncrease) {
-        super(sprite, "torch");
+        super(sprite, "boots");
         this.timeAvailable = timeAvailable;
         this.maxTime = timeAvailable;
         this.speedIncrease = speedIncrease;
