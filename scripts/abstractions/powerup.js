@@ -2,7 +2,7 @@ class Powerup {
     constructor(sprite, asset) {
         this.sprite = sprite;
         this.asset = asset;
-        this.useVerb = 'USE';
+        this.useVerb = "USE";
 
         this.pickupDelay = 0;
         this.maxPickupDelay = 60;
@@ -72,10 +72,11 @@ class Powerup {
 class Boot extends Powerup {
     constructor(sprite, timeAvailable, speedIncrease) {
         super(sprite, "boots");
+        this.useVerb = "WEAR";
         this.timeAvailable = timeAvailable;
         this.maxTime = timeAvailable;
         this.speedIncrease = speedIncrease;
-        // 0 - never used, 1 - in use, 2 - already used
+        // 0 - never used, 1 - in inv, 2 - in use, 3 - used
         this.used = 0;
     }
 
@@ -110,7 +111,6 @@ class Boot extends Powerup {
                     if (!alreadyInUse && this.pickupDelay == 0) {
                         this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
-                        this.startEffect();
                         this.used = 1;
                         heldItem = this;
                         super.sendPickupInfo();
@@ -119,22 +119,28 @@ class Boot extends Powerup {
                 break;
 
             case 1:
-                this.timeAvailable -= deltaTime;
-                if (this.timeAvailable < 0) {
-                    this.removeEffect();
+                // space
+                if (keyIsDown(32)) {
                     this.used = 2;
-                    heldItem = null;
+                    this.startEffect();
                 }
 
                 // q
                 if (keyIsDown(81)) {
-                    this.removeEffect();
                     this.used = 0;
                     heldItem = null;
                     super.drop();
                 }
 
                 break;
+
+            case 2:
+                this.timeAvailable -= deltaTime;
+                if (this.timeAvailable < 0) {
+                    this.removeEffect();
+                    this.used = 3;
+                    heldItem = null;
+                }
         }
     }
 }
@@ -142,10 +148,11 @@ class Boot extends Powerup {
 class Torch extends Powerup {
     constructor(sprite, timeAvailable, renderIncrease) {
         super(sprite, "torch");
+        this.useVerb = "IGNITE";
         this.timeAvailable = timeAvailable;
         this.maxTime = timeAvailable;
         this.renderIncrease = renderIncrease;
-        // 0 - never used, 1 - in use, 2 - already used
+        // 0 - never used, 1 - in inv, 2 - in use, 3 - used
         this.used = 0;
     }
 
@@ -180,7 +187,6 @@ class Torch extends Powerup {
                     if (!alreadyInUse && this.pickupDelay == 0) {
                         this.pickupDelay = this.maxPickupDelay;
                         this.sprite.visible = false;
-                        this.startEffect();
                         this.used = 1;
                         heldItem = this;
                         super.sendPickupInfo();
@@ -189,22 +195,28 @@ class Torch extends Powerup {
                 break;
 
             case 1:
-                this.timeAvailable -= deltaTime;
-                if (this.timeAvailable < 0) {
-                    this.removeEffect();
+                // space
+                if (keyIsDown(32)) {
                     this.used = 2;
-                    heldItem = null;
+                    this.startEffect();
                 }
 
                 // q
                 if (keyIsDown(81)) {
-                    this.removeEffect();
                     this.used = 0;
                     heldItem = null;
                     super.drop();
                 }
 
                 break;
+
+            case 2:
+                this.timeAvailable -= deltaTime;
+                if (this.timeAvailable < 0) {
+                    this.removeEffect();
+                    this.used = 3;
+                    heldItem = null;
+                }
         }
     }
 }
@@ -212,6 +224,7 @@ class Torch extends Powerup {
 class GPS extends Powerup {
     constructor(sprite, timeAvailable) {
         super(sprite, "gps");
+        super.useVerb = "TRACK";
         this.angle = 0;
         this.chosen = player;
 
@@ -328,6 +341,7 @@ class GPS extends Powerup {
 class Flare extends Powerup {
     constructor(sprite, timeAvailable) {
         super(sprite, "flare");
+        super.useVerb = "LIGHT";
         this.timeAvailable = timeAvailable;
 
         // 0 - never used, 1 - in inv, 2 - used
@@ -420,6 +434,7 @@ class Flare extends Powerup {
 class Hammer extends Powerup {
     constructor(sprite, timeAvailable) {
         super(sprite, "hammer");
+        super.useVerb = "SWING";
 
         // number of uses, weird name so inv works
         this.timeAvailable = timeAvailable;
@@ -510,6 +525,7 @@ class Hammer extends Powerup {
 class ThrowingKnife extends Powerup {
     constructor(sprite) {
         super(sprite, "knife");
+        super.useVerb = "THROW";
 
         // 0 - never used, 1 - in inv, 2 - being thrown
         this.used = 0;

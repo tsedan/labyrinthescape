@@ -138,7 +138,9 @@ function drawInventory() {
         textAlign(CENTER, CENTER);
         textFont(font);
         textSize(32);
-        text("[Q] TO DROP", topCorner + w / 2, leftCorner - uiPadding);
+
+        if (heldItem.used < 2)
+            text("[Q] TO DROP", topCorner + w / 2, leftCorner - uiPadding);
 
         if (['Torch', 'Boot', 'GPS', 'Hammer'].includes(heldItem.constructor.name)) {
             // items that are passive for some amount of time
@@ -167,11 +169,11 @@ function drawInventory() {
             rect(topCorner + w / 2 - width / 2 + weight / 2, leftCorner + w * 0.85 - barWidth / 2 + weight / 2, used * (width - weight), barWidth - weight);
         }
 
-        if (['GPS', 'Flare', 'Hammer', 'ThrowingKnife'].includes(heldItem.constructor.name)) {
+        if (heldItem.used < 2 && ['GPS', 'Flare', 'Hammer', 'ThrowingKnife', 'Boot', 'Torch'].includes(heldItem.constructor.name)) {
             // powerups that are one time use
             fill(255);
             textAlign(CENTER, CENTER);
-            text("[SPACE] TO USE", topCorner + w / 2, leftCorner - uiPadding - 32);
+            text("[SPACE] TO " + heldItem.useVerb, topCorner + w / 2, leftCorner - uiPadding - 32);
         }
     }
 
