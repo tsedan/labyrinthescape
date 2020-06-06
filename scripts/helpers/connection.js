@@ -107,6 +107,7 @@ function connectToHost(id) {
     conn.on('open', () => {
         conn.on('data', (data) => {
             let splitData = data.split(',');
+            console.log(splitData)
             if (splitData[0] == 'starthandshake') {
                 allConnections.push(conn);
 
@@ -129,6 +130,10 @@ function connectToHost(id) {
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     isMonster = player == monster;
+                    mazeStartWidth = +splitData[3];
+                    mazeStartHeight = +splitData[4];
+                    numberOfMazes = +splitData[5];
+                    holeProbability = +splitData[6];
                     startGame();
                     break;
                 case 'pos':
@@ -334,7 +339,7 @@ function sendStartInfo() {
 
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
-            allConnections[c].send('start,' + mazeSeed + ',' + monsterID);
+            allConnections[c].send('start,' + mazeSeed + ',' + monsterID + ',' + mazeStartWidth + ',' + mazeStartHeight + ',' + numberOfMazes + ',' + holeProbability);
         }
     }
 }
