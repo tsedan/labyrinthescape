@@ -102,9 +102,6 @@ class MazeGenerator {
                 this.start = [floor(random() * this.h) * 2 + 1, this.W - 1]  // East
                 this.end = [floor(random() * this.h) * 2 + 1, 0];
         }
-
-        if (abs(this.start[0] - this.end[0]) + abs(this.start[1] - this.end[1]) < 2)
-            this.generateEntrances();
     }
 
     addHoles() {
@@ -124,52 +121,22 @@ class MazeGenerator {
     }
 
     addPowerUps() {
-        let powerUpsAdded = this.powers;
-        this.powerLocs = new Array();
-        while (powerUpsAdded > 0) {
-            let current_row = 0;
-            let current_col = 0;
+        let allDeadEnds = [];
+        for (let i = 0; i < this.H; i++) {
+            for (let j = 0; j < this.W; j++) {
+                if (this.grid[i][j] == 1) continue;
+                if (this.findNeighbors(i, j, 1, true).length != 3) continue;
 
-            deadEndFinder: while (true) {
-                current_row = floor(random() * (this.H - 2)) + 1;
-                current_col = floor(random() * (this.W - 2)) + 1;
-
-                if (this.grid[current_row][current_col] == 1) continue;
-                if (this.findNeighbors(current_row, current_col, 1, true).length != 3) continue;
-
-                for (let k of this.powerLocs)
-                    if (current_col == k[1] && current_row == k[0])
-                        continue deadEndFinder;
-
-                break;
+                allDeadEnds.push([i, j]);
             }
+        }
+        console.log(allDeadEnds.length)
 
-            this.powerLocs.push([current_row, current_col]);
-            powerUpsAdded--;
+        shuffleArray(allDeadEnds);
+
+        this.powerLocs = [];
+        for (let i = 0; i < min(allDeadEnds.length, this.powers); i++) {
+            this.powerLocs.push(allDeadEnds[i]);
         }
     }
-
-    /*printPretty() {
-        for (let i = 0; i < this.grid.length; i++) {
-            let ret = "";
-            for (let j = 0; j < this.grid[i].length; j++) {
-                let isPower = false;
-                for (let k of this.powerLocs)
-                    if (j == k[1] && i == k[0])
-                        isPower = true;
-
-                if (isPower) {
-                    ret += "🟦";
-                } else if (j == this.start[1] && i == this.start[0]) {
-                    ret += "🟩";
-                } else if (j == this.end[1] && i == this.end[0]) {
-                    ret += "🟥";
-                } else {
-                    ret += (this.grid[i][j] == 1) ? "⬛️" : "⬜";
-                }
-
-            }
-            console.log(ret);
-        }
-    }*/
 }

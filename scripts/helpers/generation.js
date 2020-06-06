@@ -86,14 +86,14 @@ function genMaze(w, h, holes, numPowerups) {
         new GPS(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 5 * 1000),
         new Flare(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 10 * 1000),
         new Hammer(genObj(0, 0, scale / 2, scale / 2, gameColors.power), 2),
-        new ThrowingKnife(genObj(0, 0, scale / 2, scale / 2, gameColors.power)),
     ];
 
     shuffleArray(powerups);
+    powerups = powerups.slice(0, m.powerLocs.length - 1);
+    powerups.unshift(new ThrowingKnife(genObj(0, 0, scale / 2, scale / 2, gameColors.power)));
+    shuffleArray(powerups);
 
-    for (let p in powerups) powerups[p].setIndex();
-
-    let numP = 0;
+    for (let p in powerups) powerups[p].setIndex(p);
 
     let singleSquares = new Set();
 
@@ -103,12 +103,11 @@ function genMaze(w, h, holes, numPowerups) {
         let colorRect = m.grid[i][0];
 
         for (let j = 0; j < m.grid[0].length; j++) {
-            for (let k of m.powerLocs)
-                if (j == k[1] && i == k[0]) {
-                    currP = powerups[numP];
+            for (let k in m.powerLocs)
+                if (j == m.powerLocs[k][1] && i == m.powerLocs[k][0]) {
+                    currP = powerups[k];
                     currP.sprite.position.x = scale * j + scale / 2;
                     currP.sprite.position.y = scale * i + scale / 2;
-                    numP++;
                 }
             if (j < m.grid[0].length - 1) {
                 if (m.grid[i][j + 1] == m.grid[i][j]) {

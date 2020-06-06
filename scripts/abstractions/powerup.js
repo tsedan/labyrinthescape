@@ -59,13 +59,8 @@ class Powerup {
         }
     }
 
-    setIndex() {
-        for (let p in powerups) {
-            if (powerups[p] == this) {
-                this.index = p;
-                break;
-            }
-        }
+    setIndex(i) {
+        this.index = i;
     }
 }
 
