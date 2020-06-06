@@ -61,13 +61,13 @@ class MazeGenerator {
 
     findNeighbors(r, c, dist, is_wall) {
         let ns = [];
-        if (r > 1 && this.grid[r - dist][c] == is_wall)
+        if (r > dist - 1 && this.grid[r - dist][c] == is_wall)
             ns.push([r - dist, c]);
 
         if (r < this.H - dist && this.grid[r + dist][c] == is_wall)
             ns.push([r + dist, c]);
 
-        if (c > 1 && this.grid[r][c - dist] == is_wall)
+        if (c > dist - 1 && this.grid[r][c - dist] == is_wall)
             ns.push([r, c - dist]);
 
         if (c < this.W - dist && this.grid[r][c + dist] == is_wall)
