@@ -237,14 +237,18 @@ class GPS extends Powerup {
     choosePlayer() {
         if (isMonster) {
             let potential = [];
-            for (let p of allPlayers) {
+            for (let p of allPlayers)
                 if (p != player && deadPlayers.indexOf(p) == -1) potential.push(p);
-            }
 
             if (potential.length == 0) return;
 
-            this.chosen = potential[Math.floor(Math.random() * potential.length)]
+            let min = Infinity, ind = 0;
+            for (let p in potential) {
+                const hyp = dist(potential[p].position.x, potential[p].position.y, player.position.x, player.position.y);
+                if (hyp < min) { min = hyp; ind = p };
+            }
 
+            this.chosen = potential[ind];
         } else {
             this.chosen = monster;
         }
@@ -299,7 +303,7 @@ class GPS extends Powerup {
 
                     this.choosePlayer();
 
-                    let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
+                    let d = round(dist(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
                     newAlert("THE " + (this.chosen == monster ? "TRACKED PLAYER" : "MONSTER") + " IS " + d + " UNITS AWAY FROM YOU");
                 }
 
@@ -313,15 +317,15 @@ class GPS extends Powerup {
                 fill(255);
                 noStroke();
                 triangle(
-                    player.position.x + Math.cos(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
-                    player.position.y - Math.sin(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
-                    player.position.x + Math.cos(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
-                    player.position.y - Math.sin(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
-                    player.position.x + Math.cos(this.angle) * this.arrowHeadDist,
-                    player.position.y - Math.sin(this.angle) * this.arrowHeadDist,
+                    player.position.x + cos(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.y - sin(this.angle - this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.x + cos(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.y - sin(this.angle + this.arrowWingAngle) * this.arrowInnerDist,
+                    player.position.x + cos(this.angle) * this.arrowHeadDist,
+                    player.position.y - sin(this.angle) * this.arrowHeadDist,
                 );
 
-                let d = Math.round(Math.hypot(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
+                let d = round(dist(this.chosen.position.x - player.position.x, this.chosen.position.y - player.position.y) / scale);
                 alertMsg = "THE " + (this.chosen == monster ? "MONSTER" : "TRACKED PLAYER") + " IS " + d + " UNITS AWAY FROM YOU";
                 alertTime = 255;
 
