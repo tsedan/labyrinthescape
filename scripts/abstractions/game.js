@@ -23,6 +23,8 @@ class Game {
             spr.collide(border);
         }
 
+        sendPositionData();
+
         if (spectating) {
             minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
 
@@ -31,7 +33,6 @@ class Game {
             player.overlap(monster, die);
             player.collide(exit, exitReached);
             minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
-            sendPositionData();
 
             for (let p in powerups) powerups[p].update();
         }
