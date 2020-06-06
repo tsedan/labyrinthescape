@@ -332,7 +332,7 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
-    const monsterID = Object.keys(playerPos)[floor(random() * Object.keys(playerPos).length)];
+    const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     isMonster = player == monster;
 
