@@ -74,6 +74,19 @@ class MenuPrompt {
         if (code == 8 && this.value != "") {
             this.value = this.value.substring(0, this.value.length - 1);
             this.backspaceDelay = this.maxBackspaceDelay;
+            return;
+        }
+
+        if (code == 67 && (keyIsDown(17) || keyIsDown(91))) {
+            if (navigator.clipboard.writeText)
+                navigator.clipboard.writeText(this.value);
+            return;
+        }
+
+        if (code == 86 && (keyIsDown(17) || keyIsDown(91))) {
+            if (navigator.clipboard.readText)
+                navigator.clipboard.readText().then(text => { this.value += text.substring(0, this.maxLength-this.value.length) });
+            return;
         }
 
         if (validCharacters.includes(key) && this.value.length < this.maxLength) this.value += key;
