@@ -62,7 +62,7 @@ function connectionHost() {
                             powerups[pID].used = 2;
                         }
 
-                        if (['Boot', 'Torch', 'Hammer'].includes(powerups[pID].constructor.name)) {
+                        if (['Hammer'].includes(powerups[pID].constructor.name)) {
                             powerups[pID].timeAvailable = +splitData[7];
                         }
 
@@ -107,7 +107,6 @@ function connectToHost(id) {
     conn.on('open', () => {
         conn.on('data', (data) => {
             let splitData = data.split(',');
-            console.log(splitData)
             if (splitData[0] == 'starthandshake') {
                 allConnections.push(conn);
 
