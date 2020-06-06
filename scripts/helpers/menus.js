@@ -68,7 +68,8 @@ function initMenus() {
     disbandMenu = [
         "DISBANDMENU", "HOST DISBANDED PARTY", "the host disbanded your current party", [
             new MenuOption("BACK", () => {
-                resetGame();
+                resetAllValues();
+                resetConn();
                 menu.changeMenu(...mainMenu)
             })
         ]
@@ -101,7 +102,7 @@ function initMenus() {
             new MenuSlide(mazeStartWidth, 8, 24, "WIDTH", data => { mazeStartWidth = data }),
             new MenuSlide(mazeStartHeight, 8, 24, "HEIGHT", data => { mazeStartHeight = data }),
             new MenuSlide(numberOfMazes, 1, 7, "QUANTITY", data => { numberOfMazes = data }),
-            new MenuSlide(10 - (holeProbability * 100), 0, 10, "DIFFICULTY", data => { holeProbability = (10 - data) / 100; }),
+            new MenuSlide(round(10 - (holeProbability * 100)), 0, 10, "DIFFICULTY", data => { holeProbability = round((10 - data) / 100); }),
         ]
     ];
 
@@ -109,18 +110,28 @@ function initMenus() {
         "OVERMENU", "YOU WON!", "flex on your friends, or go for another round",
         [
             new MenuOption("PLAY AGAIN", () => {
-                // TODO: PLAY AGAIN
+                resetAllValues();
+                for (let s of getSprites()) {
+                    s.visible = true;
+                    s.width = scale / 2;
+                    s.height = scale / 2;
+                }
+
                 if (isHost) menu.changeMenu(...hostMenu);
-                else menu.changeMenu(...joinMenu);
+                else menu.changeMenu(...waitMenu);
             }),
             new MenuOption("LEAVE PARTY", () => {
                 if (isHost) {
                     sendDisbandParty();
 
-                    setTimeout(() => { resetGame() }, 1000);
+                    setTimeout(() => {
+                        resetAllValues();
+                        resetConn();
+                    }, 1000);
                 }
                 else {
-                    resetGame();
+                    resetAllValues();
+                    resetConn();
                 }
             })
         ]

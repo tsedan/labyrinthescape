@@ -13,7 +13,8 @@ function setup() {
         for (let i = 0; i <= 100; i += lightInt)
             allAssets[key].push(loadImage("assets/" + key + "/opaque" + i + '.png', img => { assetsLoaded++; }));
 
-    resetGame();
+    resetAllValues();
+    resetConn();
     menu.changeMenu(...startNameMenu);
     initializePeer();
 }

@@ -107,22 +107,11 @@ const gameColors = {
 }
 
 function resetAllValues() {
-    for (let c of allConnections) c.close();
-    for (let spr of getSprites()) spr.remove();
-
     gameState = "MENU";
     game = null;
-    menu = null;
-    allConnections = [];
-    playerPos = {};
     finishedPlayers = null;
-    allPlayers = null;
     deadPlayers = [];
-    const myName = idToName[myID];
-    idToName = [];
-    idToName[myID] = (myName ? myName : myID);
     maxRenderDist = trueMaxRenderDist;
-    player = null;
     maxSpeed = trueMaxSpeed;
     isMonster = null;
     heldItem = null;
@@ -143,17 +132,26 @@ function resetAllValues() {
     alertTime = 0;
     minimap = null;
     minimapScale = null;
-    isHost = false;
     scale = originalScale;
     originalMonsterLoc = [];
 }
 
-function resetGame() {
-    resetAllValues();
+function resetConn() {
+    for (let c of allConnections) c.close();
+    for (let spr of getSprites()) spr.remove();
+
+    allConnections = [];
+    playerPos = {};
+    const myName = idToName[myID];
+    idToName = [];
+    idToName[myID] = (myName ? myName : myID);
+    isHost = false;
+
     initMenus();
     menu = new Menu();
     menu.changeMenu(...mainMenu);
     allPlayers = new Group();
+
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
     allPlayers.add(player);
     playerPos[myID] = player;
