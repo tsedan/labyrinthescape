@@ -199,6 +199,9 @@ function connectToHost(id) {
                     gameState = "MENU";
                     menu.changeMenu(...(isMonster ? winMenu : loseMenu));
                     break;
+                case 'disbandparty':
+                    menu.changeMenu(...disbandMenu);
+                    break;
             }
         });
     });
@@ -364,6 +367,16 @@ function sendHammerUsedInfo(chosen) {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send("hammerused," + chosen[0] + "," + chosen[1]);
+        }
+    }
+}
+
+
+function sendDisbandParty() {
+    console.log("sending the disband")
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send("disbandparty");
         }
     }
 }

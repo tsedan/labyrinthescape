@@ -2,13 +2,14 @@ class Powerup {
     constructor(sprite, asset) {
         this.sprite = sprite;
         this.asset = asset;
+        this.useVerb = 'USE';
 
         this.pickupDelay = 0;
         this.maxPickupDelay = 60;
     }
 
     draw() {
-        this.pickupDelay = max(this.pickupDelay-1,0);
+        this.pickupDelay = max(this.pickupDelay - 1, 0);
         this.sprite.collide(walls, () => {
             if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
             if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
@@ -16,7 +17,7 @@ class Powerup {
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
-            image(allAssets[this.asset][floor((100/lightInt) * (hyp/maxHyp))],this.sprite.position.x,this.sprite.position.y,this.sprite.width,this.sprite.height);
+            image(allAssets[this.asset][floor((100 / lightInt) * (hyp / maxHyp))], this.sprite.position.x, this.sprite.position.y, this.sprite.width, this.sprite.height);
     }
 
     drop() {

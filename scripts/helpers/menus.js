@@ -28,6 +28,18 @@ function initMenus() {
         ]
     ];
 
+    startNameMenu = [
+        "STARTNAMEMENU", nameMenu[1], nameMenu[2],
+        [
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, data => {
+                if (data != "") {
+                    idToName[myID] = data;
+                    menu.changeMenu(...mainMenu);
+                }
+            }),
+        ]
+    ]
+
     joinMenu = [
         "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
         [
@@ -53,6 +65,15 @@ function initMenus() {
         ]
     ];
 
+    disbandMenu = [
+        "DISBANDMENU", "HOST DISBANDED PARTY", "the host disbanded your current party", [
+            new MenuOption("BACK", () => {
+                resetGame();
+                menu.changeMenu(...mainMenu)
+            })
+        ]
+    ]
+
     waitMenu = [
         "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
     ];
@@ -61,7 +82,7 @@ function initMenus() {
         "HOSTMENU", "ID: myID, nmPlP", "share this party id with your friends",
         [
             new MenuOption("START", () => {
-                if (allConnections.length+1 >= partySizeMinimum) {
+                if (allConnections.length + 1 >= partySizeMinimum) {
                     mazeSeed = Date.now();
                     sendStartInfo();
                     startGame();
@@ -89,8 +110,19 @@ function initMenus() {
         [
             new MenuOption("PLAY AGAIN", () => {
                 // TODO: PLAY AGAIN
+                if (isHost) menu.changeMenu(...hostMenu);
+                else menu.changeMenu(...joinMenu);
             }),
-            new MenuOption("CONTINUE", () => { resetGame() })
+            new MenuOption("LEAVE PARTY", () => {
+                if (isHost) {
+                    sendDisbandParty();
+
+                    setTimeout(() => { resetGame() }, 1000);
+                }
+                else {
+                    resetGame();
+                }
+            })
         ]
     ];
     loseMenu = [

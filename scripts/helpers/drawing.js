@@ -110,7 +110,7 @@ function drawMaze(pX, pY) {
             const locX = (j + 0.5) * scale, locY = (i + 0.5) * scale;
             const hyp = dist(player.position.x, player.position.y, locX, locY);
             const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
-            if (hyp <= maxHyp) image(imageArray[floor((100/lightInt) * (hyp/maxHyp))], locX, locY, scale, scale);
+            if (hyp <= maxHyp) image(imageArray[floor((100 / lightInt) * (hyp / maxHyp))], locX, locY, scale, scale);
         }
     }
 }
@@ -132,10 +132,7 @@ function drawInventory() {
     rect(topCorner, leftCorner, w, w);
 
     if (heldItem && heldItem != null) {
-        // draw item sprite, this is only temporary
-        rectMode(CENTER);
-        fill(gameColors.power);
-        rect(topCorner + w / 2, leftCorner + w / 2, w * 0.5, w * 0.5);
+        image(allAssets[heldItem.asset][0], topCorner + w / 2, leftCorner + w / 2, w * 0.5, w * 0.5);
 
         fill(255);
         textAlign(CENTER, CENTER);
@@ -151,6 +148,7 @@ function drawInventory() {
             stroke(0);
             fill(gameColors.minimap);
             const width = w * 0.8;
+            rectMode(CENTER)
             rect(topCorner + w / 2, leftCorner + w * 0.85, width, barWidth);
             noStroke();
 

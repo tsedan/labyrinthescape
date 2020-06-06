@@ -5,7 +5,7 @@ let game;
 let peer;
 
 // IMAGES
-const allAssets = { floor:[], wall:[], knife:[], torch:[], gps:[], flare:[], hammer:[], boots:[] }
+const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] }
 const lightInt = 1;
 let assetsLoaded = 0;
 const totalAssets = (101 / lightInt) * Object.keys(allAssets).length;

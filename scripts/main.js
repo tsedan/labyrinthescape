@@ -14,21 +14,22 @@ function setup() {
             allAssets[key].push(loadImage("assets/" + key + "/opaque" + i + '.png', img => { assetsLoaded++; }));
 
     resetGame();
+    menu.changeMenu(...startNameMenu);
     initializePeer();
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     if (gameState == "GAME") {
-        if (spectating) changeScale(correctScale()/2);
+        if (spectating) changeScale(correctScale() / 2);
         else changeScale(correctScale());
     }
 }
 
 function draw() {
     if (assetsLoaded < totalAssets || !connectedToServer) {
-        const percentLoaded = floor(100 * (assetsLoaded+1) / (totalAssets+1));
-        const loadString = percentLoaded + '% (' + (assetsLoaded+1) + '/' + (totalAssets+1) + ')';
+        const percentLoaded = floor(100 * (assetsLoaded + 1) / (totalAssets + 1));
+        const loadString = percentLoaded + '% (' + (assetsLoaded + 1) + '/' + (totalAssets + 1) + ')';
         drawBasicMenu('Loading...', (percentLoaded == 100 ? 'Awaiting Server Connection' : loadString), []);
     } else {
         switch (gameState) {
