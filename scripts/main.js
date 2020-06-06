@@ -15,8 +15,13 @@ function setup() {
 
     resetAllValues();
     resetConn();
-    menu.changeMenu(...startNameMenu);
-    initializePeer();
+
+    if (Modernizr.peerconnection) {
+        menu.changeMenu(...startNameMenu);
+        initializePeer();
+    } else {
+        menu.changeMenu(...notSupportedMenu);
+    }
 }
 
 function windowResized() {

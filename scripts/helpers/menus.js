@@ -40,6 +40,11 @@ function initMenus() {
         ]
     ]
 
+    notSupportedMenu = [
+        "NOTSUPPORTEDMENU", "BROWSER UNSUPPORTED", "please switch to a supported browser (not IE)",
+        []
+    ]
+
     joinMenu = [
         "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
         [
@@ -102,7 +107,7 @@ function initMenus() {
             new MenuSlide(mazeStartWidth, 8, 24, "WIDTH", data => { mazeStartWidth = data }),
             new MenuSlide(mazeStartHeight, 8, 24, "HEIGHT", data => { mazeStartHeight = data }),
             new MenuSlide(numberOfMazes, 1, 7, "QUANTITY", data => { numberOfMazes = data }),
-            new MenuSlide(round(10 - (holeProbability * 100)), 0, 10, "DIFFICULTY", data => { holeProbability = round((10 - data) / 100); }),
+            new MenuSlide(round(10 - (holeProbability * 100)), 0, 10, "DIFFICULTY", data => { holeProbability = (10 - round(data)) / 100; }),
         ]
     ];
 

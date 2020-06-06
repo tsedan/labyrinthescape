@@ -89,11 +89,13 @@ function connectionHost() {
                 }
             });
 
-            if (allConnections.length + 1 < partySizeMaximum) {
-                conn.send('starthandshake');
-            } else {
+            if (allConnections.length + 1 >= partySizeMaximum) {
                 conn.send('refuseconnection,party player cap was reached');
                 setTimeout(() => { conn.close() }, 1000);
+            } else if (gameState != 'MENU' || menu.state != 'HOSTMENU') {
+                conn.send('refuseconnection,host was not in the party creation menu');
+            } else {
+                conn.send('starthandshake');
             }
         });
     });

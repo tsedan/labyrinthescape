@@ -130,7 +130,6 @@ class MazeGenerator {
                 allDeadEnds.push([i, j]);
             }
         }
-        console.log(allDeadEnds.length)
 
         shuffleArray(allDeadEnds);
 
