@@ -134,6 +134,18 @@ function resetAllValues() {
     minimapScale = null;
     scale = originalScale;
     originalMonsterLoc = [];
+
+    for (let spr of getSprites()) {
+        let isPlayer = false;
+        for (let p of allPlayers) {
+            if (p == spr) {
+                isPlayer = true;
+            }
+        }
+
+        if (!isPlayer)
+            spr.remove()
+    };
 }
 
 function resetConn() {

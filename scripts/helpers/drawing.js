@@ -19,7 +19,7 @@ function controlPressed() {
 function spectatorMode() {
     minimap.revealAll();
     player.visible = false;
-    maxRenderDist = trueMaxRenderDist * 2;
+    maxRenderDist = trueMaxRenderDist * 4;
     maxSpeed = spectatorMaxSpeed;
     heldItem = null;
     spectating = true;
