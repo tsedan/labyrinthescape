@@ -129,7 +129,7 @@ function connectToHost(id) {
 
             switch (splitData[0]) {
                 case 'start':
-                    resetAllValues();
+                    //resetAllValues();
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     isMonster = player == monster;
