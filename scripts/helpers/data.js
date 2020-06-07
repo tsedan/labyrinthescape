@@ -14,11 +14,6 @@ const totalAssets = (101 / lightInt) * Object.keys(allAssets).length;
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
 const maxUsernameLength = 10;
 const connectionFailTime = 5000;
-let mainMenu, nameMenu, waitMenu;
-let kickMenu, failMenu;
-let joinMenu, connMenu;
-let hostMenu, modeMenu;
-let winMenu, loseMenu;
 
 // P2P
 let allConnections = [];
@@ -144,15 +139,15 @@ function resetAllValues() {
         }
 
         if (!isPlayer)
-            spr.remove()
+            spr.remove();
     };
 }
 
 function resetConn() {
-    for (let c of allConnections) c.close();
     for (let spr of getSprites()) spr.remove();
-
+    for (let c of allConnections) { c.close(); }
     allConnections = [];
+
     playerPos = {};
     const myName = idToName[myID];
     idToName = [];

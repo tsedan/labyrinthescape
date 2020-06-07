@@ -74,10 +74,10 @@ function initMenus() {
             new MenuOption("BACK", () => {
                 resetAllValues();
                 resetConn();
-                menu.changeMenu(...mainMenu)
+                menu.changeMenu(...mainMenu);
             })
         ]
-    ]
+    ];
 
     waitMenu = [
         "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
@@ -125,18 +125,13 @@ function initMenus() {
                 else menu.changeMenu(...waitMenu);
             }),
             new MenuOption("LEAVE PARTY", () => {
-                if (isHost) {
-                    sendDisbandParty();
+                if (isHost) sendDisbandParty();
+                else allConnections[0].send('leaving');
 
-                    setTimeout(() => {
-                        resetAllValues();
-                        resetConn();
-                    }, 1000);
-                }
-                else {
+                setTimeout(() => {
                     resetAllValues();
                     resetConn();
-                }
+                }, 1000);
             })
         ]
     ];

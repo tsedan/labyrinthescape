@@ -86,6 +86,19 @@ function connectionHost() {
                         sendCompletionInfo(conn.peer);
                         checkMazeCompletion();
                         break;
+                    case 'leaving':
+                        for (let c in allConnections) {
+                            if (allConnections[c].peer == conn.peer) {
+                                allConnections.splice(c,1);
+                                c--;
+                            }
+                        }
+                        playerPos[conn.peer].remove();
+                        delete playerPos[conn.peer];
+                        delete idToName[conn.peer];
+                        conn.close();
+                        menu.update();
+                        break;
                 }
             });
 
