@@ -136,6 +136,7 @@ function connectToHost(id) {
                     mazeStartHeight = +splitData[4];
                     numberOfMazes = +splitData[5];
                     holeProbability = +splitData[6];
+                    resetAllValues();
                     startGame();
                     break;
                 case 'pos':
