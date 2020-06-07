@@ -18,6 +18,7 @@ function someoneCompleted(id) {
         spectatorMode();
         newAlert("YOU EXITED THE MAZE. WAIT FOR YOUR PARTYMATES TO CATCH UP");
     } else {
+        playerPos[id].visible = false;
         newAlert(idToName[id] + " COMPLETED THE MAZE!");
     }
 }

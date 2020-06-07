@@ -33,7 +33,7 @@ class Menu {
             if (this.currOption < 0) this.currOption = this.options.length - 1;
         } else if (code == 13) {
             this.eventHandler();
-        } else if (this.state == hostMenu[0] && code == 67 && (keyIsDown(17) || keyIsDown(91))) {
+        } else if (this.state == hostMenu[0] && code == 67 && controlPressed()) {
             if (navigator.clipboard.writeText)
                 navigator.clipboard.writeText(myID);
         } else {
@@ -80,13 +80,13 @@ class MenuPrompt {
             return;
         }
 
-        if (code == 67 && (keyIsDown(17) || keyIsDown(91))) {
+        if (code == 67 && controlPressed()) {
             if (navigator.clipboard.writeText)
                 navigator.clipboard.writeText(this.value);
             return;
         }
 
-        if (code == 86 && (keyIsDown(17) || keyIsDown(91))) {
+        if (code == 86 && controlPressed()) {
             if (navigator.clipboard.readText)
                 navigator.clipboard.readText().then(text => { this.value += text.substring(0, this.maxLength-this.value.length) });
             return;

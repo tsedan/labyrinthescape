@@ -12,6 +12,10 @@ function changeScale(newScale) {
     if (m) minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 }
 
+function controlPressed() {
+    return keyIsDown(17) || keyIsDown(91) || keyIsDown(224) || keyIsDown(93);
+}
+
 function spectatorMode() {
     minimap.revealAll();
     player.visible = false;

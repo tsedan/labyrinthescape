@@ -94,6 +94,7 @@ function connectionHost() {
                 setTimeout(() => { conn.close() }, 1000);
             } else if (gameState != 'MENU' || menu.state != 'HOSTMENU') {
                 conn.send('refuseconnection,host was not in the party creation menu');
+                setTimeout(() => { conn.close() }, 1000);
             } else {
                 conn.send('starthandshake');
             }
@@ -377,9 +378,7 @@ function sendHammerUsedInfo(chosen) {
     }
 }
 
-
 function sendDisbandParty() {
-    console.log("sending the disband")
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send("disbandparty");

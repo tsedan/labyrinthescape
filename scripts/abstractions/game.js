@@ -9,6 +9,12 @@ class Game {
         finishedPlayers = [];
         genMaze(mazeStartWidth + mazesStarted * mazeGrow, mazeStartHeight + mazesStarted * mazeGrow, holeProbability, powerUpNum);
         if (isDead) { spectatorMode() } else { normalMode() }
+
+        for (let spr of allPlayers) {
+            spr.visible = true;
+            for (let dead of deadPlayers)
+                if (spr == dead) spr.visible = false;
+        }
     }
 
     update() {
