@@ -129,6 +129,7 @@ function connectToHost(id) {
 
             switch (splitData[0]) {
                 case 'start':
+                    resetAllValues();
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     isMonster = player == monster;
@@ -136,7 +137,6 @@ function connectToHost(id) {
                     mazeStartHeight = +splitData[4];
                     numberOfMazes = +splitData[5];
                     holeProbability = +splitData[6];
-                    resetAllValues();
                     startGame();
                     break;
                 case 'pos':
