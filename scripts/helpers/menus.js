@@ -41,8 +41,7 @@ function initMenus() {
     ]
 
     notSupportedMenu = [
-        "NOTSUPPORTEDMENU", "BROWSER UNSUPPORTED", "please switch to a supported browser (not IE)",
-        []
+        "NOTSUPPORTEDMENU", "BROWSER UNSUPPORTED", "please switch to a supported browser (chrome recommended)", []
     ]
 
     joinMenu = [

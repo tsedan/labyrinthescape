@@ -33,6 +33,9 @@ class Menu {
             if (this.currOption < 0) this.currOption = this.options.length - 1;
         } else if (code == 13) {
             this.eventHandler();
+        } else if (this.state == hostMenu[0] && code == 67 && (keyIsDown(17) || keyIsDown(91))) {
+            if (navigator.clipboard.writeText)
+                navigator.clipboard.writeText(myID);
         } else {
             this.options[this.currOption].handleKey(code, key);
         }
