@@ -8,6 +8,7 @@ function connectionHost() {
                 if (splitData[0] == 'confirmhandshake') {
                     allConnections.push(conn);
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                    allPlayers.add(playerPos[conn.peer]);
                     menu.update();
                 }
                 if (allConnections.indexOf(conn) == -1) return;
@@ -89,7 +90,7 @@ function connectionHost() {
                     case 'leaving':
                         for (let c in allConnections) {
                             if (allConnections[c].peer == conn.peer) {
-                                allConnections.splice(c,1);
+                                allConnections.splice(c, 1);
                                 c--;
                             }
                         }
@@ -142,7 +143,13 @@ function connectToHost(id) {
 
             switch (splitData[0]) {
                 case 'start':
-                    //resetAllValues();
+                    resetAllValues();
+                    for (let s of getSprites()) {
+                        s.visible = true;
+                        s.width = scale / 2;
+                        s.height = scale / 2;
+                    }
+
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     isMonster = player == monster;
@@ -163,6 +170,7 @@ function connectToHost(id) {
 
                     let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     playerPos[splitData[1]] = otherPlayer;
+                    allPlayers.add(otherPlayer);
                     break;
                 case 'die':
                     playerPos[splitData[1]].visible = false;

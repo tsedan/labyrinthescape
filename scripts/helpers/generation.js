@@ -57,7 +57,6 @@ function genMaze(w, h, holes, numPowerups) {
         if (playerPos.hasOwnProperty(key)) {
             playerPos[key].position.x = (m.start[1] + 0.5) * scale;
             playerPos[key].position.y = (m.start[0] + 0.5) * scale;
-            allPlayers.add(playerPos[key]);
         }
     }
 
