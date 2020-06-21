@@ -126,7 +126,10 @@ function initMenus() {
             }),
             new MenuOption("LEAVE PARTY", () => {
                 if (isHost) sendDisbandParty();
-                else allConnections[0].send('leaving');
+                else {
+                    if (allConnections[0] && allConnections[0].open)
+                        allConnections[0].send('leaving');
+                }
 
                 setTimeout(() => {
                     resetAllValues();
