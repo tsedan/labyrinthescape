@@ -4,7 +4,8 @@ function initMenus() {
         [
             new MenuOption("CREATE PARTY", () => { menu.changeMenu(...hostMenu) }),
             new MenuOption("JOIN PARTY", () => { menu.changeMenu(...joinMenu) }),
-            new MenuOption("CHANGE NAME", () => { menu.changeMenu(...nameMenu) })
+            new MenuOption("CHANGE NAME", () => { menu.changeMenu(...nameMenu) }),
+            new MenuOption("VIEW TUTORIAL", () => { menu.changeMenu(...tutorialMenu) })
         ]
     ];
 
@@ -12,6 +13,15 @@ function initMenus() {
         "KICKMENU", "KICKED FROM THE PARTY", "you've been kicked by the party leader",
         [
             new MenuOption("DANG IT", () => { menu.changeMenu(...joinMenu) })
+        ]
+    ]
+
+    tutorialMenu = [
+        "TUTORIALMENU", "HOW TO PLAY", "this will cover everything you need to know to play",
+        [
+            new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) }),
+            new MenuOption("PREVIOUS PAGE", () => { if (currentTutorialPage > 0) currentTutorialPage-- }),
+            new MenuOption("NEXT PAGE", () => { if (currentTutorialPage < numTutorialPages - 1) currentTutorialPage++ }),
         ]
     ]
 

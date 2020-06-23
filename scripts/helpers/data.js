@@ -9,6 +9,9 @@ const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [
 const lightInt = 1;
 let assetsLoaded = 0;
 const totalAssets = (101 / lightInt) * Object.keys(allAssets).length;
+const numTutorialPages = 5;
+const tutorialPages = []
+let currentTutorialPage = 0;
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";

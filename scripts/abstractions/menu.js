@@ -88,7 +88,7 @@ class MenuPrompt {
 
         if (code == 86 && controlPressed()) {
             if (navigator.clipboard.readText)
-                navigator.clipboard.readText().then(text => { this.value += text.substring(0, this.maxLength-this.value.length) });
+                navigator.clipboard.readText().then(text => { this.value += text.substring(0, this.maxLength - this.value.length) });
             return;
         }
 

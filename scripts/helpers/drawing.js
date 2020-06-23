@@ -103,6 +103,12 @@ function drawBasicMenu(header, subtitle, upper) {
     for (let i = 0; i < upper.length; i++) {
         text(upper[i], uiPadding, uiPadding + 48 * i);
     }
+
+    if (menu.state == 'TUTORIALMENU') {
+        // ratio of pages is 7:5
+        imageHeight = windowHeight * 0.7;
+        image(tutorialPages[currentTutorialPage], windowWidth / 2, imageHeight / 2, imageHeight / 5 * 7, imageHeight)
+    }
 }
 
 function drawMaze(pX, pY) {
