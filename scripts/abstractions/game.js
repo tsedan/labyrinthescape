@@ -46,10 +46,28 @@ class Game {
 
     draw() {
         background(0);
+        if (inEnding) {
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+            currentEndingTime -= deltaTime;
+            if (currentEndingTime < renderDecreaseTimings[0]) {
+                renderDecreaseTimings.shift();
+                maxRenderDist--;
+
+                if (maxRenderDist <= 0) {
+                    gameState = "MENU";
+                    menu.changeMenu(...endingMenu);
+                    inEnding = false;
+                    return;
+                }
+            }
+        }
 
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        this.update();
+        if (!inEnding) {
+            this.update();
+        }
 
         drawSprite(exit);
         drawSprite(start);

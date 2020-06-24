@@ -58,6 +58,12 @@ let orientation = 0;
 let isDead = false;
 let spectating = false;
 
+let inEnding = false;
+const endingTime = 5000;
+let renderDecreaseTimings = [];
+let currentEndingTime = endingTime;
+let endingMenu = null;
+
 // MAZE
 let m;
 let walls;
@@ -115,6 +121,9 @@ function resetAllValues() {
     heldItem = null;
     orientation = 0;
     isDead = false;
+    inEnding = false;
+    renderDecreaseTimings = [];
+    currentEndingTime = endingTime;
     tempDead = false;
     spectating = false;
     m = null;

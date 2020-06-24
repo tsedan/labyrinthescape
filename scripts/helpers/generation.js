@@ -42,17 +42,6 @@ function genMaze(w, h, holes, numPowerups) {
 
     minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 
-    for (let spr of getSprites()) {
-        let doNotRemove = false;
-        for (let key in playerPos) {
-            if (playerPos.hasOwnProperty(key) && spr == playerPos[key])
-                doNotRemove = true;
-        }
-
-        if (!doNotRemove)
-            spr.remove();
-    }
-
     for (let key in playerPos) {
         if (playerPos.hasOwnProperty(key)) {
             playerPos[key].position.x = (m.start[1] + 0.5) * scale;

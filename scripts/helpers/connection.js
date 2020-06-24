@@ -219,14 +219,12 @@ function connectToHost(id) {
                     newAlert("MAZE FINISHED, NEXT LEVEL STARTED");
                     break;
                 case 'playerwin':
-                    changeScale(correctScale());
-                    gameState = "MENU";
-                    menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
+                    startEnding();
+                    endingMenu = !isMonster ? winMenu : loseMenu
                     break;
                 case 'monsterwin':
-                    changeScale(correctScale());
-                    gameState = "MENU";
-                    menu.changeMenu(...(isMonster ? winMenu : loseMenu));
+                    startEnding();
+                    endingMenu = isMonster ? winMenu : loseMenu
                     break;
                 case 'disbandparty':
                     menu.changeMenu(...disbandMenu);
@@ -259,11 +257,19 @@ function exitReached() {
     }
 }
 
+function startEnding() {
+    changeScale(correctScale());
+    inEnding = true;
+    for (let i = 0; i < endingTime; i += endingTime / maxRenderDist) {
+        renderDecreaseTimings.push(i)
+    }
+    renderDecreaseTimings.reverse();
+}
+
 function checkMazeCompletion() {
     if (deadPlayers.length == Object.keys(playerPos).length - 1) {
-        changeScale(correctScale());
-        gameState = "MENU";
-        menu.changeMenu(...(isMonster ? winMenu : loseMenu));
+        startEnding();
+        endingMenu = isMonster ? winMenu : loseMenu
 
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
@@ -276,9 +282,8 @@ function checkMazeCompletion() {
     if (finishedPlayers.length == 0) return;
     if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
-            changeScale(correctScale());
-            gameState = "MENU";
-            menu.changeMenu(...(!isMonster ? winMenu : loseMenu));
+            startEnding();
+            endingMenu = !isMonster ? winMenu : loseMenu
 
             for (let c in allConnections) {
                 if (allConnections[c] && allConnections[c].open) {
