@@ -97,6 +97,8 @@ const minimapPercent = 0.3;
 
 // FONTS
 let font;
+let fontSizeRatio = 1;
+let fontDefaultWidth = 1440;
 
 // COLORS
 const gameColors = {

@@ -90,7 +90,7 @@ class Game {
         fill(alertFillColor);
         textFont(font);
         textAlign(CENTER, TOP);
-        textSize(48);
+        textSize(48 * fontSizeRatio);
         text(alertMsg, width / 2, uiPadding);
 
         minimap.draw();

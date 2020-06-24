@@ -30,6 +30,7 @@ function setup() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    fontSizeRatio = windowWidth / fontDefaultWidth;
     if (gameState == "GAME") {
         if (spectating) changeScale(correctScale() / 2);
         else changeScale(correctScale());

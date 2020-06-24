@@ -109,7 +109,7 @@ class MenuPrompt {
         }
 
         textAlign(RIGHT, BOTTOM);
-        textSize(64);
+        textSize(64 * fontSizeRatio);
         fill(this.value == "" ? 140 : 255);
         text((isSelected ? "> " : "") + (this.value == "" ? this.placeholder : this.value), right - uiPadding, bottom - uiPadding);
     }
@@ -125,7 +125,7 @@ class MenuOption {
 
     draw(right, bottom, isSelected) {
         textAlign(RIGHT, BOTTOM);
-        textSize(64);
+        textSize(64 * fontSizeRatio);
         fill(255);
         text((isSelected ? "> " : "") + this.value, right - uiPadding, bottom - uiPadding);
     }
@@ -178,7 +178,7 @@ class MenuSlide {
         }
 
         textAlign(RIGHT, BOTTOM);
-        textSize(64);
+        textSize(64 * fontSizeRatio);
         fill(255);
         text((isSelected ? "> " : "") + this.label + ": " + this.value, right - uiPadding, bottom - uiPadding);
     }

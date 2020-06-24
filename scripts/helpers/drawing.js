@@ -93,13 +93,13 @@ function drawBasicMenu(header, subtitle, upper) {
     const left = 0;
 
     textAlign(LEFT, BOTTOM);
-    textSize(64);
+    textSize(64 * fontSizeRatio);
     text(header, left + uiPadding, bottom - uiPadding - 32);
-    textSize(32);
+    textSize(32 * fontSizeRatio);
     text(subtitle, left + uiPadding, bottom - uiPadding);
 
     textAlign(LEFT, TOP);
-    textSize(48);
+    textSize(48 * fontSizeRatio);
     for (let i = 0; i < upper.length; i++) {
         text(upper[i], uiPadding, uiPadding + 48 * i);
     }
@@ -147,7 +147,7 @@ function drawInventory() {
         fill(255);
         textAlign(CENTER, CENTER);
         textFont(font);
-        textSize(32);
+        textSize(32 * fontSizeRatio);
 
         if (heldItem.used < 2)
             text("[Q] TO DROP", topCorner + w / 2, leftCorner - uiPadding);
