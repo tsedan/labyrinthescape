@@ -57,7 +57,7 @@ class Game {
                 if (maxRenderDist <= 0) {
                     gameState = "MENU";
                     menu.changeMenu(...endingMenu);
-                    inEnding = false;
+                    changeScale(correctScale());
                     return;
                 }
             }

@@ -34,8 +34,10 @@ class Menu {
         } else if (code == 13) {
             this.eventHandler();
         } else if (this.state == hostMenu[0] && code == 67 && controlPressed()) {
-            if (navigator.clipboard.writeText)
+            if (navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(myID);
+                menu.subtitle = 'copied!';
+            }
         } else {
             this.options[this.currOption].handleKey(code, key);
         }
@@ -81,8 +83,10 @@ class MenuPrompt {
         }
 
         if (code == 67 && controlPressed()) {
-            if (navigator.clipboard.writeText)
+            if (navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(this.value);
+                menu.subtitle = 'copied!';
+            }
             return;
         }
 

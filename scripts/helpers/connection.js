@@ -30,6 +30,16 @@ function connectionHost() {
                             }
                         }
                         break;
+                    case 'changename':
+                        idToName[conn.peer] = splitData[1];
+                        menu.update();
+
+                        for (let c in allConnections) {
+                            if (allConnections[c].peer != conn.peer) {
+                                allConnections[c].send("changename," + idToName[conn.peer] + "," + conn.peer);
+                            }
+                        }
+                        break;
                     case 'die':
                         playerPos[conn.peer].visible = false;
                         deadPlayers.push(playerPos[conn.peer]);
@@ -177,6 +187,10 @@ function connectToHost(id) {
                     playerPos[splitData[1]] = otherPlayer;
                     allPlayers.add(otherPlayer);
                     break;
+                case 'changename':
+                    idToName[splitData[2]] = splitData[1];
+                    menu.update();
+                    break;
                 case 'die':
                     playerPos[splitData[1]].visible = false;
                     deadPlayers.push(playerPos[splitData[1]]);
@@ -263,7 +277,6 @@ function exitReached() {
 }
 
 function startEnding() {
-    changeScale(correctScale());
     inEnding = true;
     for (let i = 0; i < endingTime; i += endingTime / maxRenderDist) {
         renderDecreaseTimings.push(i)
@@ -419,6 +432,14 @@ function sendDisbandParty() {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send("disbandparty");
+        }
+    }
+}
+
+function sendChangeNameInfo() {
+    for (let c in allConnections) {
+        if (allConnections[c] && allConnections[c].open) {
+            allConnections[c].send('changename,' + idToName[myID] + ',' + peer.id);
         }
     }
 }

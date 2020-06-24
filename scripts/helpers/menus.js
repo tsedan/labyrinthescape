@@ -32,11 +32,26 @@ function initMenus() {
                 if (data != "") {
                     idToName[myID] = data;
                     menu.changeMenu(...mainMenu);
+                    sendChangeNameInfo();
                 }
             }),
             new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) })
         ]
     ];
+
+    waitingNameMenu = [
+        "WAITINGNAMEMENU", nameMenu[1], nameMenu[2],
+        [
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, data => {
+                if (data != "") {
+                    idToName[myID] = data;
+                    menu.changeMenu(...waitMenu);
+                    sendChangeNameInfo();
+                }
+            }),
+            new MenuOption("BACK", () => { menu.changeMenu(...waitMenu) })
+        ]
+    ]
 
     startNameMenu = [
         "STARTNAMEMENU", nameMenu[1], nameMenu[2],
@@ -90,7 +105,9 @@ function initMenus() {
     ];
 
     waitMenu = [
-        "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", []
+        "WAITMENU", "AWAITING GAME START", "ask the party leader to start once everyone's joined", [
+            new MenuOption("CHANGE NAME", () => { menu.changeMenu(...waitingNameMenu) })
+        ]
     ];
 
     hostMenu = [
