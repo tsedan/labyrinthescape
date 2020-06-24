@@ -75,11 +75,11 @@ class Game {
         drawSprites(allPlayers);
 
         textAlign(CENTER, BOTTOM);
-        fill(gameColors.player);
         textFont(font);
         textSize(scale / 2);
         for (let k of Object.keys(playerPos)) {
             if (!playerPos[k].visible) continue;
+            fill(playerPos[k].shapeColor);
             text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].height / 2);
         }
 

@@ -152,6 +152,11 @@ function connectToHost(id) {
 
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
+                    monster.shapeColor = gameColors.monster;
+                    for (let s of allPlayers) {
+                        if (s != monster) s.shapeColor = gameColors.player;
+                    }
+
                     isMonster = player == monster;
                     mazeStartWidth = +splitData[3];
                     mazeStartHeight = +splitData[4];
@@ -364,6 +369,11 @@ function sendPositionData() {
 function sendStartInfo() {
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
+    monster.shapeColor = gameColors.monster;
+    for (let s of allPlayers) {
+        if (s != monster) s.shapeColor = gameColors.player;
+    }
+
     isMonster = player == monster;
 
     for (let c in allConnections) {

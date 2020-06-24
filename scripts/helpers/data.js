@@ -101,6 +101,7 @@ let font;
 // COLORS
 const gameColors = {
     player: '#ff5252',
+    monster: '#1f9149',
     back: '#f7f1e3',
     power: '#34ace0',
     start: '#33d9b2',
