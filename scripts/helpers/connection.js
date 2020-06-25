@@ -282,6 +282,7 @@ function startEnding() {
         renderDecreaseTimings.push(i)
     }
     renderDecreaseTimings.reverse();
+    changeScale(correctScale());
 }
 
 function checkMazeCompletion() {

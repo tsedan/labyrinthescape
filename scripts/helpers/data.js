@@ -14,15 +14,15 @@ const tutorialPages = []
 let currentTutorialPage = 0;
 
 // MENU
-const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM ";
-const maxUsernameLength = 10;
+const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
+const maxUsernameLength = 14;
 const connectionFailTime = 5000;
 
 // P2P
 let allConnections = [];
 const idLength = 6;
 let myID;
-for (myID = ''; myID.length < idLength; myID += validCharacters[Math.floor(Math.random() * (validCharacters.length - 1))]);
+for (myID = ''; myID.length < idLength; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
 let isHost = false;
 let playerPos = {};
 let finishedPlayers;

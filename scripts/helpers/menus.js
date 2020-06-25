@@ -28,7 +28,7 @@ function initMenus() {
     nameMenu = [
         "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",
         [
-            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, data => {
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, validCharacters + ' ', data => {
                 if (data != "") {
                     idToName[myID] = data;
                     menu.changeMenu(...mainMenu);
@@ -42,7 +42,7 @@ function initMenus() {
     waitingNameMenu = [
         "WAITINGNAMEMENU", nameMenu[1], nameMenu[2],
         [
-            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, data => {
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, validCharacters + ' ', data => {
                 if (data != "") {
                     idToName[myID] = data;
                     menu.changeMenu(...waitMenu);
@@ -56,7 +56,7 @@ function initMenus() {
     startNameMenu = [
         "STARTNAMEMENU", nameMenu[1], nameMenu[2],
         [
-            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, data => {
+            new MenuPrompt("TYPE YOUR USERNAME", maxUsernameLength, validCharacters + ' ', data => {
                 if (data != "") {
                     idToName[myID] = data;
                     menu.changeMenu(...mainMenu);
@@ -72,7 +72,7 @@ function initMenus() {
     joinMenu = [
         "JOINMENU", "JOIN A PARTY", "ask your party leader for the party id",
         [
-            new MenuPrompt("TYPE THE PARTY ID", idLength, data => {
+            new MenuPrompt("TYPE THE PARTY ID", idLength, validCharacters, data => {
                 if (data.length == idLength) {
                     connectToHost(data);
                     menu.changeMenu(...connMenu);

@@ -64,13 +64,15 @@ class Menu {
 }
 
 class MenuPrompt {
-    constructor(placeholder, maxLength, eventHandler) {
+    constructor(placeholder, maxLength, characterList, eventHandler) {
         this.value = "";
         this.placeholder = placeholder;
 
         this.eventHandler = eventHandler;
 
         this.maxLength = maxLength;
+        this.characterList = characterList;
+        this.re = new RegExp(this.characterList, "g");
         this.maxBackspaceDelay = 15;
         this.backspaceDelay = this.maxBackspaceDelay;
     }
@@ -85,18 +87,20 @@ class MenuPrompt {
         if (code == 67 && controlPressed()) {
             if (navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(this.value);
-                menu.subtitle = 'copied!';
+                menu.subtitle = "copied!";
             }
             return;
         }
 
         if (code == 86 && controlPressed()) {
             if (navigator.clipboard.readText)
-                navigator.clipboard.readText().then(text => { this.value += text.substring(0, this.maxLength - this.value.length) });
+                navigator.clipboard.readText().then(text => {
+                    this.value += text.replace(re, "").substring(0, this.maxLength - this.value.length);
+                });
             return;
         }
 
-        if (validCharacters.includes(key) && this.value.length < this.maxLength) this.value += key;
+        if (this.characterList.includes(key) && this.value.length < this.maxLength) this.value += key;
     }
 
     draw(right, bottom, isSelected) {
