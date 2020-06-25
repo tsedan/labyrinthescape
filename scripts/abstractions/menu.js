@@ -34,10 +34,14 @@ class Menu {
         } else if (code == 13) {
             this.eventHandler();
         } else if (this.state == hostMenu[0] && code == 67 && controlPressed()) {
-            if (navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(myID);
-                menu.subtitle = 'copied!';
+            let clip = navigator.clipboard;
+            if (clip != undefined) {
+                clip.writeText(myID);
+                menu.subtitle = "copied!";
+            } else {
+                menu.subtitle = "could not copy";
             }
+            return;
         } else {
             this.options[this.currOption].handleKey(code, key);
         }
@@ -85,18 +89,35 @@ class MenuPrompt {
         }
 
         if (code == 67 && controlPressed()) {
-            if (navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(this.value);
-                menu.subtitle = "copied!";
+            let clip = navigator.clipboard;
+            if (clip != undefined) {
+                clip.writeText(this.value).
+                    then(() => {
+                        menu.subtitle = "copied!";
+                    })
+                    .catch(() => {
+                        menu.subtitle = "unable to write to clipboard";
+                    })
+            } else {
+                menu.subtitle = "could not copy";
             }
             return;
         }
 
         if (code == 86 && controlPressed()) {
-            if (navigator.clipboard.readText)
-                navigator.clipboard.readText().then(text => {
-                    this.value += text.replace(re, "").substring(0, this.maxLength - this.value.length);
-                });
+            let clip = navigator.clipboard;
+
+            if (clip != undefined) {
+                navigator.clipboard.readText()
+                    .then(text => {
+                        this.value += text.replace(this.re, "").substring(0, this.maxLength - this.value.length);
+                    })
+                    .catch(() => {
+                        menu.subtitle = "unable to read clipboard";
+                    })
+            } else {
+                menu.subtitle = "could not paste";
+            }
             return;
         }
 
