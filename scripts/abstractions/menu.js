@@ -90,13 +90,13 @@ class MenuPrompt {
 
         if (code == 67 && controlPressed()) {
             let clip = navigator.clipboard;
-            if (clip != undefined) {
-                clip.writeText(this.value).
-                    then(() => {
+            if (clip != undefined && clip.writeText != undefined) {
+                clip.writeText(this.value)
+                    .then(() => {
                         menu.subtitle = "copied!";
                     })
                     .catch(() => {
-                        menu.subtitle = "unable to write to clipboard";
+                        menu.subtitle = "could not copy";
                     })
             } else {
                 menu.subtitle = "could not copy";
@@ -107,8 +107,8 @@ class MenuPrompt {
         if (code == 86 && controlPressed()) {
             let clip = navigator.clipboard;
 
-            if (clip != undefined) {
-                navigator.clipboard.readText()
+            if (clip != undefined && clip.readText != undefined) {
+                clip.readText()
                     .then(text => {
                         this.value += text.replace(this.re, "").substring(0, this.maxLength - this.value.length);
                     })
