@@ -26,11 +26,13 @@ function setup() {
     } else {
         menu.changeMenu(...notSupportedMenu);
     }
+
+    fontSizeRatio = round((windowWidth / fontDefaultWidth)*100)/100;
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-    fontSizeRatio = windowWidth / fontDefaultWidth;
+    fontSizeRatio = round((windowWidth / fontDefaultWidth)*100)/100;
     if (gameState == "GAME") {
         if (spectating) changeScale(correctScale() / 2);
         else changeScale(correctScale());
@@ -43,14 +45,8 @@ function draw() {
         const loadString = percentLoaded + '% (' + (assetsLoaded + 1) + '/' + (totalAssets + 1) + ')';
         drawBasicMenu('Loading...', (percentLoaded == 100 ? 'Awaiting Server Connection' : loadString), []);
     } else {
-        switch (gameState) {
-            case "MENU":
-                menu.draw();
-                break;
-            case "GAME":
-                game.draw();
-                break;
-        }
+        if (gameState == "MENU") menu.draw();
+        else if (gameState == "GAME") game.draw();
     }
 }
 

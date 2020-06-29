@@ -94,14 +94,14 @@ function drawBasicMenu(header, subtitle, upper) {
 
     textAlign(LEFT, BOTTOM);
     textSize(64 * fontSizeRatio);
-    text(header, left + uiPadding, bottom - uiPadding - 32);
+    text(header, left + uiPadding * fontSizeRatio, bottom - (uiPadding+32)*fontSizeRatio);
     textSize(32 * fontSizeRatio);
-    text(subtitle, left + uiPadding, bottom - uiPadding);
+    text(subtitle, left + uiPadding * fontSizeRatio, bottom - uiPadding * fontSizeRatio);
 
     textAlign(LEFT, TOP);
     textSize(48 * fontSizeRatio);
     for (let i = 0; i < upper.length; i++) {
-        text(upper[i], uiPadding, uiPadding + 48 * i);
+        text(upper[i], uiPadding * fontSizeRatio, (uiPadding + i * 48) * fontSizeRatio);
     }
 
     if (menu.state == 'TUTORIALMENU') {

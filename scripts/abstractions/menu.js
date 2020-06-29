@@ -62,7 +62,7 @@ class Menu {
         drawBasicMenu(this.title, this.subtitle, this.upper);
 
         for (let opt in this.options) {
-            this.options[opt].draw(windowWidth, windowHeight - opt * 64, this.currOption == opt);
+            this.options[opt].draw(windowWidth, windowHeight - opt * 64 * fontSizeRatio, this.currOption == opt);
         }
     }
 }
@@ -136,7 +136,7 @@ class MenuPrompt {
         textAlign(RIGHT, BOTTOM);
         textSize(64 * fontSizeRatio);
         fill(this.value == "" ? 140 : 255);
-        text((isSelected ? "> " : "") + (this.value == "" ? this.placeholder : this.value), right - uiPadding, bottom - uiPadding);
+        text((isSelected ? "> " : "") + (this.value == "" ? this.placeholder : this.value), right - uiPadding*fontSizeRatio, bottom - uiPadding*fontSizeRatio);
     }
 }
 
@@ -152,7 +152,7 @@ class MenuOption {
         textAlign(RIGHT, BOTTOM);
         textSize(64 * fontSizeRatio);
         fill(255);
-        text((isSelected ? "> " : "") + this.value, right - uiPadding, bottom - uiPadding);
+        text((isSelected ? "> " : "") + this.value, right - uiPadding*fontSizeRatio, bottom - uiPadding*fontSizeRatio);
     }
 }
 
@@ -205,6 +205,6 @@ class MenuSlide {
         textAlign(RIGHT, BOTTOM);
         textSize(64 * fontSizeRatio);
         fill(255);
-        text((isSelected ? "> " : "") + this.label + ": " + this.value, right - uiPadding, bottom - uiPadding);
+        text((isSelected ? "> " : "") + this.label + ": " + this.value, right - uiPadding*fontSizeRatio, bottom - uiPadding*fontSizeRatio);
     }
 }
