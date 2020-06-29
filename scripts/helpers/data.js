@@ -8,8 +8,8 @@ let peer;
 const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] }
 const lightInt = 1;
 let assetsLoaded = 0;
-const totalAssets = (101 / lightInt) * Object.keys(allAssets).length;
 const numTutorialPages = 5;
+const totalAssets = (101 / lightInt) * Object.keys(allAssets).length + numTutorialPages;
 const tutorialPages = []
 let currentTutorialPage = 0;
 

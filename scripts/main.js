@@ -9,9 +9,8 @@ function setup() {
     angleMode(DEGREES);
     noSmooth();
 
-    for (let i = 1; i <= numTutorialPages; i++) {
-        tutorialPages.push(loadImage("assets/tutorial/" + i + ".png"));
-    }
+    for (let i = 1; i <= numTutorialPages; i++)
+        tutorialPages.push(loadImage("assets/tutorial/" + i + ".png", img => { assetsLoaded++; }));
 
     for (let key of Object.keys(allAssets))
         for (let i = 0; i <= 100; i += lightInt)
