@@ -14,16 +14,19 @@ function initMenus() {
         [
             new MenuOption("DANG IT", () => { menu.changeMenu(...joinMenu) })
         ]
-    ]
+    ];
 
     tutorialMenu = [
         "TUTORIALMENU", "HOW TO PLAY", "this will cover everything you need to know to play",
         [
             new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) }),
-            new MenuOption("PREVIOUS PAGE", () => { if (currentTutorialPage > 0) currentTutorialPage-- }),
-            new MenuOption("NEXT PAGE", () => { if (currentTutorialPage < numTutorialPages - 1) currentTutorialPage++ }),
+            new MenuOption("PREVIOUS PAGE", () => {
+                if (currentTutorialPage > 0) currentTutorialPage--;
+                else currentTutorialPage = numTutorialPages-1;
+            }),
+            new MenuOption("NEXT PAGE", () => { currentTutorialPage = (currentTutorialPage+1)%numTutorialPages }),
         ]
-    ]
+    ];
 
     nameMenu = [
         "NAMEMENU", "SET YOUR USERNAME", "your username will be displayed to others in your party",

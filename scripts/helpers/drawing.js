@@ -104,9 +104,9 @@ function drawBasicMenu(header, subtitle, upper) {
         text(upper[i], uiPadding * fontSizeRatio, (uiPadding + i * 48) * fontSizeRatio);
     }
 
-    if (menu.state == 'TUTORIALMENU') {
+    if (menu.state == tutorialMenu[0]) {
         // ratio of pages is 7:5
-        imageHeight = windowHeight * 0.7;
+        const imageHeight = windowHeight * 0.7;
         image(tutorialPages[currentTutorialPage], windowWidth / 2, imageHeight / 2, imageHeight / 5 * 7, imageHeight)
     }
 }
