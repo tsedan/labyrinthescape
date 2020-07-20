@@ -15,7 +15,7 @@ function connectionHost() {
                     unusedSprites.delete(chosen)
 
                     idToSprite[conn.peer] = chosen;
-                    addAnimation(playerPos[conn.peer], chosen);
+                    addAnimation(playerPos[conn.peer], playerSprites[chosen]);
 
                     menu.update();
 
@@ -174,8 +174,15 @@ function connectToHost(id) {
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     monster.shapeColor = gameColors.monster;
-                    for (let s of allPlayers) {
-                        if (s != monster) s.shapeColor = gameColors.player;
+                    addAnimation(monster, monsterSprite);
+                    monster.scale = 1 / 2;
+
+                    for (let key of Object.keys(playerPos)) {
+                        if (playerPos[key] != monster) {
+                            playerPos[key].shapeColor = gameColors.player;
+                            addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
+                            playerPos[key].scale = 1;
+                        }
                     }
 
                     isMonster = player == monster;
@@ -199,15 +206,14 @@ function connectToHost(id) {
                     allPlayers.add(otherPlayer);
 
                     idToSprite[splitData[1]] = splitData[3];
-                    addAnimation(otherPlayer, splitData[3]);
+                    addAnimation(otherPlayer, playerSprites[splitData[3]]);
 
                     menu.update();
 
                     break;
                 case 'animation':
-                    print(splitData)
                     idToSprite[peer.id] = splitData[1]
-                    addAnimation(player, splitData[1])
+                    addAnimation(player, playerSprites[splitData[1]])
                 case 'changename':
                     idToName[splitData[2]] = splitData[1];
                     menu.update();
@@ -405,8 +411,15 @@ function sendStartInfo() {
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     monster.shapeColor = gameColors.monster;
-    for (let s of allPlayers) {
-        if (s != monster) s.shapeColor = gameColors.player;
+    addAnimation(monster, monsterSprite)
+    monster.scale = 1 / 2;
+
+    for (let key of Object.keys(playerPos)) {
+        if (playerPos[key] != monster) {
+            playerPos[key].shapeColor = gameColors.player;
+            addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
+            playerPos[key].scale = 1;
+        }
     }
 
     isMonster = player == monster;
@@ -467,8 +480,8 @@ function sendChangeNameInfo() {
 }
 
 function addAnimation(sprite, anim) {
-    sprite.addAnimation('walk_front', playerSprites[anim]['front']);
-    sprite.addAnimation('walk_back', playerSprites[anim]['back']);
-    sprite.addAnimation('walk_left', playerSprites[anim]['left']);
-    sprite.addAnimation('walk_right', playerSprites[anim]['right']);
+    sprite.addAnimation('walk_front', anim['front']);
+    sprite.addAnimation('walk_back', anim['back']);
+    sprite.addAnimation('walk_left', anim['left']);
+    sprite.addAnimation('walk_right', anim['right']);
 }

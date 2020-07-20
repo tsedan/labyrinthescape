@@ -27,6 +27,31 @@ function preload() {
         playerSprites[key]['left'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_left));
         playerSprites[key]['right'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_right));
     }
+
+    let monster_frames_front = [
+        { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': 64, 'height': 64 } },
+        { 'name': 'player_front_walk02', 'frame': { 'x': 64, 'y': 0, 'width': 64, 'height': 64 } },
+    ];
+
+    let monster_frames_back = [
+        { 'name': 'player_back_walk01', 'frame': { 'x': 128, 'y': 0, 'width': 64, 'height': 64 } },
+        { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': 64, 'width': 64, 'height': 64 } },
+    ];
+
+    let monster_frames_right = [
+        { 'name': 'player_right_walk01', 'frame': { 'x': 64, 'y': 64, 'width': 64, 'height': 64 } },
+        { 'name': 'player_right_walk02', 'frame': { 'x': 128, 'y': 64, 'width': 64, 'height': 64 } },
+    ];
+
+    let monster_frames_left = [
+        { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': 128, 'width': 64, 'height': 64 } },
+        { 'name': 'player_left_walk02', 'frame': { 'x': 64, 'y': 128, 'width': 64, 'height': 64 } },
+    ];
+
+    monsterSprite['front'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_front));
+    monsterSprite['back'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_back));
+    monsterSprite['left'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_left));
+    monsterSprite['right'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_right));
 }
 
 function setup() {

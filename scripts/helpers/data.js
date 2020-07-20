@@ -14,6 +14,7 @@ const tutorialPages = []
 let currentTutorialPage = 0;
 
 const playerSprites = { blueknight: {}, whiteknight: {}, darkknight: {} };
+const monsterSprite = {}
 let unusedSprites = new Set(Object.keys(playerSprites));
 let idToSprite = {};
 
@@ -184,9 +185,7 @@ function resetConn() {
     let chosen = arrayChoices[Math.floor(Math.random() * arrayChoices.length)]
     idToSprite[myID] = chosen;
     unusedSprites.delete(chosen)
-    addAnimation(player, chosen);
-
-    console.log(unusedSprites)
+    addAnimation(player, playerSprites[chosen]);
 
     allPlayers.add(player);
     playerPos[myID] = player;
