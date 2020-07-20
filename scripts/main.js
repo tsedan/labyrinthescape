@@ -2,23 +2,23 @@ function preload() {
     font = loadFont('assets/mozart.ttf');
 
     let player_frames_front = [
-        { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': 32, 'height': 32 } },
-        { 'name': 'player_front_walk02', 'frame': { 'x': 32, 'y': 0, 'width': 32, 'height': 32 } },
+        { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': 16, 'height': 16 } },
+        { 'name': 'player_front_walk02', 'frame': { 'x': 16, 'y': 0, 'width': 16, 'height': 16 } },
     ];
 
     let player_frames_back = [
-        { 'name': 'player_back_walk01', 'frame': { 'x': 64, 'y': 0, 'width': 32, 'height': 32 } },
-        { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': 32, 'width': 32, 'height': 32 } },
+        { 'name': 'player_back_walk01', 'frame': { 'x': 32, 'y': 0, 'width': 16, 'height': 16 } },
+        { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': 16, 'width': 16, 'height': 16 } },
     ];
 
     let player_frames_right = [
-        { 'name': 'player_right_walk01', 'frame': { 'x': 32, 'y': 32, 'width': 32, 'height': 32 } },
-        { 'name': 'player_right_walk02', 'frame': { 'x': 64, 'y': 32, 'width': 32, 'height': 32 } },
+        { 'name': 'player_right_walk01', 'frame': { 'x': 16, 'y': 16, 'width': 16, 'height': 16 } },
+        { 'name': 'player_right_walk02', 'frame': { 'x': 32, 'y': 16, 'width': 16, 'height': 16 } },
     ];
 
     let player_frames_left = [
-        { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': 64, 'width': 32, 'height': 32 } },
-        { 'name': 'player_left_walk02', 'frame': { 'x': 32, 'y': 64, 'width': 32, 'height': 32 } },
+        { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': 32, 'width': 16, 'height': 16 } },
+        { 'name': 'player_left_walk02', 'frame': { 'x': 16, 'y': 32, 'width': 16, 'height': 16 } },
     ];
 
     for (let key of Object.keys(playerSprites)) {

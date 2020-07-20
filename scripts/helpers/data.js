@@ -13,9 +13,9 @@ const totalAssets = (101 / lightInt) * Object.keys(allAssets).length + numTutori
 const tutorialPages = []
 let currentTutorialPage = 0;
 
-const playerSprites = { blueknight: {}, whiteknight: {}, darkknight: {} };
+const playerSprites = { whitewizard: {}, blackwizard: {}, bluerobe: {}, whiterobe: {}, darkrobe: {} };
 const monsterSprite = {}
-let unusedSprites = new Set(Object.keys(playerSprites));
+let unusedSprites = Object.keys(playerSprites);
 let idToSprite = {};
 
 // MENU
@@ -181,11 +181,12 @@ function resetConn() {
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
 
-    let arrayChoices = Array.from(unusedSprites);
-    let chosen = arrayChoices[Math.floor(Math.random() * arrayChoices.length)]
-    idToSprite[myID] = chosen;
-    unusedSprites.delete(chosen)
-    addAnimation(player, playerSprites[chosen]);
+    let chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+    let chosenVal = unusedSprites[chosenIndex];
+    unusedSprites.splice(chosenIndex, 1);
+
+    idToSprite[myID] = chosenVal;
+    addAnimation(player, playerSprites[chosenVal]);
 
     allPlayers.add(player);
     playerPos[myID] = player;

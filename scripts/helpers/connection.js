@@ -10,16 +10,16 @@ function connectionHost() {
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     allPlayers.add(playerPos[conn.peer]);
 
-                    let arrayChoices = Array.from(unusedSprites);
-                    let chosen = arrayChoices[Math.floor(Math.random() * arrayChoices.length)]
-                    unusedSprites.delete(chosen)
+                    let chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+                    let chosenVal = unusedSprites[chosenIndex];
+                    unusedSprites.splice(chosenIndex, 1);
 
-                    idToSprite[conn.peer] = chosen;
-                    addAnimation(playerPos[conn.peer], playerSprites[chosen]);
+                    idToSprite[conn.peer] = chosenVal;
+                    addAnimation(playerPos[conn.peer], playerSprites[chosenVal]);
 
                     menu.update();
 
-                    conn.send("animation," + chosen)
+                    conn.send("animation," + chosenVal)
                 }
                 if (allConnections.indexOf(conn) == -1) return;
                 switch (splitData[0]) {
@@ -118,6 +118,9 @@ function connectionHost() {
                         playerPos[conn.peer].remove();
                         delete playerPos[conn.peer];
                         delete idToName[conn.peer];
+
+                        unusedSprites.push(idToSprite[conn.peer])
+                        delete idToSprite[conn.peer]
                         conn.close();
                         menu.update();
                         break;
@@ -181,7 +184,7 @@ function connectToHost(id) {
                         if (playerPos[key] != monster) {
                             playerPos[key].shapeColor = gameColors.player;
                             addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
-                            playerPos[key].scale = 1;
+                            playerPos[key].scale = 2;
                         }
                     }
 
@@ -418,7 +421,7 @@ function sendStartInfo() {
         if (playerPos[key] != monster) {
             playerPos[key].shapeColor = gameColors.player;
             addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
-            playerPos[key].scale = 1;
+            playerPos[key].scale = 2;
         }
     }
 
