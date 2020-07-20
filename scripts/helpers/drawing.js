@@ -54,6 +54,30 @@ function drawMenuBackground() {
     }
 }
 
+function positiveMod(i, n) {
+    return (i % n + n) % n;
+}
+
+function updateAnimation() {
+    dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
+    console.log(dir)
+
+    switch (dir) {
+        case 0:
+            player.changeAnimation('walk_right');
+            break;
+        case 90:
+            player.changeAnimation('walk_front');
+            break;
+        case 180:
+            player.changeAnimation('walk_left');
+            break;
+        case 270:
+            player.changeAnimation('walk_back');
+            break;
+    }
+}
+
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
 
@@ -62,11 +86,11 @@ function updateVelocities() {
     } else if (a) {
         player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
         orientation = 180;
-        player.changeAnimation('walk_left');
+        //player.changeAnimation('walk_left');
     } else if (d) {
         player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
         orientation = 0;
-        player.changeAnimation('walk_right');
+        //player.changeAnimation('walk_right');
     }
 
     if (w ? s : !s) {
@@ -74,11 +98,11 @@ function updateVelocities() {
     } else if (w) {
         player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
         orientation = 270;
-        player.changeAnimation('walk_back');
+        //player.changeAnimation('walk_back');
     } else if (s) {
         player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
         orientation = 90;
-        player.changeAnimation('walk_front');
+        //player.changeAnimation('walk_front');
     }
 }
 
