@@ -5,13 +5,17 @@ let game;
 let peer;
 
 // IMAGES
-const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] }
+const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] };
 const lightInt = 1;
 let assetsLoaded = 0;
 const numTutorialPages = 5;
 const totalAssets = (101 / lightInt) * Object.keys(allAssets).length + numTutorialPages;
 const tutorialPages = []
 let currentTutorialPage = 0;
+
+const playerSprites = { blueknight: {}, whiteknight: {}, darkknight: {} };
+let unusedSprites = new Set(Object.keys(playerSprites));
+let idToSprite = {};
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -175,6 +179,15 @@ function resetConn() {
     allPlayers = new Group();
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+
+    let arrayChoices = Array.from(unusedSprites);
+    let chosen = arrayChoices[Math.floor(Math.random() * arrayChoices.length)]
+    idToSprite[myID] = chosen;
+    unusedSprites.delete(chosen)
+    addAnimation(player, chosen);
+
+    console.log(unusedSprites)
+
     allPlayers.add(player);
     playerPos[myID] = player;
 }

@@ -9,7 +9,17 @@ function connectionHost() {
                     allConnections.push(conn);
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     allPlayers.add(playerPos[conn.peer]);
+
+                    let arrayChoices = Array.from(unusedSprites);
+                    let chosen = arrayChoices[Math.floor(Math.random() * arrayChoices.length)]
+                    unusedSprites.delete(chosen)
+
+                    idToSprite[conn.peer] = chosen;
+                    addAnimation(playerPos[conn.peer], chosen);
+
                     menu.update();
+
+                    conn.send("animation," + chosen)
                 }
                 if (allConnections.indexOf(conn) == -1) return;
                 switch (splitData[0]) {
@@ -19,14 +29,15 @@ function connectionHost() {
                         break;
                     case 'name':
                         idToName[conn.peer] = splitData[1];
+
                         menu.update();
 
-                        conn.send("name," + peer.id + "," + idToName[peer.id]);
+                        conn.send("name," + peer.id + "," + idToName[peer.id] + "," + idToSprite[peer.id]);
                         for (let c in allConnections) {
 
                             if (allConnections[c].peer != conn.peer) {
-                                conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
-                                allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
+                                conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer] + "," + idToSprite[allConnections[c].peer]);
+                                allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer] + "," + idToSprite[conn.peer]);
                             }
                         }
                         break;
@@ -180,13 +191,23 @@ function connectToHost(id) {
                     playerPos[pID].position.y = splitData[3] * scale;
                     break;
                 case 'name':
+                    print(splitData)
                     idToName[splitData[1]] = splitData[2];
-                    menu.update();
 
                     let otherPlayer = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     playerPos[splitData[1]] = otherPlayer;
                     allPlayers.add(otherPlayer);
+
+                    idToSprite[splitData[1]] = splitData[3];
+                    addAnimation(otherPlayer, splitData[3]);
+
+                    menu.update();
+
                     break;
+                case 'animation':
+                    print(splitData)
+                    idToSprite[peer.id] = splitData[1]
+                    addAnimation(player, splitData[1])
                 case 'changename':
                     idToName[splitData[2]] = splitData[1];
                     menu.update();
@@ -443,4 +464,11 @@ function sendChangeNameInfo() {
             allConnections[c].send('changename,' + idToName[myID] + ',' + peer.id);
         }
     }
+}
+
+function addAnimation(sprite, anim) {
+    sprite.addAnimation('walk_front', playerSprites[anim]['front']);
+    sprite.addAnimation('walk_back', playerSprites[anim]['back']);
+    sprite.addAnimation('walk_left', playerSprites[anim]['left']);
+    sprite.addAnimation('walk_right', playerSprites[anim]['right']);
 }
