@@ -26,6 +26,7 @@ function connectionHost() {
                     case 'pos':
                         playerPos[conn.peer].position.x = splitData[1] * scale;
                         playerPos[conn.peer].position.y = splitData[2] * scale;
+                        playerPos[conn.peer].changeAnimation(splitData[3]);
                         break;
                     case 'name':
                         idToName[conn.peer] = splitData[1];
@@ -199,6 +200,7 @@ function connectToHost(id) {
                     let pID = splitData[1];
                     playerPos[pID].position.x = splitData[2] * scale;
                     playerPos[pID].position.y = splitData[3] * scale;
+                    playerPos[pID].changeAnimation(splitData[4]);
                     break;
                 case 'name':
                     print(splitData)
@@ -393,16 +395,16 @@ function sendCompletionInfo(id) {
 function sendPositionData() {
     if (!isHost && allConnections.length == 1) {
         if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('pos,' + (player.position.x / scale) + ',' + (player.position.y / scale));
+            allConnections[0].send('pos,' + (player.position.x / scale) + ',' + (player.position.y / scale) + ',' + player.getAnimationLabel());
         }
     } else if (isHost) {
         for (let c in allConnections) {
             if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('pos,' + peer.id + ',' + (player.position.x / scale) + ',' + (player.position.y / scale));
+                allConnections[c].send('pos,' + peer.id + ',' + (player.position.x / scale) + ',' + (player.position.y / scale) + ',' + player.getAnimationLabel());
                 for (let c2 in allConnections) {
                     if (allConnections[c2] && allConnections[c2].open && allConnections[c] != allConnections[c2]) {
                         let peerID = allConnections[c2].peer;
-                        allConnections[c].send('pos,' + peerID + ',' + (playerPos[peerID].position.x / scale) + ',' + (playerPos[peerID].position.y / scale));
+                        allConnections[c].send('pos,' + peerID + ',' + (playerPos[peerID].position.x / scale) + ',' + (playerPos[peerID].position.y / scale) + ',' + playerPos[peerID].getAnimationLabel());
                     }
                 }
             }
