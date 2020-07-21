@@ -67,8 +67,6 @@ class Game {
 
         if (!inEnding) this.update();
 
-        drawSprite(exit);
-
         push();
         for (let plr of allPlayers) {
             if (!plr.visible) continue;

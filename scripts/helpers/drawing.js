@@ -155,15 +155,24 @@ function drawMaze(pX, pY) {
         for (let j = bX; j < tX; j++) {
             const locX = (j + 0.5) * scale, locY = (i + 0.5) * scale;
             const hyp = dist(player.position.x, player.position.y, locX, locY);
-            if (m.start[0] == i && m.start[1] == j && hyp <= maxHyp) {
-                push();
-                translate(locX, locY);
-                rotate(startRotation);
-                image(allAssets.start[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, scale, scale);
-                pop();
-            } else {
-                const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
-                if (hyp <= maxHyp) image(imageArray[floor((100 / lightInt) * (hyp / maxHyp))], locX, locY, scale, scale);
+            if (hyp <= maxHyp) {
+                if (m.start[0] == i && m.start[1] == j) {
+                    push();
+                    translate(locX, locY);
+                    rotate(startRotation);
+                    image(allAssets.start[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, scale, scale);
+                    pop();
+                } else if (m.end[0] == i && m.end[1] == j) {
+                    push();
+                    translate(locX, locY);
+                    // end sprite is already rotated 180 compared to start, so same rotation works
+                    rotate(startRotation);
+                    image(allAssets.end[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, scale, scale);
+                    pop();
+                } else {
+                    const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
+                    image(imageArray[floor((100 / lightInt) * (hyp / maxHyp))], locX, locY, scale, scale);
+                }
             }
         }
     }
