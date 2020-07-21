@@ -68,10 +68,9 @@ class Game {
         if (!inEnding) this.update();
 
         drawSprite(exit);
-        drawSprite(start);
 
         for (let plr of allPlayers) {
-            const frame = plr.animation.getFrameImage().frame, plrSize = monster == plr ? scale : scale/2;
+            const frame = plr.animation.getFrameImage().frame, plrSize = monster == plr ? scale : scale / 2;
             image(plr.animation.spriteSheet.image, plr.position.x, plr.position.y, plrSize, plrSize, frame.x, frame.y, frame.width, frame.height);
         }
 
