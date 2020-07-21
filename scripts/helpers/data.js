@@ -23,6 +23,11 @@ const spriteSize = {
     darkrobe: 16, whiteknight: 19, blueknight: 19, darkknight: 19, dragon: 18
 };
 
+const spriteColor = {
+    monster: "#d24f26", whitewizard: "#ffffff", blackwizard: "#3c3b3b", bluerobe: "#428cd0", whiterobe: "#ffffff",
+    darkrobe: "#3f3c3c", whiteknight: "#ffffff", blueknight: "#4791df", darkknight: "#411e59", dragon: "#81cbee"
+}
+
 let unusedSprites = Object.keys(playerSprites);
 let idToSprite = {};
 
