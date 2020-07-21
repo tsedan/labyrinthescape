@@ -2,31 +2,23 @@ function preload() {
     font = loadFont('assets/mozart.ttf');
 
     for (let key of Object.keys(playerSprites)) {
-        let s = spriteSize[key];
-        let player_frames_front = [
+        const s = spriteSize[key];
+        playerSprites[key]['front'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', [
             { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': s, 'height': s } },
             { 'name': 'player_front_walk02', 'frame': { 'x': s, 'y': 0, 'width': s, 'height': s } },
-        ];
-
-        let player_frames_back = [
+        ]));
+        playerSprites[key]['back'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', [
             { 'name': 'player_back_walk01', 'frame': { 'x': s * 2, 'y': 0, 'width': s, 'height': s } },
             { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': s, 'width': s, 'height': s } },
-        ];
-
-        let player_frames_right = [
-            { 'name': 'player_right_walk01', 'frame': { 'x': s, 'y': s, 'width': s, 'height': s } },
-            { 'name': 'player_right_walk02', 'frame': { 'x': s * 2, 'y': s, 'width': s, 'height': s } },
-        ];
-
-        let player_frames_left = [
+        ]));
+        playerSprites[key]['left'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', [
             { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': s * 2, 'width': s, 'height': s } },
             { 'name': 'player_left_walk02', 'frame': { 'x': s, 'y': s * 2, 'width': s, 'height': s } },
-        ];
-
-        playerSprites[key]['front'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_front));
-        playerSprites[key]['back'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_back));
-        playerSprites[key]['left'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_left));
-        playerSprites[key]['right'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_right));
+        ]));
+        playerSprites[key]['right'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', [
+            { 'name': 'player_right_walk01', 'frame': { 'x': s, 'y': s, 'width': s, 'height': s } },
+            { 'name': 'player_right_walk02', 'frame': { 'x': s * 2, 'y': s, 'width': s, 'height': s } },
+        ]));
     }
 }
 

@@ -65,14 +65,15 @@ class Game {
 
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        if (!inEnding) {
-            this.update();
-        }
+        if (!inEnding) this.update();
 
         drawSprite(exit);
         drawSprite(start);
 
-        drawSprites(allPlayers);
+        for (let plr of allPlayers) {
+            const frame = plr.animation.getFrameImage().frame, plrSize = monster == plr ? scale : scale/2;
+            image(plr.animation.spriteSheet.image, plr.position.x, plr.position.y, plrSize, plrSize, frame.x, frame.y, frame.width, frame.height);
+        }
 
         textAlign(CENTER, BOTTOM);
         textFont(font);
