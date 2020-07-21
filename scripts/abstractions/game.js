@@ -70,18 +70,22 @@ class Game {
         drawSprite(exit);
         drawSprite(start);
 
+        push();
         for (let plr of allPlayers) {
+            if (!plr.visible) continue;
             const frame = plr.animation.getFrameImage().frame, plrSize = monster == plr ? scale : scale/2;
+            tint(255 * (1 - (dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale*maxRenderDist))));
             image(plr.animation.spriteSheet.image, plr.position.x, plr.position.y, plrSize, plrSize, frame.x, frame.y, frame.width, frame.height);
         }
+        pop();
 
         textAlign(CENTER, BOTTOM);
         textFont(font);
         textSize(scale / 2);
         for (let k of Object.keys(playerPos)) {
-            if (!playerPos[k].visible) continue;
-            fill(playerPos[k].shapeColor);
-            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].height / 2);
+            const plr = playerPos[k]; if (!plr.visible) continue;
+            fill(lerpColor(color(plr.shapeColor), color(0), dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale*maxRenderDist)));
+            text(idToName[k], plr.position.x, plr.position.y - plr.height / 2);
         }
 
         camera.off();
