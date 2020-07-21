@@ -60,7 +60,9 @@ function positiveMod(i, n) {
 
 function updateAnimation() {
     if (player.getSpeed() < 0.5) {
-        player.animation.stop();
+        // dragon needs to be always animated or looks bad
+        if (player == monster || idToSprite[peer.id] != 'dragon')
+            player.animation.stop();
     } else {
         dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
 
