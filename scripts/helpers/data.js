@@ -5,7 +5,7 @@ let game;
 let peer;
 
 // IMAGES
-const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] };
+const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [], start: [] };
 const lightInt = 1;
 let assetsLoaded = 0;
 const numTutorialPages = 5;
@@ -102,6 +102,8 @@ let alertMsg = '';
 let alertTime = 0;
 const alertRate = 5;
 const alertMaxTime = 855;
+
+let startRotation = null;
 
 // MINIMAP
 let minimap;
