@@ -60,7 +60,6 @@ function positiveMod(i, n) {
 
 function updateAnimation() {
     dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
-    console.log(dir)
 
     switch (dir) {
         case 0:

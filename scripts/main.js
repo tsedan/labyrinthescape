@@ -1,57 +1,33 @@
 function preload() {
     font = loadFont('assets/mozart.ttf');
 
-    let player_frames_front = [
-        { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': 16, 'height': 16 } },
-        { 'name': 'player_front_walk02', 'frame': { 'x': 16, 'y': 0, 'width': 16, 'height': 16 } },
-    ];
-
-    let player_frames_back = [
-        { 'name': 'player_back_walk01', 'frame': { 'x': 32, 'y': 0, 'width': 16, 'height': 16 } },
-        { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': 16, 'width': 16, 'height': 16 } },
-    ];
-
-    let player_frames_right = [
-        { 'name': 'player_right_walk01', 'frame': { 'x': 16, 'y': 16, 'width': 16, 'height': 16 } },
-        { 'name': 'player_right_walk02', 'frame': { 'x': 32, 'y': 16, 'width': 16, 'height': 16 } },
-    ];
-
-    let player_frames_left = [
-        { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': 32, 'width': 16, 'height': 16 } },
-        { 'name': 'player_left_walk02', 'frame': { 'x': 16, 'y': 32, 'width': 16, 'height': 16 } },
-    ];
-
     for (let key of Object.keys(playerSprites)) {
+        let s = spriteSize[key];
+        let player_frames_front = [
+            { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': s, 'height': s } },
+            { 'name': 'player_front_walk02', 'frame': { 'x': s, 'y': 0, 'width': s, 'height': s } },
+        ];
+
+        let player_frames_back = [
+            { 'name': 'player_back_walk01', 'frame': { 'x': s * 2, 'y': 0, 'width': s, 'height': s } },
+            { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': s, 'width': s, 'height': s } },
+        ];
+
+        let player_frames_right = [
+            { 'name': 'player_right_walk01', 'frame': { 'x': s, 'y': s, 'width': s, 'height': s } },
+            { 'name': 'player_right_walk02', 'frame': { 'x': s * 2, 'y': s, 'width': s, 'height': s } },
+        ];
+
+        let player_frames_left = [
+            { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': s * 2, 'width': s, 'height': s } },
+            { 'name': 'player_left_walk02', 'frame': { 'x': s, 'y': s * 2, 'width': s, 'height': s } },
+        ];
+
         playerSprites[key]['front'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_front));
         playerSprites[key]['back'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_back));
         playerSprites[key]['left'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_left));
         playerSprites[key]['right'] = loadAnimation(loadSpriteSheet('assets/players/' + key + '.png', player_frames_right));
     }
-
-    let monster_frames_front = [
-        { 'name': 'player_front_walk01', 'frame': { 'x': 0, 'y': 0, 'width': 64, 'height': 64 } },
-        { 'name': 'player_front_walk02', 'frame': { 'x': 64, 'y': 0, 'width': 64, 'height': 64 } },
-    ];
-
-    let monster_frames_back = [
-        { 'name': 'player_back_walk01', 'frame': { 'x': 128, 'y': 0, 'width': 64, 'height': 64 } },
-        { 'name': 'player_back_walk02', 'frame': { 'x': 0, 'y': 64, 'width': 64, 'height': 64 } },
-    ];
-
-    let monster_frames_right = [
-        { 'name': 'player_right_walk01', 'frame': { 'x': 64, 'y': 64, 'width': 64, 'height': 64 } },
-        { 'name': 'player_right_walk02', 'frame': { 'x': 128, 'y': 64, 'width': 64, 'height': 64 } },
-    ];
-
-    let monster_frames_left = [
-        { 'name': 'player_left_walk01', 'frame': { 'x': 0, 'y': 128, 'width': 64, 'height': 64 } },
-        { 'name': 'player_left_walk02', 'frame': { 'x': 64, 'y': 128, 'width': 64, 'height': 64 } },
-    ];
-
-    monsterSprite['front'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_front));
-    monsterSprite['back'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_back));
-    monsterSprite['left'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_left));
-    monsterSprite['right'] = loadAnimation(loadSpriteSheet('assets/monster/monster.png', monster_frames_right));
 }
 
 function setup() {

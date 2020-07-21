@@ -10,8 +10,13 @@ function connectionHost() {
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     allPlayers.add(playerPos[conn.peer]);
 
-                    let chosenIndex = Math.floor(Math.random() * unusedSprites.length);
-                    let chosenVal = unusedSprites[chosenIndex];
+                    let chosenVal = 'monster';
+                    let chosenIndex = null;
+
+                    while (chosenVal == 'monster') {
+                        chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+                        chosenVal = unusedSprites[chosenIndex];
+                    }
                     unusedSprites.splice(chosenIndex, 1);
 
                     idToSprite[conn.peer] = chosenVal;
@@ -178,8 +183,8 @@ function connectToHost(id) {
                     mazeSeed = +splitData[1];
                     monster = playerPos[splitData[2]];
                     monster.shapeColor = gameColors.monster;
-                    addAnimation(monster, monsterSprite);
-                    monster.scale = 1 / 2;
+                    addAnimation(monster, playerSprites['monster']);
+                    monster.scale = 1;
 
                     for (let key of Object.keys(playerPos)) {
                         if (playerPos[key] != monster) {
@@ -416,8 +421,8 @@ function sendStartInfo() {
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     monster.shapeColor = gameColors.monster;
-    addAnimation(monster, monsterSprite)
-    monster.scale = 1 / 2;
+    addAnimation(monster, playerSprites['monster'])
+    monster.scale = 1;
 
     for (let key of Object.keys(playerPos)) {
         if (playerPos[key] != monster) {

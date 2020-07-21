@@ -13,8 +13,16 @@ const totalAssets = (101 / lightInt) * Object.keys(allAssets).length + numTutori
 const tutorialPages = []
 let currentTutorialPage = 0;
 
-const playerSprites = { whitewizard: {}, blackwizard: {}, bluerobe: {}, whiterobe: {}, darkrobe: {} };
-const monsterSprite = {}
+const playerSprites = {
+    monster: {}, whitewizard: {}, blackwizard: {}, bluerobe: {}, whiterobe: {},
+    darkrobe: {}, whiteknight: {}, blueknight: {}, darkknight: {}, dragon: {}
+};
+
+const spriteSize = {
+    monster: 39, whitewizard: 16, blackwizard: 16, bluerobe: 16, whiterobe: 16,
+    darkrobe: 16, whiteknight: 19, blueknight: 19, darkknight: 19, dragon: 18
+};
+
 let unusedSprites = Object.keys(playerSprites);
 let idToSprite = {};
 
@@ -181,8 +189,13 @@ function resetConn() {
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
 
-    let chosenIndex = Math.floor(Math.random() * unusedSprites.length);
-    let chosenVal = unusedSprites[chosenIndex];
+    let chosenVal = 'monster';
+    let chosenIndex = null;
+
+    while (chosenVal == 'monster') {
+        chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+        chosenVal = unusedSprites[chosenIndex];
+    }
     unusedSprites.splice(chosenIndex, 1);
 
     idToSprite[myID] = chosenVal;
