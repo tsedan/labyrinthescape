@@ -59,23 +59,30 @@ function positiveMod(i, n) {
 }
 
 function updateAnimation() {
-    dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
+    if (player.getSpeed() < 0.5) {
+        player.animation.stop();
+    } else {
+        dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
 
-    switch (dir) {
-        case 0:
-            player.changeAnimation('walk_right');
-            break;
-        case 90:
-            player.changeAnimation('walk_front');
-            break;
-        case 180:
-            player.changeAnimation('walk_left');
-            break;
-        case 270:
-            player.changeAnimation('walk_back');
-            break;
+        switch (dir) {
+            case 0:
+                player.changeAnimation('walk_right');
+                break;
+            case 90:
+                player.changeAnimation('walk_front');
+                break;
+            case 180:
+                player.changeAnimation('walk_left');
+                break;
+            case 270:
+                player.changeAnimation('walk_back');
+                break;
+        }
+
+        player.animation.play();
     }
 }
+
 
 function updateVelocities() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');

@@ -206,7 +206,6 @@ function resetConn() {
     unusedSprites.splice(chosenIndex, 1);
 
     idToSprite[myID] = chosenVal;
-    addAnimation(player, playerSprites[chosenVal]);
 
     allPlayers.add(player);
     playerPos[myID] = player;
