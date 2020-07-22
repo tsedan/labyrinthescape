@@ -356,7 +356,7 @@ class Flare extends Powerup {
     }
 
     use() {
-        let d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), player.shapeColor, this.timeAvailable];
+        let d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), gameColors.player, this.timeAvailable];
 
         if (isMonster) {
             let potential = [];

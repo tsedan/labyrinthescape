@@ -29,7 +29,7 @@ function spectatorMode() {
 function normalMode() {
     minimap.reset();
     player.visible = true;
-    maxRenderDist = trueMaxRenderDist;
+    maxRenderDist = 5 * trueMaxRenderDist / 4;
     if (isMonster) maxRenderDist = 6 * trueMaxRenderDist / 4;
     maxSpeed = trueMaxSpeed;
     heldItem = null;
@@ -58,12 +58,59 @@ function positiveMod(i, n) {
     return (i % n + n) % n;
 }
 
-function updateAnimation() {
-    if (player.getSpeed() < 0.5) {
+function updateVelocitiesAndAnimation() {
+    const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
+
+    let onePressed = false, anyPressed = false;
+    for (let b of [a, d, w, s]) {
+        if (b) {
+            anyPressed = true;
+            if (!onePressed) {
+                onePressed = true;
+            } else {
+                onePressed = false;
+                break;
+            }
+        }
+    }
+
+    if (a ? d : !d) {
+        player.velocity.x *= friction / (friction + 1);
+    } else if (a) {
+        player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
+        if (onePressed) {
+            player.changeAnimation('walk_left');
+            orientation = 270;
+        }
+    } else if (d) {
+        player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
+        if (onePressed) {
+            player.changeAnimation('walk_right');
+            orientation = 90;
+        }
+    }
+
+    if (w ? s : !s) {
+        player.velocity.y *= friction / (friction + 1);
+    } else if (w) {
+        player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
+        if (onePressed) {
+            player.changeAnimation('walk_back');
+            orientation = 180;
+        }
+    } else if (s) {
+        player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
+        if (onePressed) {
+            player.changeAnimation('walk_front');
+            orientation = 0;
+        }
+    }
+
+    if (player.getSpeed() < 1) {
         // dragon needs to be always animated or looks bad
         if (player == monster || idToSprite[peer.id] != 'dragon')
             player.animation.stop();
-    } else {
+    } else if (!onePressed && anyPressed) {
         let angleMov = Math.atan2(player.position.x - prevPos[0], player.position.y - prevPos[1]) / Math.PI * 180
         orientation = positiveMod(round(angleMov / 90) * 90, 360)
 
@@ -81,37 +128,9 @@ function updateAnimation() {
                 player.changeAnimation('walk_left');
                 break;
         }
-
         player.animation.play();
-    }
-}
-
-
-function updateVelocities() {
-    const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
-
-    if (a ? d : !d) {
-        player.velocity.x *= friction / (friction + 1);
-    } else if (a) {
-        player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
-        //orientation = 180;
-        //player.changeAnimation('walk_left');
-    } else if (d) {
-        player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
-        //orientation = 0;
-        //player.changeAnimation('walk_right');
-    }
-
-    if (w ? s : !s) {
-        player.velocity.y *= friction / (friction + 1);
-    } else if (w) {
-        player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
-        //orientation = 270;
-        //player.changeAnimation('walk_back');
-    } else if (s) {
-        player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
-        //orientation = 90;
-        //player.changeAnimation('walk_front');
+    } else {
+        player.animation.play();
     }
 }
 
