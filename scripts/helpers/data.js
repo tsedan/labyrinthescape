@@ -82,6 +82,8 @@ let renderDecreaseTimings = [];
 let currentEndingTime = endingTime;
 let endingMenu = null;
 
+let prevPos = [0, 0];
+
 // MAZE
 let m;
 let walls;

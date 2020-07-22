@@ -64,20 +64,25 @@ function updateAnimation() {
         if (player == monster || idToSprite[peer.id] != 'dragon')
             player.animation.stop();
     } else {
-        dir = positiveMod(round(player.getDirection() / 90) * 90, 360)
+        console.log(player.position.x - prevPos[0], player.position.y - prevPos[1])
+        // console.log(player.previousPosition, player.position.x - player.previousPosition.x, player.position.y - player.previousPosition.y)
+        let angleMov = Math.atan2(player.position.x - prevPos[0], player.position.y - prevPos[1]) / Math.PI * 180
+        let dir = positiveMod(round(angleMov / 90) * 90, 360)
+
+        console.log(dir)
 
         switch (dir) {
             case 0:
-                player.changeAnimation('walk_right');
-                break;
-            case 90:
                 player.changeAnimation('walk_front');
                 break;
+            case 90:
+                player.changeAnimation('walk_right');
+                break;
             case 180:
-                player.changeAnimation('walk_left');
+                player.changeAnimation('walk_back');
                 break;
             case 270:
-                player.changeAnimation('walk_back');
+                player.changeAnimation('walk_left');
                 break;
         }
 

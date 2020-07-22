@@ -25,6 +25,8 @@ class Game {
         updateAnimation();
         updateVelocities();
 
+        prevPos = [player.position.x, player.position.y];
+
         for (let spr of allPlayers) {
             if (spr != player || !spectating) spr.collide(walls);
             spr.collide(border);
