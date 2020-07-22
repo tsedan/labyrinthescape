@@ -88,6 +88,7 @@ function connectionHost() {
 
                         if (splitData[8] == 'true') {
                             powerups[pID].used = 2;
+                            powerups[pID].orientationThrown = +splitData[9];
                         }
 
                         if (['Hammer'].includes(powerups[pID].constructor.name)) {
@@ -251,6 +252,7 @@ function connectToHost(id) {
 
                     if (splitData[8] == 'true') {
                         powerups[powerupID].used = 2;
+                        powerups[powerupID].orientationThrown = +splitData[9];
                     }
 
                     if (['Boot', 'Torch', 'Hammer'].includes(powerups[powerupID].constructor.name)) {

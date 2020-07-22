@@ -65,8 +65,6 @@ function genMaze(w, h, holes, numPowerups) {
         break;
     }
 
-    start = genObj((m.start[1] + 0.5) * scale, (m.start[0] + 0.5) * scale, scale, scale, gameColors.start);
-
     if (m.start[0] == 0) startRotation = 90;
     else if (m.start[0] == m.H - 1) startRotation = 270;
     else if (m.start[1] == 0) startRotation = 0;
