@@ -64,12 +64,8 @@ function updateAnimation() {
         if (player == monster || idToSprite[peer.id] != 'dragon')
             player.animation.stop();
     } else {
-        console.log(player.position.x - prevPos[0], player.position.y - prevPos[1])
-        // console.log(player.previousPosition, player.position.x - player.previousPosition.x, player.position.y - player.previousPosition.y)
         let angleMov = Math.atan2(player.position.x - prevPos[0], player.position.y - prevPos[1]) / Math.PI * 180
         let dir = positiveMod(round(angleMov / 90) * 90, 360)
-
-        console.log(dir)
 
         switch (dir) {
             case 0:
