@@ -5,13 +5,31 @@ let game;
 let peer;
 
 // IMAGES
-const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [] }
+const allAssets = { floor: [], wall: [], knife: [], torch: [], gps: [], flare: [], hammer: [], boots: [], start: [], end: [] };
 const lightInt = 1;
 let assetsLoaded = 0;
 const numTutorialPages = 5;
 const totalAssets = (101 / lightInt) * Object.keys(allAssets).length + numTutorialPages;
 const tutorialPages = []
 let currentTutorialPage = 0;
+
+const playerSprites = {
+    monster: {}, whitewizard: {}, blackwizard: {}, bluerobe: {}, whiterobe: {},
+    darkrobe: {}, whiteknight: {}, blueknight: {}, darkknight: {}, dragon: {}
+};
+
+const spriteSize = {
+    monster: 39, whitewizard: 16, blackwizard: 16, bluerobe: 16, whiterobe: 16,
+    darkrobe: 16, whiteknight: 19, blueknight: 19, darkknight: 19, dragon: 18
+};
+
+const spriteColor = {
+    monster: "#d24f26", whitewizard: "#ffffff", blackwizard: "#ffffff", bluerobe: "#428cd0", whiterobe: "#ffffff",
+    darkrobe: "#ffffff", whiteknight: "#ffffff", blueknight: "#4791df", darkknight: "#a960db", dragon: "#81cbee"
+}
+
+let unusedSprites = Object.keys(playerSprites);
+let idToSprite = {};
 
 // MENU
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -64,6 +82,8 @@ let renderDecreaseTimings = [];
 let currentEndingTime = endingTime;
 let endingMenu = null;
 
+let prevPos = [0, 0];
+
 // MAZE
 let m;
 let walls;
@@ -89,6 +109,8 @@ let alertMsg = '';
 let alertTime = 0;
 const alertRate = 5;
 const alertMaxTime = 855;
+
+let startRotation = null;
 
 // MINIMAP
 let minimap;
@@ -175,6 +197,18 @@ function resetConn() {
     allPlayers = new Group();
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+
+    let chosenVal = 'monster';
+    let chosenIndex = null;
+
+    while (chosenVal == 'monster') {
+        chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+        chosenVal = unusedSprites[chosenIndex];
+    }
+    unusedSprites.splice(chosenIndex, 1);
+
+    idToSprite[myID] = chosenVal;
+
     allPlayers.add(player);
     playerPos[myID] = player;
 }

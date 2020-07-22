@@ -14,6 +14,14 @@ class Powerup {
             if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
             if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
         });
+        this.sprite.collide(border, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
+        this.sprite.collide(exit, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
@@ -25,7 +33,7 @@ class Powerup {
         this.sprite.position.x = player.position.x;
         this.sprite.position.y = player.position.y;
 
-        this.sprite.setSpeed(scale / 5, orientation);
+        this.sprite.setSpeed(scale / 5, -orientation + 90);
         this.sprite.friction = (friction == 0 ? 0 : 1 / friction);
 
         this.sendDropInfo();
@@ -348,7 +356,7 @@ class Flare extends Powerup {
     }
 
     use() {
-        let d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), player.shapeColor, this.timeAvailable];
+        let d = ['flareused', floor(player.position.x / scale), floor(player.position.y / scale), gameColors.player, this.timeAvailable];
 
         if (isMonster) {
             let potential = [];
@@ -449,10 +457,10 @@ class Hammer extends Powerup {
 
         let chosen = null;
 
-        if (orientation == 0 && cX < m.W - 1) chosen = [cX + 1, cY];
-        if (orientation == 180 && cX > 0) chosen = [cX - 1, cY];
-        if (orientation == 90 && cY < m.H - 1) chosen = [cX, cY + 1];
-        if (orientation == 270 && cY > 0) chosen = [cX, cY - 1];
+        if (orientation == 0 && cY < m.H - 1) chosen = [cX, cY + 1];
+        if (orientation == 90 && cX < m.W - 1) chosen = [cX + 1, cY];
+        if (orientation == 180 && cY > 0) chosen = [cX, cY - 1];
+        if (orientation == 270 && cX > 0) chosen = [cX - 1, cY];
 
         if (chosen === null || m.grid[chosen[1]][chosen[0]] == 0) return;
         this.timeAvailable--;
@@ -526,8 +534,9 @@ class ThrowingKnife extends Powerup {
         super(sprite, "knife");
         super.useVerb = "THROW";
 
-        // 0 - never used, 1 - in inv, 2 - being thrown
+        // 0 - never used, 1 - in inv, 2 - being thrown, 3 - used
         this.used = 0;
+        this.orientationThrown = 225;
     }
 
     use() {
@@ -535,16 +544,18 @@ class ThrowingKnife extends Powerup {
         this.sprite.position.x = player.position.x;
         this.sprite.position.y = player.position.y;
 
-        if (orientation == 0) this.sprite.position.x += scale / 2
-        if (orientation == 180) this.sprite.position.x += -scale / 2
-        if (orientation == 90) this.sprite.position.y += scale / 2
-        if (orientation == 270) this.sprite.position.y += -scale / 2
+        this.orientationThrown = orientation;
 
-        this.sprite.setSpeed(20, orientation);
+        if (this.orientationThrown == 0) this.sprite.position.y += player.height
+        if (this.orientationThrown == 90) this.sprite.position.x += player.width
+        if (this.orientationThrown == 180) this.sprite.position.y += -player.height
+        if (this.orientationThrown == 270) this.sprite.position.x += -player.width
+
+        this.sprite.setSpeed(20, -this.orientationThrown + 90);
         this.sprite.friction = 0;
 
         let d = ['powerupdropped', this.index, this.sprite.position.x / scale, this.sprite.position.y / scale,
-            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.sprite.friction, this.timeAvailable, true].join(',');
+            this.sprite.velocity.x / scale, this.sprite.velocity.y / scale, this.sprite.friction, this.timeAvailable, true, this.orientationThrown].join(',');
         if (!isHost && allConnections.length == 1) {
             if (allConnections[0] && allConnections[0].open) {
                 allConnections[0].send(d);
@@ -560,7 +571,29 @@ class ThrowingKnife extends Powerup {
     }
 
     draw() {
-        super.draw();
+        this.pickupDelay = max(this.pickupDelay - 1, 0);
+        this.sprite.collide(walls, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
+        this.sprite.collide(border, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
+        this.sprite.collide(exit, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
+        const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
+        const maxHyp = maxRenderDist * scale;
+        if (hyp <= maxHyp && this.sprite.visible) {
+            push();
+            translate(this.sprite.position.x, this.sprite.position.y);
+            // 90 + 90 + 45
+            rotate(-this.orientationThrown + 225);
+            image(allAssets.knife[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, this.sprite.width, this.sprite.height);
+            pop();
+        }
     }
 
     update() {

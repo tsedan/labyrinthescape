@@ -29,7 +29,7 @@ function spectatorMode() {
 function normalMode() {
     minimap.reset();
     player.visible = true;
-    maxRenderDist = trueMaxRenderDist;
+    maxRenderDist = 5 * trueMaxRenderDist / 4;
     if (isMonster) maxRenderDist = 6 * trueMaxRenderDist / 4;
     maxSpeed = trueMaxSpeed;
     heldItem = null;
@@ -54,27 +54,83 @@ function drawMenuBackground() {
     }
 }
 
-function updateVelocities() {
+function positiveMod(i, n) {
+    return (i % n + n) % n;
+}
+
+function updateVelocitiesAndAnimation() {
     const a = keyDown('a'), d = keyDown('d'), w = keyDown('w'), s = keyDown('s');
+
+    let onePressed = false, anyPressed = false;
+    for (let b of [a, d, w, s]) {
+        if (b) {
+            anyPressed = true;
+            if (!onePressed) {
+                onePressed = true;
+            } else {
+                onePressed = false;
+                break;
+            }
+        }
+    }
 
     if (a ? d : !d) {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
         player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
-        orientation = 180;
+        if (onePressed) {
+            player.changeAnimation('walk_left');
+            orientation = 270;
+        }
     } else if (d) {
         player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
-        orientation = 0;
+        if (onePressed) {
+            player.changeAnimation('walk_right');
+            orientation = 90;
+        }
     }
 
     if (w ? s : !s) {
         player.velocity.y *= friction / (friction + 1);
     } else if (w) {
         player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
-        orientation = 270;
+        if (onePressed) {
+            player.changeAnimation('walk_back');
+            orientation = 180;
+        }
     } else if (s) {
         player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
-        orientation = 90;
+        if (onePressed) {
+            player.changeAnimation('walk_front');
+            orientation = 0;
+        }
+    }
+
+    if (player.getSpeed() < 1) {
+        // dragon needs to be always animated or looks bad
+        if (player == monster || idToSprite[peer.id] != 'dragon')
+            player.animation.stop();
+    } else if (!onePressed && anyPressed) {
+        let angleMov = Math.atan2(player.position.x - prevPos[0], player.position.y - prevPos[1]) / Math.PI * 180
+        orientation = positiveMod(round(angleMov / 90) * 90, 360)
+
+        switch (orientation) {
+            case 0:
+                player.changeAnimation('walk_front');
+                break;
+            case 90:
+                player.changeAnimation('walk_right');
+                break;
+            case 180:
+                player.changeAnimation('walk_back');
+                break;
+            case 270:
+                player.changeAnimation('walk_left');
+                break;
+        }
+        player.animation.play();
+    } else {
+        player.animation.play();
     }
 }
 
@@ -94,7 +150,7 @@ function drawBasicMenu(header, subtitle, upper) {
 
     textAlign(LEFT, BOTTOM);
     textSize(64 * fontSizeRatio);
-    text(header, left + uiPadding * fontSizeRatio, bottom - (uiPadding+32)*fontSizeRatio);
+    text(header, left + uiPadding * fontSizeRatio, bottom - (uiPadding + 32) * fontSizeRatio);
     textSize(32 * fontSizeRatio);
     text(subtitle, left + uiPadding * fontSizeRatio, bottom - uiPadding * fontSizeRatio);
 
@@ -119,8 +175,25 @@ function drawMaze(pX, pY) {
         for (let j = bX; j < tX; j++) {
             const locX = (j + 0.5) * scale, locY = (i + 0.5) * scale;
             const hyp = dist(player.position.x, player.position.y, locX, locY);
-            const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
-            if (hyp <= maxHyp) image(imageArray[floor((100 / lightInt) * (hyp / maxHyp))], locX, locY, scale, scale);
+            if (hyp <= maxHyp) {
+                if (m.start[0] == i && m.start[1] == j) {
+                    push();
+                    translate(locX, locY);
+                    rotate(startRotation);
+                    image(allAssets.start[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, scale, scale);
+                    pop();
+                } else if (m.end[0] == i && m.end[1] == j) {
+                    push();
+                    translate(locX, locY);
+                    // end sprite is already rotated 180 compared to start, so same rotation works
+                    rotate(startRotation);
+                    image(allAssets.end[floor((100 / lightInt) * (hyp / maxHyp))], 0, 0, scale, scale);
+                    pop();
+                } else {
+                    const imageArray = (m.grid[i][j] ? allAssets.wall : allAssets.floor);
+                    image(imageArray[floor((100 / lightInt) * (hyp / maxHyp))], locX, locY, scale, scale);
+                }
+            }
         }
     }
 }

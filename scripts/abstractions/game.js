@@ -22,7 +22,9 @@ class Game {
         camera.position.y = (friction * camera.position.y + player.position.y) / (friction + 1);
         alertTime = Math.max(alertTime - alertRate, 0);
 
-        updateVelocities();
+        updateVelocitiesAndAnimation();
+
+        prevPos = [player.position.x, player.position.y];
 
         for (let spr of allPlayers) {
             if (spr != player || !spectating) spr.collide(walls);
@@ -64,22 +66,25 @@ class Game {
 
         drawMaze(floor(player.position.x / scale), floor(player.position.y / scale));
 
-        if (!inEnding) {
-            this.update();
+        if (!inEnding) this.update();
+
+        push();
+        for (let plr of allPlayers) {
+            if (!plr.visible) continue;
+            const frame = plr.animation.getFrameImage().frame, plrSize = monster == plr ? scale : scale / 2;
+            tint(255 * (1 - (dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale * maxRenderDist))));
+            image(plr.animation.spriteSheet.image, plr.position.x, plr.position.y, plrSize, plrSize, frame.x, frame.y, frame.width, frame.height);
         }
-
-        drawSprite(exit);
-        drawSprite(start);
-
-        drawSprites(allPlayers);
+        pop();
 
         textAlign(CENTER, BOTTOM);
         textFont(font);
         textSize(scale / 2);
         for (let k of Object.keys(playerPos)) {
-            if (!playerPos[k].visible) continue;
-            fill(playerPos[k].shapeColor);
-            text(idToName[k], playerPos[k].position.x, playerPos[k].position.y - playerPos[k].height / 2);
+            const plr = playerPos[k]; if (!plr.visible) continue;
+            let spriteColorUse = plr == monster ? spriteColor["monster"] : spriteColor[idToSprite[k]];
+            fill(lerpColor(color(spriteColorUse), color(0), dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale * maxRenderDist)));
+            text(idToName[k], plr.position.x, plr.position.y - plr.height / 2);
         }
 
         camera.off();
