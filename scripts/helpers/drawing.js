@@ -65,9 +65,9 @@ function updateAnimation() {
             player.animation.stop();
     } else {
         let angleMov = Math.atan2(player.position.x - prevPos[0], player.position.y - prevPos[1]) / Math.PI * 180
-        let dir = positiveMod(round(angleMov / 90) * 90, 360)
+        orientation = positiveMod(round(angleMov / 90) * 90, 360)
 
-        switch (dir) {
+        switch (orientation) {
             case 0:
                 player.changeAnimation('walk_front');
                 break;
@@ -94,11 +94,11 @@ function updateVelocities() {
         player.velocity.x *= friction / (friction + 1);
     } else if (a) {
         player.velocity.x = (friction * player.velocity.x - (scale / maxSpeed)) / (friction + 1);
-        orientation = 180;
+        //orientation = 180;
         //player.changeAnimation('walk_left');
     } else if (d) {
         player.velocity.x = (friction * player.velocity.x + (scale / maxSpeed)) / (friction + 1);
-        orientation = 0;
+        //orientation = 0;
         //player.changeAnimation('walk_right');
     }
 
@@ -106,11 +106,11 @@ function updateVelocities() {
         player.velocity.y *= friction / (friction + 1);
     } else if (w) {
         player.velocity.y = (friction * player.velocity.y - (scale / maxSpeed)) / (friction + 1);
-        orientation = 270;
+        //orientation = 270;
         //player.changeAnimation('walk_back');
     } else if (s) {
         player.velocity.y = (friction * player.velocity.y + (scale / maxSpeed)) / (friction + 1);
-        orientation = 90;
+        //orientation = 90;
         //player.changeAnimation('walk_front');
     }
 }

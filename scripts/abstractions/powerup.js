@@ -14,6 +14,10 @@ class Powerup {
             if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
             if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
         });
+        this.sprite.collide(border, () => {
+            if (this.sprite.touching.bottom || this.sprite.touching.top) this.sprite.velocity.y = 0;
+            if (this.sprite.touching.left || this.sprite.touching.right) this.sprite.velocity.x = 0;
+        });
         const hyp = dist(player.position.x, player.position.y, this.sprite.position.x, this.sprite.position.y);
         const maxHyp = maxRenderDist * scale;
         if (hyp <= maxHyp && this.sprite.visible)
@@ -449,10 +453,10 @@ class Hammer extends Powerup {
 
         let chosen = null;
 
-        if (orientation == 0 && cX < m.W - 1) chosen = [cX + 1, cY];
-        if (orientation == 180 && cX > 0) chosen = [cX - 1, cY];
-        if (orientation == 90 && cY < m.H - 1) chosen = [cX, cY + 1];
-        if (orientation == 270 && cY > 0) chosen = [cX, cY - 1];
+        if (orientation == 0 && cY < m.H - 1) chosen = [cX, cY + 1];
+        if (orientation == 90 && cX < m.W - 1) chosen = [cX + 1, cY];
+        if (orientation == 180 && cY > 0) chosen = [cX, cY - 1];
+        if (orientation == 270 && cX > 0) chosen = [cX - 1, cY];
 
         if (chosen === null || m.grid[chosen[1]][chosen[0]] == 0) return;
         this.timeAvailable--;
@@ -535,12 +539,12 @@ class ThrowingKnife extends Powerup {
         this.sprite.position.x = player.position.x;
         this.sprite.position.y = player.position.y;
 
-        if (orientation == 0) this.sprite.position.x += scale / 2
-        if (orientation == 180) this.sprite.position.x += -scale / 2
-        if (orientation == 90) this.sprite.position.y += scale / 2
-        if (orientation == 270) this.sprite.position.y += -scale / 2
+        if (orientation == 0) this.sprite.position.y += scale
+        if (orientation == 90) this.sprite.position.x += scale
+        if (orientation == 180) this.sprite.position.y += -scale
+        if (orientation == 270) this.sprite.position.x += -scale
 
-        this.sprite.setSpeed(20, orientation);
+        this.sprite.setSpeed(20, -orientation + 90);
         this.sprite.friction = 0;
 
         let d = ['powerupdropped', this.index, this.sprite.position.x / scale, this.sprite.position.y / scale,
