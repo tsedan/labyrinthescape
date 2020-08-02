@@ -198,17 +198,6 @@ function resetConn() {
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
 
-    let chosenVal = 'monster';
-    let chosenIndex = null;
-
-    while (chosenVal == 'monster') {
-        chosenIndex = Math.floor(Math.random() * unusedSprites.length);
-        chosenVal = unusedSprites[chosenIndex];
-    }
-    unusedSprites.splice(chosenIndex, 1);
-
-    idToSprite[myID] = chosenVal;
-
     allPlayers.add(player);
     playerPos[myID] = player;
 }
