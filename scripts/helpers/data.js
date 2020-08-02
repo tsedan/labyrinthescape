@@ -35,6 +35,7 @@ let idToSprite = {};
 const validCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
 const maxUsernameLength = 14;
 const connectionFailTime = 5000;
+let allowedHostMenuStates;
 
 // P2P
 let allConnections = [];

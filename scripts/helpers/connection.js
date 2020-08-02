@@ -125,8 +125,7 @@ function connectionHost() {
             if (allConnections.length + 1 >= partySizeMaximum) {
                 conn.send('refuseconnection,party player cap was reached');
                 setTimeout(() => { conn.close() }, 1000);
-                //TODO: LMAOHAHA
-            } else if (gameState != 'MENU' || menu.state != 'HOSTMENU') {
+            } else if (gameState != 'MENU' || !allowedHostMenuStates.includes(menu.state)) {
                 conn.send('refuseconnection,host was not in the party creation menu');
                 setTimeout(() => { conn.close() }, 1000);
             } else {
