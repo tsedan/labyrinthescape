@@ -22,9 +22,9 @@ function initMenus() {
             new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) }),
             new MenuOption("PREVIOUS PAGE", () => {
                 if (currentTutorialPage > 0) currentTutorialPage--;
-                else currentTutorialPage = numTutorialPages-1;
+                else currentTutorialPage = numTutorialPages - 1;
             }),
-            new MenuOption("NEXT PAGE", () => { currentTutorialPage = (currentTutorialPage+1)%numTutorialPages }),
+            new MenuOption("NEXT PAGE", () => { currentTutorialPage = (currentTutorialPage + 1) % numTutorialPages }),
         ]
     ];
 
@@ -171,4 +171,7 @@ function initMenus() {
     loseMenu = [
         winMenu[0], "YOU LOST...", "remember, you can always play another round", winMenu[3]
     ];
+
+
+    allowedHostMenuStates = ["MAINMENU", "TUTORIALMENU", "NAMEMENU", "HOSTMENU", "MODEMENU"]
 }

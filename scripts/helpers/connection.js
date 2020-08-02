@@ -10,19 +10,7 @@ function connectionHost() {
                     playerPos[conn.peer] = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
                     allPlayers.add(playerPos[conn.peer]);
 
-                    let chosenVal = 'monster';
-                    let chosenIndex = null;
-
-                    while (chosenVal == 'monster') {
-                        chosenIndex = Math.floor(Math.random() * unusedSprites.length);
-                        chosenVal = unusedSprites[chosenIndex];
-                    }
-                    unusedSprites.splice(chosenIndex, 1);
-
-                    idToSprite[conn.peer] = chosenVal;
                     menu.update();
-
-                    conn.send("animation," + chosenVal)
                 }
                 if (allConnections.indexOf(conn) == -1) return;
                 switch (splitData[0]) {
@@ -38,12 +26,12 @@ function connectionHost() {
 
                         menu.update();
 
-                        conn.send("name," + peer.id + "," + idToName[peer.id] + "," + idToSprite[peer.id]);
+                        conn.send("name," + peer.id + "," + idToName[peer.id]);
                         for (let c in allConnections) {
 
                             if (allConnections[c].peer != conn.peer) {
-                                conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer] + "," + idToSprite[allConnections[c].peer]);
-                                allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer] + "," + idToSprite[conn.peer]);
+                                conn.send("name," + allConnections[c].peer + "," + idToName[allConnections[c].peer]);
+                                allConnections[c].send("name," + conn.peer + "," + idToName[conn.peer]);
                             }
                         }
                         break;
@@ -137,7 +125,7 @@ function connectionHost() {
             if (allConnections.length + 1 >= partySizeMaximum) {
                 conn.send('refuseconnection,party player cap was reached');
                 setTimeout(() => { conn.close() }, 1000);
-            } else if (gameState != 'MENU' || menu.state != 'HOSTMENU') {
+            } else if (gameState != 'MENU' || !allowedHostMenuStates.includes(menu.state)) {
                 conn.send('refuseconnection,host was not in the party creation menu');
                 setTimeout(() => { conn.close() }, 1000);
             } else {
@@ -216,12 +204,11 @@ function connectToHost(id) {
                     playerPos[splitData[1]] = otherPlayer;
                     allPlayers.add(otherPlayer);
 
-                    idToSprite[splitData[1]] = splitData[3];
                     menu.update();
 
                     break;
                 case 'animation':
-                    idToSprite[peer.id] = splitData[1]
+                    idToSprite[splitData[1]] = splitData[2]
                     break;
                 case 'changename':
                     idToName[splitData[2]] = splitData[1];
@@ -422,13 +409,40 @@ function sendPositionData() {
 function sendStartInfo() {
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
-    monster.shapeColor = gameColors.monster;
     addAnimation(monster, playerSprites['monster']);
     monster.scale = 1;
 
+    let unusedSprites = Object.keys(playerSprites);
+    for (let key of Object.keys(playerPos)) {
+        let chosenVal = 'monster';
+
+        if (playerPos[key] != monster) {
+            let chosenIndex = null;
+
+            while (chosenVal == 'monster') {
+                chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+                chosenVal = unusedSprites[chosenIndex];
+            }
+            unusedSprites.splice(chosenIndex, 1);
+        }
+
+        idToSprite[key] = chosenVal;
+    }
+
+    for (let c of allConnections) {
+        if (c && c.open) {
+            c.send('animation,' + peer.id + ',' + idToSprite[peer.id]);
+            for (let c2 of allConnections) {
+                if (c2 && c2.open) {
+                    let peerID = c2.peer;
+                    c.send('animation,' + peerID + ',' + idToSprite[peerID]);
+                }
+            }
+        }
+    }
+
     for (let key of Object.keys(playerPos)) {
         if (playerPos[key] != monster) {
-            playerPos[key].shapeColor = gameColors.player;
             addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
             playerPos[key].scale = 2;
         }
