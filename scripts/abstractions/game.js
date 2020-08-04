@@ -33,7 +33,7 @@ class Game {
 
         sendPositionData();
 
-        if (isHost) {
+        if (isHost && !monsterDead) {
             allPlayers.overlap(monster, (spr1, _spr2) => {
                 if (!spr1.visible) return;
                 if (spr1 == player) {
@@ -70,6 +70,25 @@ class Game {
 
     draw() {
         background(0);
+        if (isMonster && monsterDead) {
+            camera.off();
+            const alertFillColor = color(255);
+            fill(alertFillColor);
+            textFont(font);
+            textAlign(CENTER, TOP);
+            textSize(48 * fontSizeRatio);
+            text("YOU WERE KILLED BY A PLAYER", width / 2, uiPadding);
+            text("YOU WILL RESPAWN SOON", width / 2, uiPadding + 48 * fontSizeRatio);
+
+            currentMonsterDeadTime -= deltaTime;
+            if (currentMonsterDeadTime <= 0) {
+                currentMonsterDeadTime = monsterDeadTime;
+                monsterDead = false;
+                sendMonsterState();
+            }
+            return;
+        }
+
         if (inEnding) {
             player.velocity.x = 0;
             player.velocity.y = 0;

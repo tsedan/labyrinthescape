@@ -660,9 +660,12 @@ class ThrowingKnife extends Powerup {
                             this.sprite.visible = false;
                             super.sendPickupInfo();
                             this.used = 3;
+
+                            monsterDead = true;
+                            sendMonsterState();
+
                             player.position.x = originalMonsterLoc[0];
                             player.position.y = originalMonsterLoc[1];
-                            newAlert("YOU'VE BEEN KILLED BY A PLAYER");
                         } else if (this.pickupDelay == 0) {
                             this.pickupDelay = this.maxPickupDelay;
                             this.sprite.setVelocity(0, 0);

@@ -45,6 +45,15 @@ function connectionHost() {
                             }
                         }
                         break;
+                    case 'monsterstate':
+                        monsterDead = splitData[1] == 'true';
+                        monster.visible = !monsterDead;
+                        for (let c in allConnections) {
+                            if (allConnections[c].peer != conn.peer) {
+                                allConnections[c].send("monsterstate," + monsterDead);
+                            }
+                        }
+                        break;
                     case 'poweruppicked':
                         powerupsInUse.push(+splitData[1]);
                         powerups[+splitData[1]].sprite.visible = false;
@@ -203,6 +212,10 @@ function connectToHost(id) {
                 case 'changename':
                     idToName[splitData[2]] = splitData[1];
                     menu.update();
+                    break;
+                case 'monsterstate':
+                    monsterDead = splitData[1] == 'true';
+                    monster.visible = !monsterDead;
                     break;
                 case 'die':
                     if (splitData[1] == myID) {
@@ -482,6 +495,20 @@ function sendChangeNameInfo() {
     for (let c in allConnections) {
         if (allConnections[c] && allConnections[c].open) {
             allConnections[c].send('changename,' + idToName[myID] + ',' + peer.id);
+        }
+    }
+}
+
+function sendMonsterState() {
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('monsterstate,' + monsterDead);
+        }
+    } else if (isHost) {
+        for (let c of allConnections) {
+            if (c && c.open) {
+                c.send('monsterstate,' + monsterDead);
+            }
         }
     }
 }

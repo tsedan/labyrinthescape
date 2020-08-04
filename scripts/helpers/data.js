@@ -79,8 +79,13 @@ let spectating = false;
 
 let inEnding = false;
 const endingTime = 5000;
+
+let monsterDead = false;
+const monsterDeadTime = 5000;
+
 let renderDecreaseTimings = [];
 let currentEndingTime = endingTime;
+let currentMonsterDeadTime = monsterDeadTime;
 let endingMenu = null;
 
 let prevPos = [0, 0];
@@ -148,6 +153,7 @@ function resetAllValues() {
     orientation = 0;
     isDead = false;
     inEnding = false;
+    monsterDead = false;
     renderDecreaseTimings = [];
     currentEndingTime = endingTime;
     tempDead = false;
