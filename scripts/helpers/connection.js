@@ -45,16 +45,6 @@ function connectionHost() {
                             }
                         }
                         break;
-                    case 'die':
-                        playerPos[conn.peer].visible = false;
-                        deadPlayers.push(playerPos[conn.peer]);
-                        for (let c of allConnections) {
-                            if ((c && c.open) && (c.peer != conn.peer)) {
-                                c.send('die,' + conn.peer);
-                            }
-                        }
-                        checkMazeCompletion();
-                        break;
                     case 'poweruppicked':
                         powerupsInUse.push(+splitData[1]);
                         powerups[+splitData[1]].sprite.visible = false;
@@ -215,8 +205,12 @@ function connectToHost(id) {
                     menu.update();
                     break;
                 case 'die':
-                    playerPos[splitData[1]].visible = false;
-                    deadPlayers.push(playerPos[splitData[1]]);
+                    if (splitData[1] == myID) {
+                        die();
+                    } else {
+                        playerPos[splitData[1]].visible = false;
+                        deadPlayers.push(playerPos[splitData[1]]);
+                    }
                     break;
                 case 'poweruppicked':
                     powerupsInUse.push(+splitData[1]);
@@ -351,19 +345,6 @@ function die() {
     isDead = true;
     deadPlayers.push(player);
     newAlert("YOU DIED AND ENTERED SPECTATOR MODE");
-
-    if (!isHost && allConnections.length == 1) {
-        if (allConnections[0] && allConnections[0].open) {
-            allConnections[0].send('die');
-        }
-    } else if (isHost) {
-        for (let c in allConnections) {
-            if (allConnections[c] && allConnections[c].open) {
-                allConnections[c].send('die,' + myID);
-            }
-        }
-        checkMazeCompletion();
-    }
 }
 
 function initializePeer() {

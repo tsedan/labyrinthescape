@@ -33,12 +33,34 @@ class Game {
 
         sendPositionData();
 
+        if (isHost) {
+            allPlayers.overlap(monster, (spr1, _spr2) => {
+                if (!spr1.visible) return;
+                if (spr1 == player) {
+                    die();
+                } else {
+                    spr1.visible = false;
+                    deadPlayers.push(spr1);
+                }
+
+                let deadID = getKeyByValue(playerPos, spr1);
+
+                for (let c of allConnections) {
+                    if (c && c.open) {
+                        c.send('die,' + deadID);
+                    }
+                }
+
+
+                checkMazeCompletion();
+            });
+        }
+
         if (spectating) {
             minimap.updateLoc(floor(player.position.x / scale), floor(player.position.y / scale));
 
             for (let p in powerups) powerups[p].draw();
         } else {
-            player.overlap(monster, die);
             player.collide(exit, exitReached);
             minimap.update(floor(player.position.x / scale), floor(player.position.y / scale));
 
