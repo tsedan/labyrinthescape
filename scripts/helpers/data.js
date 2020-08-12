@@ -49,7 +49,7 @@ let allPlayers;
 let deadPlayers = [];
 let connectedToServer;
 let idToName = {};
-const partySizeMinimum = 1;
+const partySizeMinimum = 2;
 const partySizeMaximum = 5;
 const peerConfig = {
     secure: true,
