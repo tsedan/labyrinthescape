@@ -139,3 +139,137 @@ class MazeGenerator {
         }
     }
 }
+
+class MazeSolver {
+    constructor(maze) {
+        this.m = maze;
+
+        this.visited_cells = {};
+        this.solution = [];
+
+        let current = this.m.start;
+        this.solution.push(current);
+        this.visit(current);
+
+        if (this.on_edge(this.m.start)) {
+            current = this.push_edge(this.m.start);
+            this.solution.push(current);
+            this.visit(current);
+        }
+    }
+
+    visit(cell) {
+        if (!(cell in this.visited_cells))
+            this.visited_cells[cell] = 0
+
+        this.visited_cells[cell]++;
+    }
+
+    get_visit_count(cell) {
+        if (!(cell in this.visited_cells))
+            return 0
+        else
+            return this.visited_cells[cell] < 3 ? this.visited_cells[cell] : 2
+    }
+
+    what_next(ns) {
+        let visit_counts = {}
+
+        for (let i = 0; i < ns.length; i++) {
+            let visit_count = this.get_visit_count(ns[i])
+            if (!(visit_count in visit_counts))
+                visit_counts[visit_count] = []
+
+            visit_counts[visit_count].push(ns[i])
+        }
+
+        if (0 in visit_counts) {
+            return visit_counts[0][Math.floor(Math.random() * visit_counts[0].length)];
+        } else if (1 in visit_counts) {
+            if (visit_counts[1].length > 1 && this.solution.length > 2)
+                if (visit_counts[1].includes(this.solution[this.solution.length - 3])) {
+                    const index = visit_counts[1].indexOf(this.solution[this.solution.length - 3]);
+                    visit_counts[1].splice(index, 1);
+                }
+            return visit_counts[1][Math.floor(Math.random() * visit_counts[1].length)];
+        }
+
+        else {
+            if (visit_counts[2].length > 1 && this.solution.length > 2)
+                if (visit_counts[2].includes(this.solution[this.solution.length - 3])) {
+                    const index = visit_counts[2].indexOf(this.solution[this.solution.length - 3]);
+                    visit_counts[2].splice(index, 1);
+                }
+            return visit_counts[2][Math.floor(Math.random() * visit_counts[2].length)];
+        }
+    }
+
+    step() {
+        let ns = this.find_unblocked_neighbors(this.solution[this.solution.length - 1])
+        let nxt = this.what_next(ns)
+
+        this.solution.push(this.midpoint(this.solution[this.solution.length - 1], nxt))
+        this.solution.push(nxt)
+        this.visit(nxt)
+    }
+
+    on_edge(cell) {
+        let r = cell[0], c = cell[1];
+
+        if (r == 0 || r == this.m.H - 1)
+            return true
+        if (c == 0 || c == this.m.W - 1)
+            return true
+
+        return false
+    }
+
+    push_edge(cell) {
+        let r = cell[0], c = cell[1];
+
+        if (r == 0)
+            return [1, c]
+        else if (r == this.m.H - 1)
+            return [r - 1, c]
+        else if (c == 0)
+            return [r, 1]
+        else
+            return [r, c - 1]
+    }
+
+    within_one(cell, desire) {
+        if (!cell || !desire)
+            return false
+
+        if (cell[0] == desire[0]) {
+            if (Math.abs(cell[1] - desire[1]) < 2)
+                return true
+        } else if (cell[1] == desire[1]) {
+            if (Math.abs(cell[0] - desire[0]) < 2)
+                return true
+        }
+
+        return false
+    }
+
+    find_unblocked_neighbors(posi) {
+        let r = posi[0], c = posi[1];
+        let ns = []
+
+        if (r > 1 && !this.m.grid[r - 1][c] && !this.m.grid[r - 2][c])
+            ns.push([r - 2, c])
+        if (r < this.m.H - 2 && !this.m.grid[r + 1][c] && !this.m.grid[r + 2][c])
+            ns.push([r + 2, c])
+        if (c > 1 && !this.m.grid[r][c - 1] && !this.m.grid[r][c - 2])
+            ns.push([r, c - 2])
+        if (c < this.m.W - 2 && !this.m.grid[r][c + 1] && !this.m.grid[r][c + 2])
+            ns.push([r, c + 2])
+
+        shuffleArray(ns)
+        return ns
+    }
+
+    midpoint(a, b) {
+        return [Math.floor((a[0] + b[0]) / 2), Math.floor((a[1] + b[1]) / 2)]
+    }
+}

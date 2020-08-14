@@ -140,5 +140,14 @@ class Game {
 
         minimap.draw();
         drawInventory();
+
+        // if (!ms.within_one(ms.solution[ms.solution.length - 1], m.end)) {
+        //     let a = ms.solution[ms.solution.length - 1];
+        //     let attract = [a[1] * scale + scale / 2, a[0] * scale + scale / 2];
+        //     player.attractionPoint(2, attract[0], attract[1]);
+
+        //     let dist = Math.hypot(attract[0] - player.position.x, attract[1] - player.position.y);
+        //     if (dist < 10) ms.step();
+        // }
     }
 }

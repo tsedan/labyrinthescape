@@ -92,6 +92,7 @@ let prevPos = [0, 0];
 
 // MAZE
 let m;
+let ms;
 let walls;
 let exit;
 let powerups;
@@ -159,6 +160,7 @@ function resetAllValues() {
     tempDead = false;
     spectating = false;
     m = null;
+    ms = null;
     walls = null;
     exit = null;
     powerups = null;

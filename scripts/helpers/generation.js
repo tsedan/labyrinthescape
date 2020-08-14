@@ -40,6 +40,8 @@ function genMaze(w, h, holes, numPowerups) {
     m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate();
 
+    ms = new MazeSolver(m)
+
     minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 
     for (let key in playerPos) {
