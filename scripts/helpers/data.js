@@ -44,6 +44,8 @@ let myID;
 for (myID = ''; myID.length < idLength; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
 let isHost = false;
 let playerPos = {};
+let cpus = {};
+let solvers = {};
 let finishedPlayers;
 let allPlayers;
 let deadPlayers = [];
@@ -92,7 +94,6 @@ let prevPos = [0, 0];
 
 // MAZE
 let m;
-let ms;
 let walls;
 let exit;
 let powerups;
@@ -160,7 +161,7 @@ function resetAllValues() {
     tempDead = false;
     spectating = false;
     m = null;
-    ms = null;
+    solvers = null;
     walls = null;
     exit = null;
     powerups = null;
@@ -195,6 +196,7 @@ function resetConn() {
     allConnections = [];
 
     playerPos = {};
+    cpus = {};
     const myName = idToName[myID];
     idToName = [];
     idToName[myID] = (myName ? myName : myID);
@@ -206,7 +208,6 @@ function resetConn() {
     allPlayers = new Group();
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-
     allPlayers.add(player);
     playerPos[myID] = player;
 }

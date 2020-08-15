@@ -423,6 +423,22 @@ function sendStartInfo() {
         idToSprite[key] = chosenVal;
     }
 
+    for (let key of Object.keys(cpus)) {
+        let chosenVal = 'monster';
+
+        if (cpus[key] != monster) {
+            let chosenIndex = null;
+
+            while (chosenVal == 'monster') {
+                chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+                chosenVal = unusedSprites[chosenIndex];
+            }
+            unusedSprites.splice(chosenIndex, 1);
+        }
+
+        idToSprite[key] = chosenVal;
+    }
+
     for (let c of allConnections) {
         if (c && c.open) {
             c.send('animation,' + peer.id + ',' + idToSprite[peer.id]);
@@ -439,6 +455,13 @@ function sendStartInfo() {
         if (playerPos[key] != monster) {
             addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
             playerPos[key].scale = 2;
+        }
+    }
+
+    for (let key of Object.keys(cpus)) {
+        if (cpus[key] != monster) {
+            addAnimation(cpus[key], playerSprites[idToSprite[key]]);
+            cpus[key].scale = 2;
         }
     }
 
