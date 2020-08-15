@@ -117,7 +117,7 @@ function initMenus() {
         "HOSTMENU", "ID: myID, nmPlP", "share this party id with your friends",
         [
             new MenuOption("START", () => {
-                if (allConnections.length + 1 >= partySizeMinimum) {
+                if (allPlayers.length >= partySizeMinimum) {
                     mazeSeed = Date.now();
                     sendStartInfo();
                     startGame();

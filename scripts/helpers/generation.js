@@ -40,11 +40,15 @@ function genMaze(w, h, holes, numPowerups) {
     m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate();
 
+    for (const key of Object.keys(cpus)) {
+        solvers[key] = new MazeSolver(m);
+    }
+
     minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 
-    for (let i = 0; i < allPlayers.length; i++) {
-        allPlayers[i].position.x = (m.start[1] + 0.5) * scale;
-        allPlayers[i].position.y = (m.start[0] + 0.5) * scale;
+    for (const p of allPlayers) {
+        p.position.x = (m.start[1] + 0.5) * scale;
+        p.position.y = (m.start[0] + 0.5) * scale;
     }
 
     while (true) {

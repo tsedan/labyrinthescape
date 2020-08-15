@@ -121,7 +121,7 @@ function connectionHost() {
                 }
             });
 
-            if (allConnections.length + 1 >= partySizeMaximum) {
+            if (allPlayers.length >= partySizeMaximum) {
                 conn.send('refuseconnection,party player cap was reached');
                 setTimeout(() => { conn.close() }, 1000);
             } else if (gameState != 'MENU' || !allowedHostMenuStates.includes(menu.state)) {
@@ -136,6 +136,7 @@ function connectionHost() {
 
 function connectToHost(id) {
     for (let c of allConnections) c.close();
+    isHost = false;
 
     let conn = peer.connect(id);
 
@@ -401,6 +402,7 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
+
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     addAnimation(monster, playerSprites['monster']);

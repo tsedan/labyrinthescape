@@ -68,8 +68,27 @@ class Game {
         }
     }
 
+    moveCPU(cpuID) {
+        let ms = solvers[cpuID];
+        if (!ms.within_one(ms.solution[ms.solution.length - 1], m.end)) {
+            let last = ms.solution[ms.solution.length - 1];
+            let attract = [last[1] * scale + scale / 2, last[0] * scale + scale / 2];
+            cpus[cpuID].attractionPoint(1, attract[0], attract[1]);
+
+            let dist = Math.hypot(attract[0] - cpus[cpuID].position.x, attract[1] - cpus[cpuID].position.y);
+            if (dist < 10) ms.step();
+        }
+    }
+
     draw() {
         background(0);
+
+        if (isHost) {
+            for (let key of Object.keys(cpus)) {
+                this.moveCPU(key)
+            }
+        }
+
         if (isMonster && monsterDead) {
             camera.off();
             const alertFillColor = color(255);
@@ -140,14 +159,5 @@ class Game {
 
         minimap.draw();
         drawInventory();
-
-        // if (!ms.within_one(ms.solution[ms.solution.length - 1], m.end)) {
-        //     let a = ms.solution[ms.solution.length - 1];
-        //     let attract = [a[1] * scale + scale / 2, a[0] * scale + scale / 2];
-        //     player.attractionPoint(2, attract[0], attract[1]);
-
-        //     let dist = Math.hypot(attract[0] - player.position.x, attract[1] - player.position.y);
-        //     if (dist < 10) ms.step();
-        // }
     }
 }
