@@ -23,6 +23,11 @@ function someoneCompleted(id) {
     }
 }
 
+function cpuCompleted(id) {
+    cpus[id].visible = false;
+    newAlert(idToName[id] + " COMPLETED THE MAZE!");
+}
+
 function newAlert(msg) {
     alertMsg = msg;
     alertTime = alertMaxTime;

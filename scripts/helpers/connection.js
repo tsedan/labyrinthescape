@@ -308,6 +308,32 @@ function exitReached() {
     }
 }
 
+function cpuExit(spr) {
+    let id = null;
+    for (let s of Object.keys(cpus)) {
+        if (cpus[s] === spr) {
+            id = s;
+            break;
+        }
+    }
+
+    cpuCompleted(id);
+
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('comp');
+        }
+    } else if (isHost) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('comp,' + id);
+            }
+        }
+        finishedPlayers.push(id);
+        checkMazeCompletion();
+    }
+}
+
 function startEnding() {
     inEnding = true;
     for (let i = 0; i < endingTime; i += endingTime / maxRenderDist) {
@@ -318,7 +344,7 @@ function startEnding() {
 }
 
 function checkMazeCompletion() {
-    if (deadPlayers.length == Object.keys(playerPos).length - 1) {
+    if (deadPlayers.length == allPlayers.length - 1) {
         startEnding();
         endingMenu = isMonster ? winMenu : loseMenu
 
@@ -331,7 +357,7 @@ function checkMazeCompletion() {
         return;
     }
     if (finishedPlayers.length == 0) return;
-    if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
+    if (finishedPlayers.length == allPlayers.length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
             startEnding();
             endingMenu = !isMonster ? winMenu : loseMenu
