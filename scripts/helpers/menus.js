@@ -126,7 +126,7 @@ function initMenus() {
                 }
             }),
             new MenuOption("CONFIG", () => { menu.changeMenu(...modeMenu) }),
-            new MenuOption("CPU", () => { menu.changeMenu(...cpuMenu) }),
+            new MenuOption("CPU (BETA)", () => { menu.changeMenu(...cpuMenu) }),
             new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) })
         ]
     ];
