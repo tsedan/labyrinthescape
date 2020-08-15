@@ -139,3 +139,132 @@ class MazeGenerator {
         }
     }
 }
+
+class MazeSolver {
+    constructor(maze) {
+        this.m = maze;
+
+        this.visitedCells = {};
+        this.solution = [];
+
+        let current = this.m.start;
+        this.solution.push(current);
+        this.visit(current);
+
+        if (this.onEdge(this.m.start)) {
+            current = this.pushEdge(this.m.start);
+            this.solution.push(current);
+            this.visit(current);
+        }
+    }
+
+    visit(cell) {
+        if (!(cell in this.visitedCells))
+            this.visitedCells[cell] = 0
+
+        this.visitedCells[cell]++;
+    }
+
+    getVisitCount(cell) {
+        if (!(cell in this.visitedCells))
+            return 0
+        else
+            return this.visitedCells[cell] < 3 ? this.visitedCells[cell] : 2
+    }
+
+    what_next(ns) {
+        let visitCounts = {}
+
+        for (let i = 0; i < ns.length; i++) {
+            let visit_count = this.getVisitCount(ns[i])
+            if (!(visit_count in visitCounts))
+                visitCounts[visit_count] = []
+
+            visitCounts[visit_count].push(ns[i])
+        }
+
+        if (0 in visitCounts) {
+            return visitCounts[0][Math.floor(Math.random() * visitCounts[0].length)];
+        } else if (1 in visitCounts) {
+            if (visitCounts[1].length > 1 && this.solution.length > 2)
+                if (visitCounts[1].includes(this.solution[this.solution.length - 3])) {
+                    const index = visitCounts[1].indexOf(this.solution[this.solution.length - 3]);
+                    visitCounts[1].splice(index, 1);
+                }
+            return visitCounts[1][Math.floor(Math.random() * visitCounts[1].length)];
+        }
+
+        else {
+            if (visitCounts[2].length > 1 && this.solution.length > 2)
+                if (visitCounts[2].includes(this.solution[this.solution.length - 3])) {
+                    const index = visitCounts[2].indexOf(this.solution[this.solution.length - 3]);
+                    visitCounts[2].splice(index, 1);
+                }
+            return visitCounts[2][Math.floor(Math.random() * visitCounts[2].length)];
+        }
+    }
+
+    step() {
+        let ns = this.findUnblockedNeighbors(this.solution[this.solution.length - 1])
+        let nxt = this.what_next(ns)
+
+        this.solution.push(nxt)
+        this.visit(nxt)
+    }
+
+    onEdge(cell) {
+        let r = cell[0], c = cell[1];
+
+        if (r == 0 || r == this.m.H - 1)
+            return true
+        if (c == 0 || c == this.m.W - 1)
+            return true
+
+        return false
+    }
+
+    pushEdge(cell) {
+        let r = cell[0], c = cell[1];
+
+        if (r == 0)
+            return [1, c]
+        else if (r == this.m.H - 1)
+            return [r - 1, c]
+        else if (c == 0)
+            return [r, 1]
+        else
+            return [r, c - 1]
+    }
+
+    withinOne(cell, desire) {
+        if (!cell || !desire)
+            return false
+
+        if (cell[0] == desire[0]) {
+            if (Math.abs(cell[1] - desire[1]) < 2)
+                return true
+        } else if (cell[1] == desire[1]) {
+            if (Math.abs(cell[0] - desire[0]) < 2)
+                return true
+        }
+
+        return false
+    }
+
+    findUnblockedNeighbors(posi) {
+        let r = posi[0], c = posi[1];
+        let ns = []
+
+        if (r > 1 && !this.m.grid[r - 1][c] && !this.m.grid[r - 2][c])
+            ns.push([r - 2, c])
+        if (r < this.m.H - 2 && !this.m.grid[r + 1][c] && !this.m.grid[r + 2][c])
+            ns.push([r + 2, c])
+        if (c > 1 && !this.m.grid[r][c - 1] && !this.m.grid[r][c - 2])
+            ns.push([r, c - 2])
+        if (c < this.m.W - 2 && !this.m.grid[r][c + 1] && !this.m.grid[r][c + 2])
+            ns.push([r, c + 2])
+
+        shuffleArray(ns)
+        return ns
+    }
+}

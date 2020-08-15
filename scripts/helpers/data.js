@@ -42,8 +42,10 @@ let allConnections = [];
 const idLength = 6;
 let myID;
 for (myID = ''; myID.length < idLength; myID += validCharacters[Math.floor(Math.random() * validCharacters.length)]);
-let isHost = false;
+let isHost = true;
 let playerPos = {};
+let cpus = {};
+let solvers = {};
 let finishedPlayers;
 let allPlayers;
 let deadPlayers = [];
@@ -159,6 +161,7 @@ function resetAllValues() {
     tempDead = false;
     spectating = false;
     m = null;
+    solvers = {};
     walls = null;
     exit = null;
     powerups = null;
@@ -193,10 +196,11 @@ function resetConn() {
     allConnections = [];
 
     playerPos = {};
+    cpus = {};
     const myName = idToName[myID];
     idToName = [];
     idToName[myID] = (myName ? myName : myID);
-    isHost = false;
+    isHost = true;
 
     initMenus();
     menu = new Menu();
@@ -204,7 +208,6 @@ function resetConn() {
     allPlayers = new Group();
 
     player = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
-
     allPlayers.add(player);
     playerPos[myID] = player;
 }

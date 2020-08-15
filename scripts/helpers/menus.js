@@ -117,7 +117,7 @@ function initMenus() {
         "HOSTMENU", "ID: myID, nmPlP", "share this party id with your friends",
         [
             new MenuOption("START", () => {
-                if (allConnections.length + 1 >= partySizeMinimum) {
+                if (allPlayers.length >= partySizeMinimum) {
                     mazeSeed = Date.now();
                     sendStartInfo();
                     startGame();
@@ -126,6 +126,7 @@ function initMenus() {
                 }
             }),
             new MenuOption("CONFIG", () => { menu.changeMenu(...modeMenu) }),
+            new MenuOption("CPU (BETA)", () => { menu.changeMenu(...cpuMenu) }),
             new MenuOption("BACK", () => { menu.changeMenu(...mainMenu) })
         ]
     ];
@@ -139,6 +140,32 @@ function initMenus() {
             new MenuSlide(round(10 - (holeProbability * 100)), 0, 10, "DIFFICULTY", data => { holeProbability = (10 - round(data)) / 100; }),
         ]
     ];
+
+    cpuMenu = [
+        "CPUMENU", hostMenu[1], "add CPUs to the game",
+        [
+            new MenuOption("BACK", () => { menu.changeMenu(...hostMenu) }),
+            new MenuOption("ADD CPU", () => {
+                if (allPlayers.length >= partySizeMaximum) return;
+
+                let cpu = genObj(0, 0, scale / 2, scale / 2, gameColors.player);
+                allPlayers.add(cpu);
+                let id = "CPU#" + (Object.keys(cpus).length + 1);
+                cpus[id] = cpu;
+                idToName[id] = id;
+                menu.update();
+            }),
+            new MenuOption("REMOVE CPU", () => {
+                if (Object.keys(cpus).length === 0) return;
+                let removeID = Object.keys(cpus)[Object.keys(cpus).length - 1];
+
+                allPlayers.remove(cpus[removeID]);
+                delete cpus[removeID];
+                delete idToName[removeID];
+                menu.update();
+            }),
+        ]
+    ]
 
     winMenu = [
         "OVERMENU", "YOU WON!", "flex on your friends, or go for another round",

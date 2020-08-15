@@ -121,7 +121,7 @@ function connectionHost() {
                 }
             });
 
-            if (allConnections.length + 1 >= partySizeMaximum) {
+            if (allPlayers.length >= partySizeMaximum) {
                 conn.send('refuseconnection,party player cap was reached');
                 setTimeout(() => { conn.close() }, 1000);
             } else if (gameState != 'MENU' || !allowedHostMenuStates.includes(menu.state)) {
@@ -136,6 +136,7 @@ function connectionHost() {
 
 function connectToHost(id) {
     for (let c of allConnections) c.close();
+    isHost = false;
 
     let conn = peer.connect(id);
 
@@ -307,6 +308,32 @@ function exitReached() {
     }
 }
 
+function cpuExit(spr) {
+    let id = null;
+    for (let s of Object.keys(cpus)) {
+        if (cpus[s] === spr) {
+            id = s;
+            break;
+        }
+    }
+
+    cpuCompleted(id);
+
+    if (!isHost && allConnections.length == 1) {
+        if (allConnections[0] && allConnections[0].open) {
+            allConnections[0].send('comp');
+        }
+    } else if (isHost) {
+        for (let c in allConnections) {
+            if (allConnections[c] && allConnections[c].open) {
+                allConnections[c].send('comp,' + id);
+            }
+        }
+        finishedPlayers.push(id);
+        checkMazeCompletion();
+    }
+}
+
 function startEnding() {
     inEnding = true;
     for (let i = 0; i < endingTime; i += endingTime / maxRenderDist) {
@@ -317,7 +344,7 @@ function startEnding() {
 }
 
 function checkMazeCompletion() {
-    if (deadPlayers.length == Object.keys(playerPos).length - 1) {
+    if (deadPlayers.length == allPlayers.length - 1) {
         startEnding();
         endingMenu = isMonster ? winMenu : loseMenu
 
@@ -330,7 +357,7 @@ function checkMazeCompletion() {
         return;
     }
     if (finishedPlayers.length == 0) return;
-    if (finishedPlayers.length == Object.keys(playerPos).length - deadPlayers.length - 1) {
+    if (finishedPlayers.length == allPlayers.length - deadPlayers.length - 1) {
         if (mazesStarted == numberOfMazes) {
             startEnding();
             endingMenu = !isMonster ? winMenu : loseMenu
@@ -401,6 +428,7 @@ function sendPositionData() {
 }
 
 function sendStartInfo() {
+
     const monsterID = Object.keys(playerPos)[floor(Math.random() * Object.keys(playerPos).length)];
     monster = playerPos[monsterID];
     addAnimation(monster, playerSprites['monster']);
@@ -411,6 +439,22 @@ function sendStartInfo() {
         let chosenVal = 'monster';
 
         if (playerPos[key] != monster) {
+            let chosenIndex = null;
+
+            while (chosenVal == 'monster') {
+                chosenIndex = Math.floor(Math.random() * unusedSprites.length);
+                chosenVal = unusedSprites[chosenIndex];
+            }
+            unusedSprites.splice(chosenIndex, 1);
+        }
+
+        idToSprite[key] = chosenVal;
+    }
+
+    for (let key of Object.keys(cpus)) {
+        let chosenVal = 'monster';
+
+        if (cpus[key] != monster) {
             let chosenIndex = null;
 
             while (chosenVal == 'monster') {
@@ -439,6 +483,13 @@ function sendStartInfo() {
         if (playerPos[key] != monster) {
             addAnimation(playerPos[key], playerSprites[idToSprite[key]]);
             playerPos[key].scale = 2;
+        }
+    }
+
+    for (let key of Object.keys(cpus)) {
+        if (cpus[key] != monster) {
+            addAnimation(cpus[key], playerSprites[idToSprite[key]]);
+            cpus[key].scale = 2;
         }
     }
 

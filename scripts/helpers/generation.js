@@ -23,6 +23,11 @@ function someoneCompleted(id) {
     }
 }
 
+function cpuCompleted(id) {
+    cpus[id].visible = false;
+    newAlert(idToName[id] + " COMPLETED THE MAZE!");
+}
+
 function newAlert(msg) {
     alertMsg = msg;
     alertTime = alertMaxTime;
@@ -40,13 +45,15 @@ function genMaze(w, h, holes, numPowerups) {
     m = new MazeGenerator(w, h, holes, numPowerups);
     m.generate();
 
+    for (const key of Object.keys(cpus)) {
+        solvers[key] = new MazeSolver(m);
+    }
+
     minimapScale = (min(windowWidth, windowHeight) * minimapPercent) / max(m.H, m.W);
 
-    for (let key in playerPos) {
-        if (playerPos.hasOwnProperty(key)) {
-            playerPos[key].position.x = (m.start[1] + 0.5) * scale;
-            playerPos[key].position.y = (m.start[0] + 0.5) * scale;
-        }
+    for (const p of allPlayers) {
+        p.position.x = (m.start[1] + 0.5) * scale;
+        p.position.y = (m.start[0] + 0.5) * scale;
     }
 
     while (true) {

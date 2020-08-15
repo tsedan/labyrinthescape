@@ -44,6 +44,7 @@ class Game {
                 }
 
                 let deadID = getKeyByValue(playerPos, spr1);
+                if (deadID === undefined) deadID = getKeyByValue(cpus, spr1);
 
                 for (let c of allConnections) {
                     if (c && c.open) {
@@ -68,8 +69,35 @@ class Game {
         }
     }
 
+    moveCPU(cpuID) {
+        let ms = solvers[cpuID];
+        if (!ms.withinOne(ms.solution[ms.solution.length - 1], m.end)) {
+            let last = ms.solution[ms.solution.length - 1];
+            let attract = [last[1] * scale + scale / 2, last[0] * scale + scale / 2];
+            cpus[cpuID].attractionPoint(1, attract[0], attract[1]);
+
+            let dist = Math.hypot(attract[0] - cpus[cpuID].position.x, attract[1] - cpus[cpuID].position.y);
+
+            if (dist < scale) {
+                ms.step();
+            }
+        } else {
+            cpus[cpuID].attractionPoint(1, m.end[1] * scale + scale / 2, m.end[0] * scale + scale / 2);
+            cpus[cpuID].collide(exit, cpuExit);
+        }
+
+        cpus[cpuID].limitSpeed(scale / trueMaxSpeed);
+    }
+
     draw() {
         background(0);
+
+        if (isHost) {
+            for (let key of Object.keys(cpus)) {
+                if (!finishedPlayers.includes(key)) this.moveCPU(key);
+            }
+        }
+
         if (isMonster && monsterDead) {
             camera.off();
             const alertFillColor = color(255);
@@ -123,6 +151,13 @@ class Game {
         textSize(scale / 2);
         for (let k of Object.keys(playerPos)) {
             const plr = playerPos[k]; if (!plr.visible) continue;
+            let spriteColorUse = plr == monster ? spriteColor["monster"] : spriteColor[idToSprite[k]];
+            fill(lerpColor(color(spriteColorUse), color(0), dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale * maxRenderDist)));
+            text(idToName[k], plr.position.x, plr.position.y - plr.height / 2);
+        }
+
+        for (let k of Object.keys(cpus)) {
+            const plr = cpus[k]; if (!plr.visible) continue;
             let spriteColorUse = plr == monster ? spriteColor["monster"] : spriteColor[idToSprite[k]];
             fill(lerpColor(color(spriteColorUse), color(0), dist(player.position.x, player.position.y, plr.position.x, plr.position.y) / (scale * maxRenderDist)));
             text(idToName[k], plr.position.x, plr.position.y - plr.height / 2);
