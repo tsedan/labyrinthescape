@@ -144,76 +144,75 @@ class MazeSolver {
     constructor(maze) {
         this.m = maze;
 
-        this.visited_cells = {};
+        this.visitedCells = {};
         this.solution = [];
 
         let current = this.m.start;
         this.solution.push(current);
         this.visit(current);
 
-        if (this.on_edge(this.m.start)) {
-            current = this.push_edge(this.m.start);
+        if (this.onEdge(this.m.start)) {
+            current = this.pushEdge(this.m.start);
             this.solution.push(current);
             this.visit(current);
         }
     }
 
     visit(cell) {
-        if (!(cell in this.visited_cells))
-            this.visited_cells[cell] = 0
+        if (!(cell in this.visitedCells))
+            this.visitedCells[cell] = 0
 
-        this.visited_cells[cell]++;
+        this.visitedCells[cell]++;
     }
 
-    get_visit_count(cell) {
-        if (!(cell in this.visited_cells))
+    getVisitCount(cell) {
+        if (!(cell in this.visitedCells))
             return 0
         else
-            return this.visited_cells[cell] < 3 ? this.visited_cells[cell] : 2
+            return this.visitedCells[cell] < 3 ? this.visitedCells[cell] : 2
     }
 
     what_next(ns) {
-        let visit_counts = {}
+        let visitCounts = {}
 
         for (let i = 0; i < ns.length; i++) {
-            let visit_count = this.get_visit_count(ns[i])
-            if (!(visit_count in visit_counts))
-                visit_counts[visit_count] = []
+            let visit_count = this.getVisitCount(ns[i])
+            if (!(visit_count in visitCounts))
+                visitCounts[visit_count] = []
 
-            visit_counts[visit_count].push(ns[i])
+            visitCounts[visit_count].push(ns[i])
         }
 
-        if (0 in visit_counts) {
-            return visit_counts[0][Math.floor(Math.random() * visit_counts[0].length)];
-        } else if (1 in visit_counts) {
-            if (visit_counts[1].length > 1 && this.solution.length > 2)
-                if (visit_counts[1].includes(this.solution[this.solution.length - 3])) {
-                    const index = visit_counts[1].indexOf(this.solution[this.solution.length - 3]);
-                    visit_counts[1].splice(index, 1);
+        if (0 in visitCounts) {
+            return visitCounts[0][Math.floor(Math.random() * visitCounts[0].length)];
+        } else if (1 in visitCounts) {
+            if (visitCounts[1].length > 1 && this.solution.length > 2)
+                if (visitCounts[1].includes(this.solution[this.solution.length - 3])) {
+                    const index = visitCounts[1].indexOf(this.solution[this.solution.length - 3]);
+                    visitCounts[1].splice(index, 1);
                 }
-            return visit_counts[1][Math.floor(Math.random() * visit_counts[1].length)];
+            return visitCounts[1][Math.floor(Math.random() * visitCounts[1].length)];
         }
 
         else {
-            if (visit_counts[2].length > 1 && this.solution.length > 2)
-                if (visit_counts[2].includes(this.solution[this.solution.length - 3])) {
-                    const index = visit_counts[2].indexOf(this.solution[this.solution.length - 3]);
-                    visit_counts[2].splice(index, 1);
+            if (visitCounts[2].length > 1 && this.solution.length > 2)
+                if (visitCounts[2].includes(this.solution[this.solution.length - 3])) {
+                    const index = visitCounts[2].indexOf(this.solution[this.solution.length - 3]);
+                    visitCounts[2].splice(index, 1);
                 }
-            return visit_counts[2][Math.floor(Math.random() * visit_counts[2].length)];
+            return visitCounts[2][Math.floor(Math.random() * visitCounts[2].length)];
         }
     }
 
     step() {
-        let ns = this.find_unblocked_neighbors(this.solution[this.solution.length - 1])
+        let ns = this.findUnblockedNeighbors(this.solution[this.solution.length - 1])
         let nxt = this.what_next(ns)
 
-        this.solution.push(this.midpoint(this.solution[this.solution.length - 1], nxt))
         this.solution.push(nxt)
         this.visit(nxt)
     }
 
-    on_edge(cell) {
+    onEdge(cell) {
         let r = cell[0], c = cell[1];
 
         if (r == 0 || r == this.m.H - 1)
@@ -224,7 +223,7 @@ class MazeSolver {
         return false
     }
 
-    push_edge(cell) {
+    pushEdge(cell) {
         let r = cell[0], c = cell[1];
 
         if (r == 0)
@@ -237,7 +236,7 @@ class MazeSolver {
             return [r, c - 1]
     }
 
-    within_one(cell, desire) {
+    withinOne(cell, desire) {
         if (!cell || !desire)
             return false
 
@@ -252,7 +251,7 @@ class MazeSolver {
         return false
     }
 
-    find_unblocked_neighbors(posi) {
+    findUnblockedNeighbors(posi) {
         let r = posi[0], c = posi[1];
         let ns = []
 
@@ -267,9 +266,5 @@ class MazeSolver {
 
         shuffleArray(ns)
         return ns
-    }
-
-    midpoint(a, b) {
-        return [Math.floor((a[0] + b[0]) / 2), Math.floor((a[1] + b[1]) / 2)]
     }
 }
